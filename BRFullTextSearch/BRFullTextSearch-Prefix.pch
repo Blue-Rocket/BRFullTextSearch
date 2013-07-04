@@ -1,0 +1,19 @@
+//
+// Prefix header for all source files of the 'BRFullTextSearch' target in the 'BRFullTextSearch' project
+//
+
+#ifdef __OBJC__
+	#import <Foundation/Foundation.h>
+#endif
+
+#define _REENTRANT
+
+#ifdef LOGGING
+#define log4Error NSLog
+#define log4Info NSLog
+#define log4Debug NSLog
+#else
+#define log4Error(...)
+#define log4Info(...)
+#define log4Debug(...)
+#endif

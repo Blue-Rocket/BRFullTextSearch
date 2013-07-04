@@ -1,0 +1,4 @@
+[submodule "clucene"]
+	path = clucene
+	url = git://clucene.git.sourceforge.net/gitroot/clucene/clucene
+	branch = master
