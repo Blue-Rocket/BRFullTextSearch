@@ -1,0 +1,9 @@
+BRFullTextSearch
+Copyright 2013 Blue Rocket
+
+This software makes use of the CLucene search engine, itself
+an open source project hosted at
+
+	http://sourceforge.net/projects/clucene/
+	
+and released under the LGPL license.
