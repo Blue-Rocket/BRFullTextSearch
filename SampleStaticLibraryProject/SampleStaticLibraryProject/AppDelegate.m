@@ -51,7 +51,7 @@ static const NSUInteger kNumDocs = 50;
 				BRSimpleIndexable *doc = [[BRSimpleIndexable alloc] initWithIdentifier:[NSString stringWithFormat:@"%lu", (unsigned long)i]
 																				  data:@{
 															  kBRSearchFieldNameTitle : [NSString stringWithFormat:@"Document %lu", (unsigned long)(i+1)],
-															  kBRSearchFieldNameValue : [self testCopy:(arc4random() % 100)]
+															  kBRSearchFieldNameValue : [self testCopy:((arc4random() % 100) + 5)]
 										  }];
 				[_searchService addObjectToIndex:doc context:updateContext];
 				[[NSNotificationCenter defaultCenter] postNotificationName:kIndexProgressNotification
