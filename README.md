@@ -53,7 +53,7 @@ the root project directory. Copy that framework into your project and add it
 as a build dependency. You must also add the following build dependencies:
 
  * libz
- * libdstc++
+ * libstdc++
 
 Finally, add `-ObjC` as an *Other Linker Flags* build setting.
 
