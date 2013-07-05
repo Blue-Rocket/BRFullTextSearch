@@ -9,9 +9,11 @@
 #import "ViewController.h"
 
 #import "AppDelegate.h"
+#import <BRFullTextSearch/BRFullTextSearch.h>
 
 @implementation ViewController {
 	id observer;
+	id<BRSearchResults> results;
 }
 
 - (void)viewDidLoad {
@@ -32,6 +34,8 @@
 														  if ( self.indexProgressView.progress - 100.0 < 0.01 ) {
 															  [UIView animateWithDuration:0.2 animations:^{
 																  self.indexProgressView.alpha = 0;
+															  } completion:^(BOOL finished) {
+																  [self.searchBar becomeFirstResponder];
 															  }];
 														  }
 													  }];
@@ -40,7 +44,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.searchBar becomeFirstResponder];
 }
 
 #pragma mark - UITableView support
@@ -50,11 +53,40 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 0;
+	return (tableView == self.searchDisplayController.searchResultsTableView ? [results count] : 0);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return nil;
+	static NSString *CellId = @"Cell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellId];
+	if ( cell == nil ) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellId];
+	}
+	id<BRSearchResult> result = [results resultAtIndex:indexPath.row];
+	cell.textLabel.text = [result valueForField:kBRSearchFieldNameValue];
+	cell.detailTextLabel.text = [result valueForField:kBRSearchFieldNameTitle];
+	return cell;
+}
+
+#pragma mark - UISearchDisplayController support
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    NSLog(@"search: %@", searchString);
+	BOOL search = ([searchString rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location != NSNotFound
+				   || [searchString length] > 2);
+	if ( search ) {
+		results = [[(AppDelegate *)[UIApplication sharedApplication].delegate searchService]
+				   search:controller.searchBar.text];
+	}
+	return search;
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+	NSLog(@"Searching for %@", self.searchBar.text);
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+	NSLog(@"Search ended for %@", self.searchBar.text);
 }
 
 @end
