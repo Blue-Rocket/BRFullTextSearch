@@ -33,7 +33,7 @@ reference is the only CLucene-specific portion of the code:
 Project Setup
 -------------
 
-After cloning the BRFulLTextSearch repository, you must initialize git submodules.
+After cloning the BRFullTextSearch repository, you must initialize git submodules.
 For example:
 
 	git clone git@github.com:Blue-Rocket/BRFullTextSearch.git
