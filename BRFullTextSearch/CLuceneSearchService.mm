@@ -66,6 +66,11 @@ using namespace lucene::store;
 		indexUpdateOptimizeThreshold = kDefaultIndexUpdateOptimizeThreshold;
 		bundle = [NSBundle mainBundle];
 		defaultAnalyzerLanguage = @"en";
+		
+		NSFileManager *fm = [NSFileManager new];
+		if ( ![fm fileExistsAtPath:indexPath] ) {
+			[fm createDirectoryAtPath:indexPath withIntermediateDirectories:YES attributes:nil error:nil];
+		}
 
 		// create Directory instance, using NoLockFactory because we have a serial queue for all update operations
 		dir = FSDirectory::getDirectory([path cStringUsingEncoding:NSUTF8StringEncoding], BRNoLockFactory::getNoLockFactory());
