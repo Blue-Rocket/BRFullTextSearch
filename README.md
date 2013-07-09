@@ -42,15 +42,19 @@ For example:
 	
 This will pull in the relevant submodules, e.g. CLucene.
 
-Project Integration
--------------------
+Static Framework Project Integration
+------------------------------------
 
 You can integrate BRFullTextSearch into your project in a couple of ways. First,
 the BRFullTextSearch Xcode project includes a target called 
 **BRFullTextSearch.framework** that builds a static library framework. Build 
 that target, which will produce a `BRFullTextSearch.framework` bundle at 
 the root project directory. Copy that framework into your project and add it
-as a build dependency. You must also add the following build dependencies:
+as a build dependency.
+
+You must also add the following linker build dependencies, which you can do by
+clicking the **+** button in the **Link Binary With Libraries** section of the 
+**Build Phases** tab in the project settings:
 
  * libz
  * libstdc++
@@ -62,3 +66,33 @@ project set up using the static library framework integration approach. You
 must build **BRFullTextSearch.framework** first, then open this project. When
 you run the project, it will index a set of documents using some Latin text.
 You can then search for latin words using a simple UI.
+
+Dependent Project Integration
+-----------------------------
+
+The other way you can integrate BRFullTextSearch into your project is to add
+the BRFullTextSearch Xcode project as a dependent project of your project. The 
+BRFullTextSearch Xcode project includes a target called 
+**BRFullTextSearch** that builds a static library. You can use that target as
+a dependency in your own project.
+
+To do this, drag the **BRFullTextSearch.xcodeproj** onto your project in the 
+Project Navigator. Then go to the **Build Phases** tab of your project's 
+settings. Expand the **Target Dependencies** section and click the **+** button.
+You should see the **BRFullTextSearch** static library target as an available
+option. Select that and click the **Add** button.
+
+You must also add the following linker build dependencies, which you can do by
+clicking the **+** button in the **Link Binary With Libraries** section of the 
+**Build Phases** tab in the project settings:
+
+ * libz
+ * libstdc++
+
+Next, add `-ObjC` as an *Other Linker Flags* build setting.
+
+Finally, you'll need to add the path to the directory containing the 
+*BRFullTextSearch.xcodeproj* file as a **Header Search Paths** value in 
+the **Build Settings** tab of the project settings. If you have added 
+BRFullTextSearch as a git submodule to your own project, then the path
+might be something like **"$(PROJECT_DIR)/../BRFullTextSearch"**.
