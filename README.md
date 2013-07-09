@@ -59,7 +59,11 @@ clicking the **+** button in the **Link Binary With Libraries** section of the
  * libz
  * libstdc++
 
-Finally, add `-ObjC` as an *Other Linker Flags* build setting.
+Next, add `-ObjC` as an *Other Linker Flags* build setting.
+
+Finally, you'll need to add the path to the directory containing the 
+`BRFullTextSearch.framework` bundle as a **Framework Search Paths** value
+in the **Build Settings** tab of the project settings.
 
 The **SampleStaticLibraryProject** included in this repository is an example
 project set up using the static library framework integration approach. You
