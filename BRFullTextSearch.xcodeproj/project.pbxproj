@@ -863,7 +863,7 @@
 		C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CLuceneSearchServiceTests.mm; sourceTree = "<group>"; };
 		C97940F01786022900DF0660 /* BRSimpleIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleIndexable.h; sourceTree = "<group>"; };
 		C97940F11786022900DF0660 /* BRSimpleIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleIndexable.m; sourceTree = "<group>"; };
-		C97940F51786240100DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = "en.lproj/stop-words.txt"; sourceTree = "<group>"; };
+		C97940F51786240100DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/stop-words.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2156,7 +2156,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-fvisibility=default";
 				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/../clucene/src/shared\" \"$(PROJECT_DIR)/../clucene/src/core\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/clucene/src/shared\" \"$(PROJECT_DIR)/clucene/src/core\"";
 			};
 			name = Debug;
 		};
@@ -2180,7 +2180,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-fvisibility=default";
 				SDKROOT = iphoneos;
-				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/../clucene/src/shared\" \"$(PROJECT_DIR)/../clucene/src/core\"";
+				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/clucene/src/shared\" \"$(PROJECT_DIR)/clucene/src/core\"";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
