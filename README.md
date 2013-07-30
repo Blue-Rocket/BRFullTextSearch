@@ -16,20 +16,20 @@ The following snippet shows how the API works. The `CLuceneSearchService`
 reference is the only CLucene-specific portion of the code:
 
 ```objc
-	id<BRSearchService> service = [[CLuceneSearchService alloc] initWithIndexPath:@"/some/path"];
-	
-	// add a document to the index
-	id<BRIndexable> doc = [[BRSimpleIndexable alloc] initWithIdentifier:@"1" data:@{
-						   kBRSearchFieldNameTitle : @"Special document",
-						   kBRSearchFieldNameValue : @"This is a long winded note with really important details in it."
-						   }];
-	[service addObjectToIndexAndWait:doc];
-	
-	// search for documents and log contents of each result
-	id<BRSearchResults> results = [service search:@"special"];
-	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		NSLog(@"Found result: %@", [result dictionaryRepresentation]);
-	}];
+id<BRSearchService> service = [[CLuceneSearchService alloc] initWithIndexPath:@"/some/path"];
+
+// add a document to the index
+id<BRIndexable> doc = [[BRSimpleIndexable alloc] initWithIdentifier:@"1" data:@{
+					   kBRSearchFieldNameTitle : @"Special document",
+					   kBRSearchFieldNameValue : @"This is a long winded note with really important details in it."
+					   }];
+[service addObjectToIndexAndWait:doc];
+
+// search for documents and log contents of each result
+id<BRSearchResults> results = [service search:@"special"];
+[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+	NSLog(@"Found result: %@", [result dictionaryRepresentation]);
+}];
 ```
 
 Project Setup
