@@ -495,6 +495,9 @@ using namespace lucene::store;
 #pragma mark - Search API
 
 - (id<BRSearchResults>)search:(NSString *)query {
+	if ( [query length] < 1 ) {
+		return nil;
+	}
 	std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
 	QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
 	for ( NSString *fieldName in generalTextFields ) {
@@ -538,6 +541,9 @@ using namespace lucene::store;
 					 sortBy:(NSString *)sortFieldName
 				   sortType:(BRSearchSortType)sortType
 				  ascending:(BOOL)ascending {
+	if ( [query length] < 1 ) {
+		return nil;
+	}
 	std::auto_ptr<Query> rootQuery(new BooleanQuery(false));
 	QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
 	for ( NSString *fieldName in generalTextFields ) {
