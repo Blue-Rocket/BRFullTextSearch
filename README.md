@@ -15,6 +15,7 @@ Example Usage
 The following snippet shows how the API works. The `CLuceneSearchService`
 reference is the only CLucene-specific portion of the code:
 
+```objc
 	id<BRSearchService> service = [[CLuceneSearchService alloc] initWithIndexPath:@"/some/path"];
 	
 	// add a document to the index
@@ -29,6 +30,7 @@ reference is the only CLucene-specific portion of the code:
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		NSLog(@"Found result: %@", [result dictionaryRepresentation]);
 	}];
+```
 
 Project Setup
 -------------
