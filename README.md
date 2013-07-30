@@ -1,11 +1,11 @@
 FullTextSearch
 ==============
 
-iOS Objective-C search engine.
+iOS Objective-C full-text search engine.
 
 This project provides a way to integrate full-text search capabilities
 into your iOS project. First, it provides a protocol-based API for a 
-simple search framework. Second, it provides a 
+simple text indexing and search framework. Second, it provides a 
 [CLucene](http://clucene.sourceforge.net/) based implementation of that
 framework.
 
