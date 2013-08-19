@@ -501,8 +501,12 @@ using namespace lucene::store;
 	std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
 	QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
 	for ( NSString *fieldName in generalTextFields ) {
-		Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
-		rootQuery.get()->add(q, true, false, false);
+		try {
+			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
+			rootQuery.get()->add(q, true, false, false);
+		} catch ( CLuceneError &ex ) {
+			log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+		}
 	}
 	std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
 	return [[CLuceneSearchResults alloc] initWithHits:hits];
@@ -547,8 +551,12 @@ using namespace lucene::store;
 	std::auto_ptr<Query> rootQuery(new BooleanQuery(false));
 	QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
 	for ( NSString *fieldName in generalTextFields ) {
-		Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
-		((BooleanQuery *)rootQuery.get())->add(q, true, false, false);
+		try {
+			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
+			((BooleanQuery *)rootQuery.get())->add(q, true, false, false);
+		} catch ( CLuceneError &ex ) {
+			log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+		}
 	}
 	return [self searchWithQuery:rootQuery sortBy:sortFieldName sortType:sortType ascending:ascending];
 }
@@ -578,8 +586,12 @@ using namespace lucene::store;
 					theAnalyzer = [self defaultAnalyzer];
 				}
 				QueryParser parser([[lhs keyPath] asCLuceneString], theAnalyzer);
-				Query *q = parser.parse([[rhs constantValue] asCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
-				result.reset(q);
+				try {
+					Query *q = parser.parse([[rhs constantValue] asCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
+					result.reset(q);
+				} catch ( CLuceneError &ex ) {
+					log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+				}
 			}
 				break;
 				
