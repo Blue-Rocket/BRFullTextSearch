@@ -256,25 +256,29 @@ using namespace lucene::store;
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	
 	// delete any existing document now
-	NSString *idValue = [self idValue:object];
-	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
-#ifdef LOGGING
-	int32_t deletedCount =
-#endif
-	[ctx modifier]->deleteDocuments(idTerm);
-	log4Debug(@"Removed %d documents from search index", deletedCount);
-	delete idTerm, idTerm = NULL;
+	[self removeObjectFromIndexWithIdentifier:[self idValue:object] context:updateContext];
 	
 	// create our Document to index, but buffer into context for inserting later for better performance
 	Document *doc = _CLNEW Document();
 	std::auto_ptr<Document> d(doc);
 	[self populateDocument:doc withObject:object];
 	[ctx addDocument:d];
-	log4Debug(@"Buffered document %@ for indexing later (%lu buffered)", idValue, (unsigned long)[ctx documentCount]);
+	log4Debug(@"Buffered document %@ for indexing later (%lu buffered)", [self idValue:object], (unsigned long)[ctx documentCount]);
 	
 	if ( [ctx documentCount] >= kDefaultIndexUpdateBatchBufferSize ) {
 		[self flushBufferedDocuments:updateContext];
 	}
+}
+
+- (void)removeObjectFromIndexWithIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
+	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
+	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [identifier asCLuceneString]);
+#ifdef LOGGING
+	int32_t deletedCount =
+#endif
+	[ctx modifier]->deleteDocuments(idTerm);
+	log4Debug(@"Removed %d documents from search index", deletedCount);
+	delete idTerm, idTerm = NULL;
 }
 
 - (void)flushBufferedDocuments:(CLuceneIndexUpdateContext *)updateContext {
@@ -505,7 +509,7 @@ using namespace lucene::store;
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
 			rootQuery.get()->add(q, true, false, false);
 		} catch ( CLuceneError &ex ) {
-			log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+			log4Error(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
 	}
 	std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
@@ -555,7 +559,7 @@ using namespace lucene::store;
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
 			((BooleanQuery *)rootQuery.get())->add(q, true, false, false);
 		} catch ( CLuceneError &ex ) {
-			log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+			log4Error(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
 	}
 	return [self searchWithQuery:rootQuery sortBy:sortFieldName sortType:sortType ascending:ascending];
@@ -590,7 +594,7 @@ using namespace lucene::store;
 					Query *q = parser.parse([[rhs constantValue] asCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
 					result.reset(q);
 				} catch ( CLuceneError &ex ) {
-					log4Error(@"Error parsing query [%@]: %@", query, [NSString stringWithCLuceneString:ex._twhat]);
+					log4Error(@"Error %d parsing query [%@]: %@", ex.number(), [lhs keyPath], [NSString stringWithCLuceneString:ex.twhat()]);
 				}
 			}
 				break;
