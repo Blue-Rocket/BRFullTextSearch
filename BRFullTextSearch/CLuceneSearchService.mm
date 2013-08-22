@@ -261,7 +261,7 @@ using namespace lucene::store;
 	[self removeObjectFromIndex:[object indexObjectType] withIdentifier:[object indexIdentifier] context:updateContext];
 	
 	// create our Document to index, but buffer into context for inserting later for better performance
-	Document *doc = _CLNEW Document();
+	Document *doc = new Document();
 	std::auto_ptr<Document> d(doc);
 	[self populateDocument:doc withObject:object];
 	[ctx addDocument:d];
@@ -274,7 +274,7 @@ using namespace lucene::store;
 
 - (void)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
-	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
+	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
 #ifdef LOGGING
 	int32_t deletedCount =
 #endif
@@ -318,11 +318,11 @@ using namespace lucene::store;
 
 
 - (void)populateDocument:(Document *)doc withObject:(id<BRIndexable>)object {
-	doc->add(* _CLNEW Field([kBRSearchFieldNameIdentifier asCLuceneString],
+	doc->add(* new Field([kBRSearchFieldNameIdentifier asCLuceneString],
 							[[self idValue:object] asCLuceneString],
 							Field::STORE_YES | Field::INDEX_UNTOKENIZED,
 							true));
-	doc->add(* _CLNEW Field([kBRSearchFieldNameObjectType asCLuceneString],
+	doc->add(* new Field([kBRSearchFieldNameObjectType asCLuceneString],
 							[StringForBRSearchObjectType([object indexObjectType]) asCLuceneString],
 							Field::STORE_YES | Field::INDEX_UNTOKENIZED,
 							true));
@@ -360,7 +360,7 @@ using namespace lucene::store;
 					break;
 			}
 		}
-		Field *f = _CLNEW Field([fieldName asCLuceneString], storeType | indexType);
+		Field *f = new Field([fieldName asCLuceneString], storeType | indexType);
 		id fieldValue = [fields objectForKey:fieldName];
 		if ( [fieldValue isKindOfClass:[NSString class]] ) {
 			f->setValue((TCHAR *)[fieldValue asCLuceneString], true);
