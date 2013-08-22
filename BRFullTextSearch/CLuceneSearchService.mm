@@ -631,13 +631,32 @@ using namespace lucene::store;
 				NSExpression *upperExpression = nil;
 				bool upperInclusive = false;
 				
-				if ( parent != nil && [[parent subpredicates] count] == 2 ) {
-					NSComparisonPredicate *closingRangePredicate = nil;
-					bool firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
-					if ( firstPredicate ) {
+				if ( parent != nil && [[parent subpredicates] count] > 1 ) {
+					NSPredicate *closingRangePredicate = nil;
+					NSUInteger myPosition = [[parent subpredicates] indexOfObjectIdenticalTo:predicate];
+					bool firstPredicate = false;
+					if ( myPosition == 0 ) {
+						firstPredicate = true;
 						closingRangePredicate = [parent subpredicates][1];
+					} else if ( myPosition + 1 == [[parent subpredicates] count] ) {
+						closingRangePredicate = [parent subpredicates][myPosition - 1];
 					} else {
-						closingRangePredicate = [parent subpredicates][0];
+						// in the middle, so try previous predicate first
+						NSPredicate *otherPredicate = [parent subpredicates][myPosition - 1];
+						if ( [otherPredicate isKindOfClass:[NSComparisonPredicate class]]
+							&& [[[(NSComparisonPredicate *)otherPredicate leftExpression] keyPath] isEqualToString:[lhs keyPath]] ) {
+							// use previous
+							closingRangePredicate = otherPredicate;
+						} else {
+							// try following predicate
+							otherPredicate = [parent subpredicates][myPosition + 1];
+							firstPredicate = false;
+							if ( [otherPredicate isKindOfClass:[NSComparisonPredicate class]]
+								&& [[[(NSComparisonPredicate *)otherPredicate leftExpression] keyPath] isEqualToString:[lhs keyPath]] ) {
+								// use following
+								closingRangePredicate = otherPredicate;
+							}
+						}
 					}
 					if ( [closingRangePredicate isKindOfClass:[NSComparisonPredicate class]] ) {
 						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;

@@ -669,6 +669,33 @@
 	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id, n2Id] msg:@"reversed inclusive range"];
 }
 
+- (void)testSearchWithTimestampPredicateRangeMoreThanTwoExpressions {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"o = %@ AND ((s >= %@) AND (s <= %@))", @"?", n0.date, n2.date];
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid, n1.uid, n2.uid] msg:@"object type AND inclusive range"];
+
+	predicate = [NSPredicate predicateWithFormat:@"o = %@ AND ((s > %@) AND (s < %@))", @"?", n0.date, n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1.uid] msg:@"object type AND exclusive range"];
+	
+	predicate = [NSPredicate predicateWithFormat:@"o = %@ AND ((s > %@) AND (s < %@))", @"!", n0.date, n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"object type AND exclusive range"];
+}
+
 - (void)assertSearchResults:(id<BRSearchResults>)results matchingIdentifiers:(NSArray *)expectedIds msg:(NSString *)msg {
 	STAssertEquals([results count], [expectedIds count], @"results count %@", msg);
 	__block NSUInteger count = 0;
