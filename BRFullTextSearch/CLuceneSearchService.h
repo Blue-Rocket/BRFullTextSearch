@@ -30,7 +30,6 @@
 // the next main thread run loop execution.
 - (void)resetSearcher;
 
-
 // the NSUserDefaults key used to track the number of index updates between optimizations
 - (NSString *)userDefaultsIndexUpdateCountKey;
 
