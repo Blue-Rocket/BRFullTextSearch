@@ -432,7 +432,7 @@ using namespace lucene::store;
 	for ( NSString *identifier in identifiers ) {
 		Term *term = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
 		TermQuery *termQuery = new TermQuery(term); // assumes ownership of Term
-		rootQuery->add(termQuery, BooleanClause::SHOULD); // rootQuery assumes ownership of TermQuery
+		rootQuery->add(termQuery, true, BooleanClause::SHOULD); // rootQuery assumes ownership of TermQuery
 	}
 	result.reset(rootQuery.release());
 	return result;
@@ -518,7 +518,7 @@ using namespace lucene::store;
 	for ( NSString *fieldName in generalTextFields ) {
 		try {
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
-			rootQuery.get()->add(q, true, false, false);
+			rootQuery.get()->add(q, true, BooleanClause::SHOULD);
 		} catch ( CLuceneError &ex ) {
 			log4Error(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
@@ -568,7 +568,7 @@ using namespace lucene::store;
 	for ( NSString *fieldName in generalTextFields ) {
 		try {
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
-			((BooleanQuery *)rootQuery.get())->add(q, true, false, false);
+			((BooleanQuery *)rootQuery.get())->add(q, true, BooleanClause::SHOULD);
 		} catch ( CLuceneError &ex ) {
 			log4Error(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
