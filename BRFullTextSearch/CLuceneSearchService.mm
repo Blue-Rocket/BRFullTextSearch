@@ -9,11 +9,13 @@
 #import "CLuceneSearchService.h"
 
 #import "CLucene.h"
+#import "ConstantScoreQuery.h"
 #import "BRNoLockFactory.h"
 #import "BRSnowballAnalyzer.h"
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
 
 static const char * kWriteQueueName = "us.bluerocket.CLucene.IndexWrite";
@@ -289,6 +291,20 @@ using namespace lucene::store;
 	}];
 }
 
+- (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext {
+	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
+	[self removeObjectsFromIndexWithQuery:query context:(CLuceneIndexUpdateContext *)updateContext];
+}
+
+- (void)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
+	std::auto_ptr<Hits> hits([self searcher]->search(query.get()));
+	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
+	IndexModifier *modifier = [ctx modifier];
+	for ( size_t i = 0, len = hits->length(); i < len; i++ ) {
+		modifier->deleteDocument(hits->id(i));
+	}
+}
+
 #pragma mark - Internal support
 
 - (NSString *)idValueForType:(BRSearchObjectType)objectType identifier:(NSString *)identifier {
@@ -426,12 +442,7 @@ using namespace lucene::store;
 	Query *q = query.release();
 	[self bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
 		std::auto_ptr<Query> localQuery(q);
-		std::auto_ptr<Hits> hits([self searcher]->search(localQuery.get()));
-		CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
-		IndexModifier *modifier = [ctx modifier];
-		for ( size_t i = 0, len = hits->length(); i < len; i++ ) {
-			modifier->deleteDocument(hits->id(i));
-		}
+		[self removeObjectsFromIndexWithQuery:localQuery context:(CLuceneIndexUpdateContext *)updateContext];
 	} queue:finishedQueue finished:finishedBlock];
 }
 
@@ -474,7 +485,7 @@ using namespace lucene::store;
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
 										  queue:(dispatch_queue_t)finishedQueue
 									   finished:(void (^)())finished {
-	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil];
+	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
 	[self removeObjectsFromIndexWithQuery:query queue:finishedQueue finished:finished];
 }
 
@@ -567,18 +578,18 @@ using namespace lucene::store;
 
 #pragma mark - Predicate search API
 
-- (std::auto_ptr<Query>)queryForPredicate:(NSPredicate *)predicate analyzer:(Analyzer *)theAnalyzer {
+- (std::auto_ptr<Query>)queryForPredicate:(NSPredicate *)predicate analyzer:(Analyzer *)theAnalyzer parent:(NSCompoundPredicate *)parent {
 	std::auto_ptr<Query> result;
 	if ( [predicate isKindOfClass:[NSComparisonPredicate class]] ) {
 		NSComparisonPredicate *comparison = (NSComparisonPredicate *)predicate;
 		NSExpression *lhs = [comparison leftExpression];
 		NSAssert1([lhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [lhs expressionType]);
 		NSExpression *rhs = [comparison rightExpression];
-		NSAssert1([rhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [lhs expressionType]);
+		NSAssert1([rhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [rhs expressionType]);
 		switch ( [comparison predicateOperatorType] ) {
 			case NSEqualToPredicateOperatorType:
 			{
-				Term *term = new Term([[lhs keyPath] asCLuceneString], [[rhs constantValue] asCLuceneString]);
+				Term *term = new Term([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString]);
 				result.reset(new TermQuery(term)); // TermQuery assumes ownership of idTerm
 			}
 				break;
@@ -591,7 +602,7 @@ using namespace lucene::store;
 				}
 				QueryParser parser([[lhs keyPath] asCLuceneString], theAnalyzer);
 				try {
-					Query *q = parser.parse([[rhs constantValue] asCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
+					Query *q = parser.parse([rhs constantValueCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
 					result.reset(q);
 				} catch ( CLuceneError &ex ) {
 					log4Error(@"Error %d parsing query [%@]: %@", ex.number(), [lhs keyPath], [NSString stringWithCLuceneString:ex.twhat()]);
@@ -601,8 +612,94 @@ using namespace lucene::store;
 				
 			case NSBeginsWithPredicateOperatorType:
 			{
-				Term *term = new Term([[lhs keyPath] asCLuceneString], [[rhs constantValue] asCLuceneString]);
+				Term *term = new Term([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString]);
 				result.reset(new PrefixQuery(term)); // PrefixQuery assumes ownership of Term
+			}
+				break;
+				
+			case NSLessThanPredicateOperatorType:
+			case NSLessThanOrEqualToPredicateOperatorType:
+			{
+				// if we are part of a parent with 2 children, and we are the 2nd child, and the 1st child is for the same constant expression,
+				// then form a closed range query;
+				bool closedRange = false;
+				if ( parent != nil && [[parent subpredicates] count] == 2 ) {
+					NSComparisonPredicate *closingRangePredicate = nil;
+					BOOL firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
+					if ( firstPredicate ) {
+						closingRangePredicate = [parent subpredicates][1];
+					} else {
+						closingRangePredicate = [parent subpredicates][0];
+					}
+					if ( [closingRangePredicate isKindOfClass:[NSComparisonPredicate class]] ) {
+						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;
+						NSExpression *closingRangeLhs = [closingRangeComparison leftExpression];
+						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [closingRangeLhs expressionType]);
+						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]]
+							&& ([closingRangeComparison predicateOperatorType] == NSGreaterThanPredicateOperatorType
+							|| [closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType) ) {
+							closedRange = true;
+							if ( !firstPredicate ) {
+								// closed range
+								NSExpression *closingRangeRhs = [closingRangeComparison rightExpression];
+								NSAssert1([closingRangeRhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [closingRangeRhs expressionType]);
+								result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString],
+																		 [closingRangeRhs constantValueCLuceneString],
+																		 [rhs constantValueCLuceneString],
+																		 ([closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType),
+																		 ([comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
+							}
+						}
+					}
+				}
+				if ( closedRange == false ) {
+					// open-ended range (no lower bound)
+					result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString], NULL, [rhs constantValueCLuceneString],
+															 false, ([comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
+				}
+			}
+				break;
+				
+			case NSGreaterThanPredicateOperatorType:
+			case NSGreaterThanOrEqualToPredicateOperatorType:
+			{
+				// if we are part of a parent with 2 children, and we are the 2nd child, and the 1st child is for the same constant expression,
+				// then form a closed range query;
+				bool closedRange = false;
+				if ( parent != nil && [[parent subpredicates] count] == 2 ) {
+					NSComparisonPredicate *closingRangePredicate = nil;
+					BOOL firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
+					if ( firstPredicate ) {
+						closingRangePredicate = [parent subpredicates][1];
+					} else {
+						closingRangePredicate = [parent subpredicates][0];
+					}
+					if ( [closingRangePredicate isKindOfClass:[NSComparisonPredicate class]] ) {
+						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;
+						NSExpression *closingRangeLhs = [closingRangeComparison leftExpression];
+						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [closingRangeLhs expressionType]);
+						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]]
+							&& ([closingRangeComparison predicateOperatorType] == NSLessThanPredicateOperatorType
+								|| [closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType) ) {
+								closedRange = true;
+								if ( !firstPredicate ) {
+									// closed range
+									NSExpression *closingRangeRhs = [closingRangeComparison rightExpression];
+									NSAssert1([closingRangeRhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [closingRangeRhs expressionType]);
+									result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString],
+																			 [rhs constantValueCLuceneString],
+																			 [closingRangeRhs constantValueCLuceneString],
+																			 ([comparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType),
+																			 ([closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
+								}
+							}
+					}
+				}
+				if ( closedRange == false ) {
+					// open-ended range (no upper bound)
+					result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString], NULL,
+															 ([comparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType), false));
+				}
 			}
 				break;
 				
@@ -628,9 +725,13 @@ using namespace lucene::store;
 				occur = BooleanClause::SHOULD;
 				break;
 		}
+		
 		for ( NSPredicate *subpredicate in [compound subpredicates] ) {
-			std::auto_ptr<Query> subQuery = [self queryForPredicate:subpredicate analyzer:theAnalyzer];
-			boolean->add(subQuery.release(), occur); // transfer ownership of subQuery to boolean
+			std::auto_ptr<Query> subQuery = [self queryForPredicate:subpredicate analyzer:theAnalyzer parent:compound];
+			// subQuery might be NULL (in case of range query)
+			if ( subQuery.get() != NULL ) {
+				boolean->add(subQuery.release(), occur); // transfer ownership of subQuery to boolean
+			}
 		}
 		result.reset(boolean);
 	}
@@ -641,7 +742,7 @@ using namespace lucene::store;
 									sortBy:(NSString *)sortFieldName
 								  sortType:(BRSearchSortType)sortType
 								 ascending:(BOOL)ascending {
-	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer]];
+	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer] parent:nil];
 	return [self searchWithQuery:query sortBy:sortFieldName sortType:sortType ascending:ascending];
 }
 

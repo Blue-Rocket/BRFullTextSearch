@@ -12,6 +12,7 @@
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
 #import "CLuceneSearchService.h"
+#import "NSDate+BRFullTextSearchAdditions.h"
 
 @implementation CLuceneSearchServiceTests {
 	CLuceneSearchService *searchService;
@@ -609,6 +610,124 @@
 	STAssertEquals(count, (NSUInteger)2, @"results iterated");
 }
 
+- (void)testSearchWithTimestampPredicateRange {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	
+	NSString *n0Id = n0.uid;
+	NSString *n1Id = n1.uid;
+	NSString *n2Id = n2.uid;
+	
+	// first search for inclusive range for all documents
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(s >= %@) AND (s <= %@)", n0.date, n2.date];
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id, n2Id] msg:@"inclusive range"];
+	
+	// now search for exclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s > %@) AND (s < %@)", n0.date, n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1Id] msg:@"exclusive range"];
+
+	// now search for inclusive + exclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s >= %@) AND (s < %@)", n0.date, n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id] msg:@"inclusive + exclusive range"];
+
+	// now search for exclusive + inclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s > %@) AND (s <= %@)", n0.date, n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1Id, n2Id] msg:@"exclusive + inclusive range"];
+	
+	// now search for reversed exclusive + inclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s < %@) AND (s >= %@)", n2.date, n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id] msg:@"reversed exclusive + inclusive range"];
+
+	// now search for reversed inclusive + exclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s <= %@) AND (s > %@)", n2.date, n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1Id, n2Id] msg:@"reversed inclusive + exclusive range"];
+
+	// now search for reversed exclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s < %@) AND (s > %@)", n2.date, n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1Id] msg:@"reversed exclusive range"];
+
+	// now search for reversed inclusive range...
+	predicate = [NSPredicate predicateWithFormat:@"(s <= %@) AND (s >= %@)", n2.date, n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id, n2Id] msg:@"reversed inclusive range"];
+}
+
+- (void)assertSearchResults:(id<BRSearchResults>)results matchingIdentifiers:(NSArray *)expectedIds msg:(NSString *)msg {
+	STAssertEquals([results count], [expectedIds count], @"results count %@", msg);
+	__block NSUInteger count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		STAssertEqualObjects([result identifier], expectedIds[count], @"object ID %@", msg);
+		count++;
+	}];
+	STAssertEquals(count, [expectedIds count], @"results iterated %@", msg);
+}
+
+- (void)testSearchWithTimestampPredicateOpenEndedRange {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	
+	NSString *n0Id = n0.uid;
+	NSString *n1Id = n1.uid;
+	NSString *n2Id = n2.uid;
+	
+	// first search for >= range
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"s >= %@", n0.date];
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id, n2Id] msg:@">= range"];
+	
+	// now search for > range...
+	predicate = [NSPredicate predicateWithFormat:@"s > %@", n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n1Id, n2Id] msg:@"> range"];
+	
+	// now search for <= range...
+	predicate = [NSPredicate predicateWithFormat:@"s <= %@", n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id, n2Id] msg:@"<= range"];
+
+	// now search for < range...
+	predicate = [NSPredicate predicateWithFormat:@"s < %@", n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0Id, n1Id] msg:@"< range"];
+
+	// now search for > range out of bounds...
+	predicate = [NSPredicate predicateWithFormat:@"s > %@", n2.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"< range out of bounds"];
+
+	// now search for < range out of bounds...
+	predicate = [NSPredicate predicateWithFormat:@"s < %@", n0.date];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"< range out of bounds"];
+}
+
 #pragma mark - Delete from index
 
 - (void)testDeleteBRSimpleIndexable {
@@ -634,6 +753,51 @@
 	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet new]];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:nil queue:NULL finished:NULL];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:[NSSet new] queue:NULL finished:NULL];
+}
+
+- (void)testBulkDeleteInclusiveRange {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((s >= %@) AND (s <= %@))", n0.date, n2.date];
+	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate];
+	
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"<= s <="];
+}
+
+- (void)testBulkDeleteExclusiveRange {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((s > %@) AND (s < %@))", n0.date, n2.date];
+	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate];
+	
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"< s <"];
+	results = [searchService searchWithPredicate:[NSPredicate predicateWithFormat:@"((s >= %@) AND (s <= %@))", n0.date, n2.date]
+										  sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid, n2.uid] msg:@"s == BulkDeleteExclusiveRange"];
 }
 
 @end

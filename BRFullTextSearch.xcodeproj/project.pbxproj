@@ -410,6 +410,8 @@
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C97940F31786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C97940F41786240100DF0660 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C97940F61786240100DF0660 /* stop-words.txt */; };
+		C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
+		C9E6137717C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -864,6 +866,8 @@
 		C97940F01786022900DF0660 /* BRSimpleIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleIndexable.h; sourceTree = "<group>"; };
 		C97940F11786022900DF0660 /* BRSimpleIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleIndexable.m; sourceTree = "<group>"; };
 		C97940F51786240100DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/stop-words.txt"; sourceTree = "<group>"; };
+		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
+		C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSExpression+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1567,6 +1571,8 @@
 				C909C6661784D5000016C25E /* CLuceneSearchResults.mm */,
 				C909C6671784D5000016C25E /* CLuceneSearchService.h */,
 				C909C6681784D5000016C25E /* CLuceneSearchService.mm */,
+				C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */,
+				C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */,
 				C909C6571784D4B70016C25E /* NSString+CLuceneAdditions.h */,
 				C909C6581784D4B70016C25E /* NSString+CLuceneAdditions.mm */,
 			);
@@ -1712,6 +1718,7 @@
 				C909C4901784CF0A0016C25E /* gunichartables.cpp in Sources */,
 				C909C4921784CF0A0016C25E /* repl_lltot.cpp in Sources */,
 				C909C4941784CF0A0016C25E /* repl_tcscasecmp.cpp in Sources */,
+				C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */,
 				C909C4961784CF0A0016C25E /* repl_tcslwr.cpp in Sources */,
 				C909C4981784CF0A0016C25E /* repl_tcstod.cpp in Sources */,
 				C909C49A1784CF0A0016C25E /* repl_tcstoll.cpp in Sources */,
@@ -1948,6 +1955,7 @@
 				C909C5021784CF0A0016C25E /* MergePolicy.cpp in Sources */,
 				C909C5041784CF0A0016C25E /* MergeScheduler.cpp in Sources */,
 				C909C5061784CF0A0016C25E /* MultipleTermPositions.cpp in Sources */,
+				C9E6137717C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */,
 				C909C5081784CF0A0016C25E /* MultiReader.cpp in Sources */,
 				C909C50A1784CF0A0016C25E /* MultiSegmentReader.cpp in Sources */,
 				C909C50C1784CF0A0016C25E /* Payload.cpp in Sources */,
