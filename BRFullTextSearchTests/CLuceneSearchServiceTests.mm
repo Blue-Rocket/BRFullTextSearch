@@ -843,7 +843,7 @@
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND ((s >= %@) AND (s <= %@))",
 									kBRSearchFieldNameObjectType,
-									@"?",
+									StringForBRSearchObjectType(kBRSimpleIndexableSearchObjectType),
 									n0.date, n2.date];
 
 	NSCondition *condition = [NSCondition new];
