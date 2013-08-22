@@ -619,56 +619,21 @@ using namespace lucene::store;
 				
 			case NSLessThanPredicateOperatorType:
 			case NSLessThanOrEqualToPredicateOperatorType:
-			{
-				// if we are part of a parent with 2 children, and we are the 2nd child, and the 1st child is for the same constant expression,
-				// then form a closed range query;
-				bool closedRange = false;
-				if ( parent != nil && [[parent subpredicates] count] == 2 ) {
-					NSComparisonPredicate *closingRangePredicate = nil;
-					BOOL firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
-					if ( firstPredicate ) {
-						closingRangePredicate = [parent subpredicates][1];
-					} else {
-						closingRangePredicate = [parent subpredicates][0];
-					}
-					if ( [closingRangePredicate isKindOfClass:[NSComparisonPredicate class]] ) {
-						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;
-						NSExpression *closingRangeLhs = [closingRangeComparison leftExpression];
-						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [closingRangeLhs expressionType]);
-						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]]
-							&& ([closingRangeComparison predicateOperatorType] == NSGreaterThanPredicateOperatorType
-							|| [closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType) ) {
-							closedRange = true;
-							if ( !firstPredicate ) {
-								// closed range
-								NSExpression *closingRangeRhs = [closingRangeComparison rightExpression];
-								NSAssert1([closingRangeRhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [closingRangeRhs expressionType]);
-								result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString],
-																		 [closingRangeRhs constantValueCLuceneString],
-																		 [rhs constantValueCLuceneString],
-																		 ([closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType),
-																		 ([comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
-							}
-						}
-					}
-				}
-				if ( closedRange == false ) {
-					// open-ended range (no lower bound)
-					result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString], NULL, [rhs constantValueCLuceneString],
-															 false, ([comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
-				}
-			}
-				break;
-				
 			case NSGreaterThanPredicateOperatorType:
 			case NSGreaterThanOrEqualToPredicateOperatorType:
 			{
 				// if we are part of a parent with 2 children, and we are the 2nd child, and the 1st child is for the same constant expression,
 				// then form a closed range query;
-				bool closedRange = false;
+				const bool lessExpression = ([comparison predicateOperatorType] == NSLessThanPredicateOperatorType
+											 || [comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType);
+				NSExpression *lowerExpression = nil;
+				bool lowerInclusive = false;
+				NSExpression *upperExpression = nil;
+				bool upperInclusive = false;
+				
 				if ( parent != nil && [[parent subpredicates] count] == 2 ) {
 					NSComparisonPredicate *closingRangePredicate = nil;
-					BOOL firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
+					bool firstPredicate = ([[parent subpredicates] indexOfObjectIdenticalTo:predicate] == 0);
 					if ( firstPredicate ) {
 						closingRangePredicate = [parent subpredicates][1];
 					} else {
@@ -678,28 +643,37 @@ using namespace lucene::store;
 						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;
 						NSExpression *closingRangeLhs = [closingRangeComparison leftExpression];
 						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [closingRangeLhs expressionType]);
-						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]]
-							&& ([closingRangeComparison predicateOperatorType] == NSLessThanPredicateOperatorType
-								|| [closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType) ) {
-								closedRange = true;
-								if ( !firstPredicate ) {
-									// closed range
-									NSExpression *closingRangeRhs = [closingRangeComparison rightExpression];
-									NSAssert1([closingRangeRhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [closingRangeRhs expressionType]);
-									result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString],
-																			 [rhs constantValueCLuceneString],
-																			 [closingRangeRhs constantValueCLuceneString],
-																			 ([comparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType),
-																			 ([closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType)));
+						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]] ) {
+							if ( lessExpression && ([closingRangeComparison predicateOperatorType] == NSGreaterThanPredicateOperatorType
+												   || [closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType) ) {
+								if ( firstPredicate ) {
+									return result;
 								}
+								lowerExpression = [closingRangeComparison rightExpression];
+								lowerInclusive = ([closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType);
+								NSAssert1([lowerExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [lowerExpression expressionType]);
+							} else if ( !lessExpression && ([closingRangeComparison predicateOperatorType] == NSLessThanPredicateOperatorType
+															|| [closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType) ) {
+								if ( firstPredicate ) {
+									return result;
+								}
+								upperExpression = [closingRangeComparison rightExpression];
+								upperInclusive = ([closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType);
+								NSAssert1([upperExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [upperExpression expressionType]);
 							}
+						}
 					}
 				}
-				if ( closedRange == false ) {
-					// open-ended range (no upper bound)
-					result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString], NULL,
-															 ([comparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType), false));
+				if ( lessExpression )  {
+					upperExpression = rhs;
+					upperInclusive = ([comparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType);
+				} else {
+					lowerExpression = rhs;
+					lowerInclusive = ([comparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType);
 				}
+				result.reset(new ConstantScoreRangeQuery([[lhs keyPath] asCLuceneString],
+														 [lowerExpression constantValueCLuceneString], [upperExpression constantValueCLuceneString],
+														 lowerInclusive, upperInclusive));
 			}
 				break;
 				
