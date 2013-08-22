@@ -258,7 +258,7 @@ using namespace lucene::store;
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	
 	// delete any existing document now
-	[self removeObjectFromIndexWithIdentifier:[self idValue:object] context:updateContext];
+	[self removeObjectFromIndex:[object indexObjectType] withIdentifier:[object indexIdentifier] context:updateContext];
 	
 	// create our Document to index, but buffer into context for inserting later for better performance
 	Document *doc = _CLNEW Document();
@@ -272,9 +272,9 @@ using namespace lucene::store;
 	}
 }
 
-- (void)removeObjectFromIndexWithIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
+- (void)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
-	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [identifier asCLuceneString]);
+	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
 #ifdef LOGGING
 	int32_t deletedCount =
 #endif

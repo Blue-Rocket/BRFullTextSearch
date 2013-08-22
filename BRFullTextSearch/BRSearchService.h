@@ -46,7 +46,7 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id<BRIndexUpdateContext>updateCo
 - (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finishedBlock;
 - (void)bulkUpdateIndexAndWait:(BRSearchServiceIndexUpdateBlock)updateBlock;
 - (void)addObjectToIndex:(id<BRIndexable>)object context:(id<BRIndexUpdateContext>)updateContext;
-- (void)removeObjectFromIndexWithIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext;
+- (void)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext;
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext;
 
 // remove a set of objects from the index based on their identifiers, calling the finished block on completion (if not NULL)
