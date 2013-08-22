@@ -130,7 +130,7 @@ using namespace lucene::store;
 
 #pragma mark - Accessors
 
-- (Searcher *)searcher {
+- (std::tr1::shared_ptr<Searcher>)searcher {
 	if ( searcher.get() == NULL ) {
 		// create the index directory, if it doesn't already exist
 		BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
@@ -143,7 +143,7 @@ using namespace lucene::store;
 		}
 		searcher.reset(new IndexSearcher(dir));
 	}
-	return searcher.get();
+	return searcher;
 }
 
 - (std::auto_ptr<Analyzer>)analyzerForLanguage:(NSString *)lang {
@@ -529,8 +529,8 @@ using namespace lucene::store;
 
 - (id<BRSearchResult>)findObject:(BRSearchObjectType)type withIdentifier:(NSString *)identifier {
 	NSString *idValue = [self idValueForType:type identifier:identifier];
-	Term *idTerm = _CLNEW Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
-	std::auto_ptr<TermQuery> idQuery(_CLNEW TermQuery(idTerm)); // assumes ownership of idTerm
+	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
+	std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm)); // assumes ownership of idTerm
 	std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
 	CLuceneSearchResult *result = nil;
 	if ( hits->length() > 0 ) {
@@ -552,8 +552,9 @@ using namespace lucene::store;
 	SortField *docField = (ascending ? SortField::FIELD_DOC() : new SortField(NULL, SortField::DOC, true));
 	SortField *fields[] = {sortField, docField, NULL}; // requires NULL last element
 	std::auto_ptr<Sort> sort(new Sort(fields)); // assumes ownership of fields
-	std::auto_ptr<Hits> hits([self searcher]->search(query.get(), sort.get()));
-	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:searcher];
+	std::tr1::shared_ptr<Searcher> s = [self searcher];
+	std::auto_ptr<Hits> hits(s->search(query.get(), sort.get()));
+	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
 }
 
 - (id<BRSearchResults>)search:(NSString *)query
