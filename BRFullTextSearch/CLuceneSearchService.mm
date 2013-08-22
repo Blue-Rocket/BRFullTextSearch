@@ -588,6 +588,7 @@ using namespace lucene::store;
 		NSAssert1([rhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [rhs expressionType]);
 		switch ( [comparison predicateOperatorType] ) {
 			case NSEqualToPredicateOperatorType:
+			case NSNotEqualToPredicateOperatorType:
 			{
 				Term *term = new Term([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString]);
 				result.reset(new TermQuery(term)); // TermQuery assumes ownership of idTerm
@@ -723,7 +724,14 @@ using namespace lucene::store;
 			std::auto_ptr<Query> subQuery = [self queryForPredicate:subpredicate analyzer:theAnalyzer parent:compound];
 			// subQuery might be NULL (in case of range query)
 			if ( subQuery.get() != NULL ) {
-				boolean->add(subQuery.release(), occur); // transfer ownership of subQuery to boolean
+				
+				// check for !=
+				if ( [subpredicate isKindOfClass:[NSComparisonPredicate class]]
+					&& [(NSComparisonPredicate *)subpredicate predicateOperatorType] == NSNotEqualToPredicateOperatorType ) {
+					occur = BooleanClause::MUST_NOT;
+				}
+				
+				boolean->add(subQuery.release(), true, occur); // transfer ownership of subQuery to boolean
 			}
 		}
 		result.reset(boolean);
