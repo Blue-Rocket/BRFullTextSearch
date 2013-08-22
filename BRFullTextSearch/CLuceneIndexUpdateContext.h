@@ -18,6 +18,7 @@
 - (id)initWithIndexModifier:(lucene::index::IndexModifier *)modifier;
 
 - (lucene::index::IndexModifier *)modifier;
+- (lucene::search::Searcher *)searcher;
 - (void)addDocument:(std::auto_ptr<lucene::document::Document>)doc;
 - (void)removeAllDocuments;
 - (size_t)documentCount;

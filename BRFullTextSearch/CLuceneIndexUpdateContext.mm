@@ -10,10 +10,12 @@
 
 using namespace lucene::document;
 using namespace lucene::index;
+using namespace lucene::search;
 
 @implementation CLuceneIndexUpdateContext {
 	std::list<Document*> docs; // default constructor called in alloc by runtime, and delete in dealloc
 	IndexModifier *modifier;
+	std::auto_ptr<Searcher> searcher;
 }
 
 - (id)initWithIndexModifier:(IndexModifier *)theModifier {
@@ -29,6 +31,13 @@ using namespace lucene::index;
 
 - (IndexModifier *)modifier {
 	return modifier;
+}
+
+- (Searcher *)searcher {
+	if ( searcher.get() == NULL ) {
+		searcher.reset(new IndexSearcher(modifier->getDirectory()));
+	}
+	return searcher.get();
 }
 
 - (void)addDocument:(std::auto_ptr<Document>)doc {

@@ -297,8 +297,8 @@ using namespace lucene::store;
 }
 
 - (void)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
-	std::auto_ptr<Hits> hits([self searcher]->search(query.get()));
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
+	std::auto_ptr<Hits> hits([ctx searcher]->search(query.get()));
 	IndexModifier *modifier = [ctx modifier];
 	for ( size_t i = 0, len = hits->length(); i < len; i++ ) {
 		modifier->deleteDocument(hits->id(i));
