@@ -803,7 +803,7 @@
 	[self assertSearchResults:results matchingIdentifiers:nil msg:@"<= s <="];
 }
 
-- (void)testBulkDeleteExclusiveRange {
+- (void)testDeleteExclusiveRange {
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
 	n0.date = [NSDate new];
 	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
@@ -825,6 +825,47 @@
 	results = [searchService searchWithPredicate:[NSPredicate predicateWithFormat:@"((s >= %@) AND (s <= %@))", n0.date, n2.date]
 										  sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	[self assertSearchResults:results matchingIdentifiers:@[n0.uid, n2.uid] msg:@"s == BulkDeleteExclusiveRange"];
+}
+
+- (void)testBulkDelete {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.date = [NSDate new];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = [n0.date dateByAddingTimeInterval:4];
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = [n0.date dateByAddingTimeInterval:8];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND ((s >= %@) AND (s <= %@))",
+									kBRSearchFieldNameObjectType,
+									@"?",
+									n0.date, n2.date];
+
+	NSCondition *condition = [NSCondition new];
+	[condition lock];
+	__block BOOL finished = NO;
+	[searchService bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
+		// first remove all documents for the date range we're going to re-index for... this takes care of removing documents
+		// for events that have been deleted
+		[searchService removeObjectsFromIndexMatchingPredicate:predicate context:updateContext];
+	} queue:NULL finished:^{
+		[condition lock];
+		finished = YES;
+		[condition signal];
+		[condition unlock];
+	}];
+	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:60]];
+	[condition unlock];
+	
+	[searchService resetSearcher];
+
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"o == ? && < s <"];
 }
 
 @end
