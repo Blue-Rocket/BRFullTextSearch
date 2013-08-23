@@ -17,6 +17,7 @@
 #import "CLuceneSearchResults.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
+#import "CLucene/util/_MD5Digester.h"
 
 static const char * kWriteQueueName = "us.bluerocket.CLucene.IndexWrite";
 static const NSInteger kDefaultIndexUpdateOptimizeThreshold = 25;
@@ -197,7 +198,15 @@ using namespace lucene::store;
 }
 
 - (NSString *)userDefaultsIndexUpdateCountKey {
-	return [NSString stringWithFormat:@"CLuceneIndexUpdateCount-%@", @"TODO"]; // TODO: hash of indexPath
+	char *dirHash = NULL;
+	if ( indexPath != nil ) {
+		dirHash = lucene::util::MD5String((char *)[indexPath cStringUsingEncoding:NSUTF8StringEncoding]);
+	}
+	NSString *result = [NSString stringWithFormat:@"CLuceneIndexUpdateCount-%s", dirHash];
+	if ( dirHash != NULL ) {
+		free(dirHash);
+	}
+	return result;
 }
 
 #pragma mark - Bulk API
