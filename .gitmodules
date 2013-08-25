@@ -2,3 +2,7 @@
 	path = clucene
 	url = git://clucene.git.sourceforge.net/gitroot/clucene/clucene
 	branch = master
+[submodule "MagicalRecord"]
+	path = MagicalRecord
+	url = git://github.com/magicalpanda/MagicalRecord.git
+	branch = master
