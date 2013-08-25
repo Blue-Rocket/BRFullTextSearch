@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:BRFullTextSearch.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SampleDependentProject/SampleDependentProject.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SampleStaticLibraryProject/SampleStaticLibraryProject.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:SampleCoreDataProject/SampleCoreDataProject.xcodeproj">
+   </FileRef>
+</Workspace>
