@@ -41,7 +41,7 @@
 		C979411B17863D3200DF0660 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		C979411C17863D3200DF0660 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		C979411F17863D3200DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
-		C979412617863D6100DF0660 /* BRFullTextSearch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BRFullTextSearch.framework; path = ../BRFullTextSearch.framework; sourceTree = "<group>"; };
+		C979412617863D6100DF0660 /* BRFullTextSearch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BRFullTextSearch.framework; path = ../Framework/Debug/BRFullTextSearch.framework; sourceTree = "<group>"; };
 		C9794128178640A100DF0660 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		C979412A178640AE00DF0660 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		C979412C1786415C00DF0660 /* TestCopy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TestCopy.txt; sourceTree = "<group>"; };
@@ -281,7 +281,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)/../Framework/Debug\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleStaticLibraryProject/SampleStaticLibraryProject-Prefix.pch";
@@ -296,7 +296,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/..\"",
+					"\"$(SRCROOT)/../Framework/Debug\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleStaticLibraryProject/SampleStaticLibraryProject-Prefix.pch";
@@ -325,6 +325,7 @@
 				C979412517863D3200DF0660 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
