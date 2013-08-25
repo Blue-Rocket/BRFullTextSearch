@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  StickyNoteListViewController.h
 //  SampleCoreDataProject
 //
 //  Created by Matt on 8/26/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface StickyNoteListViewController : UITableViewController
 
 @end
