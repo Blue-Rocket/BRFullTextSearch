@@ -34,6 +34,7 @@ const BRSearchObjectType kStickyNoteSearchObjectType = 'n';
 		[data setObject:self.text forKey:kBRSearchFieldNameValue];
 	}
 	[data setObject:[self.created asIndexTimestampString] forKey:kBRSearchFieldNameTimestamp];
+	NSLog(@"StickyNote index data: %@", data);
 	return data;
 }
 
