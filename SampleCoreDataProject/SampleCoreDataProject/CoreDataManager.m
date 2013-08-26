@@ -60,6 +60,7 @@
 	
 	// perform the index update batch operation on a background thread
 	[self.searchService bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
+		[NSManagedObjectContext MR_resetContextForCurrentThread]; // make sure we pull in latest data
 		for ( NSString *objectType in deletedIndexableIds ) {
 			BRSearchObjectType type = BRSearchObjectTypeForString(objectType);
 			for ( NSString *identifier in [deletedIndexableIds objectForKey:objectType] ) {
