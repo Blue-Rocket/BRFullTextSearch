@@ -53,6 +53,7 @@
 		C9049BB617CACD870099F480 /* StickyNoteListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */; };
 		C9049BBA17CAD3860099F480 /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BB817CAD3860099F480 /* StickyNoteViewController.m */; };
 		C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */; };
+		C9049BC217CAE7700099F480 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9049BC017CAE7700099F480 /* stop-words.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		C9049BB717CAD3860099F480 /* StickyNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteViewController.h; sourceTree = "<group>"; };
 		C9049BB817CAD3860099F480 /* StickyNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteViewController.m; sourceTree = "<group>"; };
 		C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyNoteViewController.xib; sourceTree = "<group>"; };
+		C9049BC117CAE7700099F480 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "stop-words.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +238,7 @@
 		C9049B1D17CAC48E0099F480 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C9049BBF17CAE7700099F480 /* en.lproj */,
 				C9049B1E17CAC48E0099F480 /* SampleCoreDataProject-Info.plist */,
 				C9049B1F17CAC48E0099F480 /* InfoPlist.strings */,
 				C9049B2217CAC48E0099F480 /* main.m */,
@@ -368,6 +371,15 @@
 			name = Model;
 			sourceTree = "<group>";
 		};
+		C9049BBF17CAE7700099F480 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				C9049BC017CAE7700099F480 /* stop-words.txt */,
+			);
+			name = en.lproj;
+			path = ../../BRFullTextSearch/en.lproj;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -449,6 +461,7 @@
 				C9049B2D17CAC48F0099F480 /* Default-568h@2x.png in Resources */,
 				C9049BB617CACD870099F480 /* StickyNoteListViewController.xib in Resources */,
 				C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */,
+				C9049BC217CAE7700099F480 /* stop-words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,6 +525,14 @@
 				C9049B2017CAC48E0099F480 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C9049BC017CAE7700099F480 /* stop-words.txt */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C9049BC117CAE7700099F480 /* en */,
+			);
+			name = "stop-words.txt";
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
