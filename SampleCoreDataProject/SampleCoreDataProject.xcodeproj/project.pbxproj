@@ -51,6 +51,8 @@
 		C9049BB017CACA5C0099F480 /* StickyNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BAF17CACA5C0099F480 /* StickyNote.m */; };
 		C9049BB517CACD870099F480 /* StickyNoteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BB317CACD870099F480 /* StickyNoteListViewController.m */; };
 		C9049BB617CACD870099F480 /* StickyNoteListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */; };
+		C9049BBA17CAD3860099F480 /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BB817CAD3860099F480 /* StickyNoteViewController.m */; };
+		C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -157,6 +159,9 @@
 		C9049BB217CACD870099F480 /* StickyNoteListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteListViewController.h; sourceTree = "<group>"; };
 		C9049BB317CACD870099F480 /* StickyNoteListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteListViewController.m; sourceTree = "<group>"; };
 		C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyNoteListViewController.xib; sourceTree = "<group>"; };
+		C9049BB717CAD3860099F480 /* StickyNoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNoteViewController.h; sourceTree = "<group>"; };
+		C9049BB817CAD3860099F480 /* StickyNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteViewController.m; sourceTree = "<group>"; };
+		C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyNoteViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +225,9 @@
 				C9049BB217CACD870099F480 /* StickyNoteListViewController.h */,
 				C9049BB317CACD870099F480 /* StickyNoteListViewController.m */,
 				C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */,
+				C9049BB717CAD3860099F480 /* StickyNoteViewController.h */,
+				C9049BB817CAD3860099F480 /* StickyNoteViewController.m */,
+				C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */,
 				C9049B1D17CAC48E0099F480 /* Supporting Files */,
 			);
 			path = SampleCoreDataProject;
@@ -440,6 +448,7 @@
 				C9049B2B17CAC48F0099F480 /* Default@2x.png in Resources */,
 				C9049B2D17CAC48F0099F480 /* Default-568h@2x.png in Resources */,
 				C9049BB617CACD870099F480 /* StickyNoteListViewController.xib in Resources */,
+				C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +491,7 @@
 				C9049BAD17CAC9CD0099F480 /* Model.xcdatamodeld in Sources */,
 				C9049BB017CACA5C0099F480 /* StickyNote.m in Sources */,
 				C9049BB517CACD870099F480 /* StickyNoteListViewController.m in Sources */,
+				C9049BBA17CAD3860099F480 /* StickyNoteViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +546,7 @@
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/..\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -562,6 +573,7 @@
 				HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/..\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-ObjC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
