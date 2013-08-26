@@ -31,6 +31,7 @@
 }
 
 - (void)maintainSearchIndexFromManagedObjectDidSave:(NSNotification *)notification {
+	// for inserted or updated objects, collect into array so we can add them to index in batch on background thread
 	NSMutableSet *changed = [NSMutableSet new];
 	[changed addObjectsFromArray:[[notification.userInfo objectForKey:NSUpdatedObjectsKey] allObjects]];
 	[changed addObjectsFromArray:[[notification.userInfo objectForKey:NSInsertedObjectsKey] allObjects]];
@@ -40,16 +41,29 @@
 			[updatedIndexables addObject:obj];
 		}
 	}
+	
+	// for deleted objects, create dictionary of object type -> identifier, so we can delete them in batch
 	NSSet *deleted = [notification.userInfo objectForKey:NSDeletedObjectsKey];
-	NSMutableArray *deletedIndexableIds = [[NSMutableArray alloc] initWithCapacity:[deleted count]];
+	NSMutableDictionary *deletedIndexableIds = [[NSMutableDictionary alloc] initWithCapacity:[deleted count]];
 	for ( id obj in deleted ) {
 		if ( [obj conformsToProtocol:@protocol(BRIndexable)] ) {
-			[deletedIndexableIds addObject:[obj indexIdentifier]];
+			NSString *objectType = StringForBRSearchObjectType([obj indexObjectType]);
+			NSMutableArray *ids = [deletedIndexableIds objectForKey:objectType];
+			if ( ids == nil ) {
+				ids = [[NSMutableArray alloc] initWithCapacity:[deleted count]];
+				[deletedIndexableIds setObject:ids forKey:objectType];
+			}
+			[ids addObject:[obj indexIdentifier]];
 		}
 	}
+	
+	// perform the index update batch operation on a background thread
 	[self.searchService bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
-		for ( NSString *identifier in deletedIndexableIds ) {
-			[self.searchService removeObjectFromIndex:kBRSimpleIndexableSearchObjectType withIdentifier:identifier context:updateContext];
+		for ( NSString *objectType in deletedIndexableIds ) {
+			BRSearchObjectType type = BRSearchObjectTypeForString(objectType);
+			for ( NSString *identifier in [deletedIndexableIds objectForKey:objectType] ) {
+				[self.searchService removeObjectFromIndex:type withIdentifier:identifier context:updateContext];
+			}
 		}
 		for ( NSManagedObject *obj in updatedIndexables ) {
 			NSManagedObject<BRIndexable> *localObj = (NSManagedObject<BRIndexable> *)[obj MR_inThreadContext];
