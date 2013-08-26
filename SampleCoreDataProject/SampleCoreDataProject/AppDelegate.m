@@ -26,6 +26,7 @@
 	
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.viewController = [[StickyNoteListViewController alloc] initWithNibName:@"StickyNoteListViewController" bundle:nil];
+	self.viewController.searchService = searchService;
 	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [self.window makeKeyAndVisible];
     return YES;

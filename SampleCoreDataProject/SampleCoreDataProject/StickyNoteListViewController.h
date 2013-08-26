@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <BRFullTextSearch/BRFullTextSearch.h>
 
-@interface StickyNoteListViewController : UITableViewController
+@interface StickyNoteListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,
+	UISearchDisplayDelegate, UISearchBarDelegate>
+
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
+
+@property (nonatomic, strong) id<BRSearchService> searchService;
 
 @end
