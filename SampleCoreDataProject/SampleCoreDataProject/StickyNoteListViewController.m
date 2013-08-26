@@ -23,6 +23,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
 		self.navigationItem.title = @"Sticky Notes";
+		self.navigationItem.leftBarButtonItem = self.editButtonItem;
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							   target:self
 																							   action:@selector(addStickyNote:)];
@@ -34,10 +35,8 @@
 	[super viewWillAppear:animated];
 	if ( stickyNotesModel == nil ) {
 		stickyNotesModel = [StickyNote MR_fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"created" ascending:NO delegate:self];
-	} else {
-		[stickyNotesModel performFetch:nil];
+		[self.tableView reloadData];
 	}
-	[self.tableView reloadData];
 }
 
 - (IBAction)addStickyNote:(id)sender {
@@ -45,11 +44,89 @@
 	[self.navigationController pushViewController:editor animated:YES];
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+	[super setEditing:editing animated:animated];
+	[self.tableView setEditing:editing animated:animated];
+}
+
 #pragma mark - NSFetchedResultsControllerDelegate
 
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
 
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch ( type ) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+            break;
+			
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath *)newIndexPath {
+	
+    UITableView *tableView = self.tableView;
+	
+    switch ( type ) {
+        case NSFetchedResultsChangeInsert:
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+            break;
+			
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+            break;
+			
+        case NSFetchedResultsChangeUpdate:
+			[self configureTableView:tableView cell:[tableView cellForRowAtIndexPath:indexPath]
+						 atIndexPath:indexPath];
+            break;
+			
+        case NSFetchedResultsChangeMove:
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+}
 
 #pragma mark - UITableView support
+
+- (void)configureTableView:(UITableView *)tableView cell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
+	static NSDateFormatter *dateFormatter;
+	if ( dateFormatter == nil ) {
+		dateFormatter = [[NSDateFormatter alloc] init];
+		NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"h:m a MMMMddyyyy" options:0 locale:[NSLocale currentLocale]];
+		[dateFormatter setDateFormat:formatString];
+	}
+    
+	if ( tableView == self.tableView ) {
+		StickyNote *stickyNote = [stickyNotesModel objectAtIndexPath:indexPath];
+		cell.textLabel.text = stickyNote.text;
+		cell.detailTextLabel.text = [dateFormatter stringFromDate:stickyNote.created];
+	} else {
+		// seach results
+		id<BRSearchResult> result = [searchResults resultAtIndex:indexPath.row];
+		cell.textLabel.text = [result valueForField:kBRSearchFieldNameValue];
+		cell.detailTextLabel.text = [dateFormatter stringFromDate:
+									 [NSDate dateWithIndexTimestampString:[result valueForField:kBRSearchFieldNameTimestamp]]];
+	}
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -73,28 +150,9 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if ( cell == nil ) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-	
-	static NSDateFormatter *dateFormatter;
-	if ( dateFormatter == nil ) {
-		dateFormatter = [[NSDateFormatter alloc] init];
-		NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"h:m a MMMMddyyyy" options:0 locale:[NSLocale currentLocale]];
-		[dateFormatter setDateFormat:formatString];
-	}
-    
-	if ( tableView == self.tableView ) {
-		StickyNote *stickyNote = [stickyNotesModel objectAtIndexPath:indexPath];
-		cell.textLabel.text = stickyNote.text;
-		cell.detailTextLabel.text = [dateFormatter stringFromDate:stickyNote.created];
-	} else {
-		// seach results
-		id<BRSearchResult> result = [searchResults resultAtIndex:indexPath.row];
-		cell.textLabel.text = [result valueForField:kBRSearchFieldNameValue];
-		cell.detailTextLabel.text = [dateFormatter stringFromDate:
-									 [NSDate dateWithIndexTimestampString:[result valueForField:kBRSearchFieldNameTimestamp]]];
-	}
-    
+	[self configureTableView:tableView cell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -113,5 +171,15 @@
 	}
 	[self.navigationController pushViewController:editor animated:YES];
 }
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ( editingStyle == UITableViewCellEditingStyleDelete ) {
+		StickyNote *stickyNote = [stickyNotesModel objectAtIndexPath:indexPath];
+		[MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+			[[stickyNote managedObjectContext] deleteObject:stickyNote];
+		}];
+	}
+}
+
 
 @end
