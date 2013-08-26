@@ -9,6 +9,7 @@
 #import "StickyNoteListViewController.h"
 
 #import <BRFullTextSearch/NSDate+BRFullTextSearchAdditions.h>
+#import "Notifications.h"
 #import "StickyNote.h"
 #import "StickyNoteViewController.h"
 
@@ -27,6 +28,10 @@
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							   target:self
 																							   action:@selector(addStickyNote:)];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(searchIndexDidChange:)
+													 name:SearchIndexDidChange
+												   object:nil];
     }
     return self;
 }
@@ -47,6 +52,20 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
 	[self.tableView setEditing:editing animated:animated];
+}
+
+- (void)searchIndexDidChange:(NSNotification *)notification {
+	if ( self.searchDisplayController.active ) {
+		[self.searchDisplayController.searchResultsTableView reloadData];
+	}
+}
+
+- (void)executeSearch {
+	NSString *query = self.searchBar.text;
+	searchResults = nil;
+	if ( [query length] > 1 ) {
+		searchResults = [self.searchService search:query];
+	}
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
@@ -138,11 +157,7 @@
 	}
 	
 	// search results table view here
-	NSString *query = self.searchBar.text;
-	searchResults = nil;
-	if ( [query length] > 1 ) {
-		searchResults = [self.searchService search:query];
-	}
+	[self executeSearch];
     return [searchResults count];
 }
 

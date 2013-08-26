@@ -54,6 +54,7 @@
 		C9049BBA17CAD3860099F480 /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BB817CAD3860099F480 /* StickyNoteViewController.m */; };
 		C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */; };
 		C9049BC217CAE7700099F480 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9049BC017CAE7700099F480 /* stop-words.txt */; };
+		C9049BC517CB10800099F480 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BC417CB10800099F480 /* Notifications.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,8 @@
 		C9049BB817CAD3860099F480 /* StickyNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNoteViewController.m; sourceTree = "<group>"; };
 		C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyNoteViewController.xib; sourceTree = "<group>"; };
 		C9049BC117CAE7700099F480 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "stop-words.txt"; sourceTree = "<group>"; };
+		C9049BC317CB10800099F480 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
+		C9049BC417CB10800099F480 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +227,8 @@
 				C9049B2617CAC48E0099F480 /* AppDelegate.m */,
 				C9049BA817CAC6BA0099F480 /* CoreDataManager.h */,
 				C9049BA917CAC6BA0099F480 /* CoreDataManager.m */,
+				C9049BC317CB10800099F480 /* Notifications.h */,
+				C9049BC417CB10800099F480 /* Notifications.m */,
 				C9049BB217CACD870099F480 /* StickyNoteListViewController.h */,
 				C9049BB317CACD870099F480 /* StickyNoteListViewController.m */,
 				C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */,
@@ -505,6 +510,7 @@
 				C9049BB017CACA5C0099F480 /* StickyNote.m in Sources */,
 				C9049BB517CACD870099F480 /* StickyNoteListViewController.m in Sources */,
 				C9049BBA17CAD3860099F480 /* StickyNoteViewController.m in Sources */,
+				C9049BC517CB10800099F480 /* Notifications.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

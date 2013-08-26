@@ -9,6 +9,7 @@
 #import "CoreDataManager.h"
 
 #import <BRFullTextSearch/BRFullTextSearch.h>
+#import "Notifications.h"
 
 @implementation CoreDataManager
 
@@ -69,7 +70,9 @@
 			NSManagedObject<BRIndexable> *localObj = (NSManagedObject<BRIndexable> *)[obj MR_inThreadContext];
 			[self.searchService addObjectToIndex:localObj context:updateContext];
 		}
-	} queue:NULL finished:NULL];
+	} queue:dispatch_get_main_queue() finished:^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:SearchIndexDidChange object:nil];
+	}];
 }
 
 @end
