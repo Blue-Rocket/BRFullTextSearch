@@ -159,7 +159,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	StickyNoteViewController *editor = [[StickyNoteViewController alloc] initWithNibName:@"StickyNoteViewController" bundle:nil];
 	if ( tableView == self.tableView ) {
 		editor.stickyNote = [stickyNotesModel objectAtIndexPath:indexPath];
