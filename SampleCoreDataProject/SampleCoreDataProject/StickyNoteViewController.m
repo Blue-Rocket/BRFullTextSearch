@@ -35,7 +35,12 @@
 	if ( self.stickyNote == nil ) {
 		if ( [self.textView.text length] > 0 ) {
 			self.stickyNote = [StickyNote MR_createEntity];
-			self.stickyNote.created = [NSDate new];
+			
+			// we use the time stamp, down to seconds granularity, as the primary key for this demo
+			NSCalendar *cal = [NSCalendar currentCalendar];
+			NSDateComponents *timestamp = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit)
+												 fromDate:[NSDate new]];
+			self.stickyNote.created = [cal dateFromComponents:timestamp];
 		}
 	}
 	if ( self.stickyNote != nil ) {
