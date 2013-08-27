@@ -17,6 +17,7 @@
 	if ( formatter == nil ) {
 		formatter = [NSDateFormatter new];
 		[formatter setTimeZone:[NSTimeZone GMTTimeZone]];
+		[formatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]];
 		[formatter setDateFormat:@"yyyyMMddHHmmss"];
 	}
 	return formatter;
