@@ -16,11 +16,15 @@ using namespace lucene::search;
 	std::list<Document*> docs; // default constructor called in alloc by runtime, and delete in dealloc
 	IndexModifier *modifier;
 	std::auto_ptr<Searcher> searcher;
+	int updateCount;
 }
+
+@synthesize updateCount;
 
 - (id)initWithIndexModifier:(IndexModifier *)theModifier {
 	if ( (self = [super init]) ) {
 		modifier = theModifier;
+		updateCount = 0;
 	}
 	return self;
 }

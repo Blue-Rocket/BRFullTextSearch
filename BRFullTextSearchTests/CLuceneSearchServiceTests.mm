@@ -52,7 +52,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -94,7 +94,7 @@
 	
 	for ( int i = 0; i < threshold; i++ ) {
 		n0.title = [NSString stringWithFormat:@"Special note%d", i];
-		[searchService addObjectsToIndexAndWait:@[n0]];
+		[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	}
 	
 	// at this point, we should have mutliple segment files, and updated count
@@ -102,7 +102,7 @@
 	STAssertEquals(updateCount, threshold, @"update count");
 	
 	n0.title = [NSString stringWithFormat:@"Special note%d", threshold];
-	[searchService addObjectsToIndexAndWait:@[n0]];
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	
 	updateCount = [[NSUserDefaults standardUserDefaults] integerForKey:[searchService userDefaultsIndexUpdateCountKey]];
 	STAssertEquals(updateCount, (NSInteger)0, @"update count");
@@ -120,7 +120,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -136,7 +136,7 @@
 
 - (void)testSearchBRSimpleIndexableByIdentifier {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nIdentifier = n.uid;
 	
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:nIdentifier];
@@ -147,7 +147,7 @@
 
 - (void)testSearchBRSimpleIndexableByFreeText {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nID = n.uid;
 	
 	id<BRSearchResults> results = [searchService search:@"special"];
@@ -164,7 +164,7 @@
 
 - (void)testSearchBRSimpleIndexableByFreeTextCaseInsensitive {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nID = n.uid;
 	
 	id<BRSearchResults> results = [searchService search:@"SPECIAL"];
@@ -182,7 +182,7 @@
 - (void)testSearchBRSimpleIndexableByFreeTextStemmed {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
 	n.title = @"My special note with a flower in it.";
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nID = n.uid;
 	
 	// search where the query term is singular, but the index term was plural ("details")
@@ -208,7 +208,7 @@
 
 - (void)testSearchBRSimpleIndexableByFreeTextStopWords {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nID = n.uid;
 	
 	// first confirm normal non-stop word search works as expected
@@ -240,7 +240,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -279,7 +279,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -318,7 +318,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = n0.date;
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -391,7 +391,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -414,10 +414,10 @@
 
 - (void)testIndexNothing {
 	// test that API doesn't freak out from empty input
-	[searchService addObjectToIndexAndWait:nil];
+	[searchService addObjectToIndexAndWait:nil error:nil];
 	[searchService addObjectToIndex:nil queue:NULL finished:NULL];
-	[searchService addObjectsToIndexAndWait:nil];
-	[searchService addObjectsToIndexAndWait:[NSArray new]];
+	[searchService addObjectsToIndexAndWait:nil error:nil];
+	[searchService addObjectsToIndexAndWait:[NSArray new] error:nil];
 	[searchService addObjectsToIndex:nil queue:NULL finished:NULL];
 	[searchService addObjectsToIndex:[NSArray new] queue:NULL finished:NULL];
 }
@@ -425,7 +425,7 @@
 - (void)testUpdateDocument {
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
 	n0.date = [n0.date dateByAddingTimeInterval:-4];
-	[searchService addObjectsToIndexAndWait:@[n0]];
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	
@@ -445,7 +445,7 @@
 	
 	// now update note, to change terms...
 	n0.title = @"My pretty note";
-	[searchService addObjectsToIndexAndWait:@[n0]];
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	[searchService resetSearcher]; // must reset to pick up changes immediately after first search
 	
 	// search for old keyword... should NOT find anymore
@@ -480,7 +480,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -498,7 +498,7 @@
 	STAssertTrue([seen containsObject:n1Id], @"uid");
 	
 	// now add to index, and search again
-	[searchService addObjectsToIndexAndWait:@[n2]];
+	[searchService addObjectsToIndexAndWait:@[n2] error:nil];
 	[searchService resetSearcher];
 	
 	results = [searchService search:@"note"];
@@ -529,7 +529,7 @@
 		for ( BRSimpleIndexable *n in notes ) {
 			[searchService addObjectToIndex:n context:updateContext];
 		}
-	}];
+	} error:nil];
 	
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:[n0 indexIdentifier]];
 	STAssertEqualObjects([result identifier], [n0 uid], @"object ID");
@@ -541,7 +541,7 @@
 
 - (void)testSearchWithSimplePredicate {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nID = n.uid;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"t like %@", @"special"];
 	
@@ -570,7 +570,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = n0.date;
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n1Id = n1.uid;
 	NSString *n2Id = n2.uid;
@@ -622,7 +622,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -681,7 +681,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"o = %@ AND ((s >= %@) AND (s <= %@))", @"?", n0.date, n2.date];
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
@@ -718,7 +718,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -759,14 +759,14 @@
 
 - (void)testDeleteBRSimpleIndexable {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
-	[searchService addObjectToIndexAndWait:n];
+	[searchService addObjectToIndexAndWait:n error:nil];
 	NSString *nIdentifier = n.uid;
 	
 	// verify we can find that document
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:nIdentifier];
 	STAssertNotNil(result, @"search result");
 	
-	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet setWithObject:nIdentifier]];
+	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet setWithObject:nIdentifier] error:nil];
 	
 	// verify we CANNOT find that document
 	id<BRSearchResult> result2 = [searchService findObject:'?' withIdentifier:nIdentifier];
@@ -776,8 +776,8 @@
 
 - (void)testDeleteNothing {
 	// test that API doesn't freak out from empty sets
-	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:nil];
-	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet new]];
+	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:nil error:nil];
+	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet new] error:nil];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:nil queue:NULL finished:NULL];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:[NSSet new] queue:NULL finished:NULL];
 }
@@ -794,10 +794,10 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((s >= %@) AND (s <= %@))", n0.date, n2.date];
-	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate];
+	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate error:nil];
 	
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	[self assertSearchResults:results matchingIdentifiers:nil msg:@"<= s <="];
@@ -815,10 +815,10 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"((s > %@) AND (s < %@))", n0.date, n2.date];
-	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate];
+	[searchService removeObjectsFromIndexMatchingPredicateAndWait:predicate error:nil];
 	
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	[self assertSearchResults:results matchingIdentifiers:nil msg:@"< s <"];
@@ -839,7 +839,7 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [n0.date dateByAddingTimeInterval:8];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2]];
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
 
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K == %@ AND ((s >= %@) AND (s <= %@))",
 									kBRSearchFieldNameObjectType,
@@ -853,7 +853,7 @@
 		// first remove all documents for the date range we're going to re-index for... this takes care of removing documents
 		// for events that have been deleted
 		[searchService removeObjectsFromIndexMatchingPredicate:predicate context:updateContext];
-	} queue:NULL finished:^{
+	} queue:NULL finished:^(int updateCount, NSError *error) {
 		[condition lock];
 		finished = YES;
 		[condition signal];

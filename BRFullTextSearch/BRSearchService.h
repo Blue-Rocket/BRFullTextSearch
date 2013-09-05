@@ -28,46 +28,53 @@ typedef enum {
 }
 #endif
 
+// standard completion callback; if error will be nil unless a problem occurred
+typedef void (^BRSearchServiceCallbackBlock)(NSError *error);
+typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *error);
+
 @protocol BRSearchService <NSObject>
 
 #pragma mark - Indexing
 
 // add an object to the index, calling the finished block on completion (if not NULL) using the provided queue
 // or a global queue if finishedQueue is NULL
-- (void)addObjectToIndex:(id<BRIndexable>)object queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finished;
-- (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finished;
+- (void)addObjectToIndex:(id<BRIndexable>)object queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished;
+- (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished;
 
 // add an object to the index and block until it has been added
-- (void)addObjectToIndexAndWait:(id<BRIndexable>)object;
-- (void)addObjectsToIndexAndWait:(NSArray *)objects;
+- (void)addObjectToIndexAndWait:(id<BRIndexable>)object error:(NSError *__autoreleasing *)error;
+- (void)addObjectsToIndexAndWait:(NSArray *)objects error:(NSError *__autoreleasing *)error;
 
 // bulk update
 typedef void (^BRSearchServiceIndexUpdateBlock)(id<BRIndexUpdateContext>updateContext);
-- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finishedBlock;
-- (void)bulkUpdateIndexAndWait:(BRSearchServiceIndexUpdateBlock)updateBlock;
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceUpdateCallbackBlock)finishedBlock;
+- (BOOL)bulkUpdateIndexAndWait:(BRSearchServiceIndexUpdateBlock)updateBlock error:(NSError *__autoreleasing *)error;
 - (void)addObjectToIndex:(id<BRIndexable>)object context:(id<BRIndexUpdateContext>)updateContext;
-- (void)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext;
-- (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext;
+
+// return count of documents removed, or -1 for error
+- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext;
+- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext;
 
 // remove a set of objects from the index based on their identifiers, calling the finished block on completion (if not NULL)
 // using the provided queue or a global queue if queue is NULL
 - (void)removeObjectsFromIndex:(BRSearchObjectType)type
 			   withIdentifiers:(NSSet *)identifiers
 						 queue:(dispatch_queue_t)finishedQueue
-					  finished:(void (^)())finished;
+					  finished:(BRSearchServiceUpdateCallbackBlock)finished;
 
 // remove a set of objects from the index based on their identifiers, blocking until finished
-- (void)removeObjectsFromIndexAndWait:(BRSearchObjectType)type
-					  withIdentifiers:(NSSet *)identifiers;
+- (int)removeObjectsFromIndexAndWait:(BRSearchObjectType)type
+					  withIdentifiers:(NSSet *)identifiers
+							   error:(NSError *__autoreleasing *)error;
 
 // remove a set of objects from the index matching a search result set, calling the finished block on completion (if not NULL)
 // using the provided queue or a global queue if queue is NULL
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
 										  queue:(dispatch_queue_t)finishedQueue
-									   finished:(void (^)())finished;
+									   finished:(BRSearchServiceUpdateCallbackBlock)finished;
 
 // remove a set of objects from the index matching a search result set, blocking until finished
-- (void)removeObjectsFromIndexMatchingPredicateAndWait:(NSPredicate *)predicate;
+- (int)removeObjectsFromIndexMatchingPredicateAndWait:(NSPredicate *)predicate error:(NSError *__autoreleasing *)error;
 
 #pragma mark - Searching
 

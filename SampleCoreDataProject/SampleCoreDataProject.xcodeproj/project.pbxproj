@@ -647,6 +647,7 @@
 				C9049B3817CAC48F0099F480 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

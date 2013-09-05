@@ -17,6 +17,8 @@
 
 - (id)initWithIndexModifier:(lucene::index::IndexModifier *)modifier;
 
+@property (nonatomic) int updateCount;
+
 - (lucene::index::IndexModifier *)modifier;
 - (lucene::search::Searcher *)searcher;
 - (void)addDocument:(std::auto_ptr<lucene::document::Document>)doc;

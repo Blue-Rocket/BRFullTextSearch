@@ -211,49 +211,60 @@ using namespace lucene::store;
 
 #pragma mark - Bulk API
 
-- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finishedBlock {
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceUpdateCallbackBlock)finishedBlock {
 	dispatch_async(IndexWriteQueue, ^{
 		@autoreleasepool {
-			NSString *defaultsUpdateKey = [self userDefaultsIndexUpdateCountKey];
-			BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
-			std::auto_ptr<IndexModifier> modifier(new IndexModifier(dir, [self defaultAnalyzer], (bool)create));
-			CLuceneIndexUpdateContext *ctx = [[CLuceneIndexUpdateContext alloc] initWithIndexModifier:modifier.get()];
-			@try {
-				updateBlock(ctx);
-				[self flushBufferedDocuments:ctx];
-			} @finally {
-				// keep track of index updates, to optimize index
-				NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-				const NSInteger updateCount = [ud integerForKey:defaultsUpdateKey] + 1;
-				if ( updateCount > indexUpdateOptimizeThreshold ) {
-					//log4Debug(@"Optimizing search index; %ld updates have occurred", (long)updateCount);
-					modifier->optimize();
-					[ud setInteger:0 forKey:defaultsUpdateKey];
-				} else {
-					[ud setInteger:updateCount forKey:defaultsUpdateKey];
+			NSError *error = nil;
+			int finishedUpdateCount = 0;
+			try {
+				NSString *defaultsUpdateKey = [self userDefaultsIndexUpdateCountKey];
+				BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
+				std::auto_ptr<IndexModifier> modifier(new IndexModifier(dir, [self defaultAnalyzer], (bool)create));
+				CLuceneIndexUpdateContext *ctx = [[CLuceneIndexUpdateContext alloc] initWithIndexModifier:modifier.get()];
+				@try {
+					updateBlock(ctx);
+					[self flushBufferedDocuments:ctx];
+				} @finally {
+					// keep track of index updates, to optimize index
+					NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+					const NSInteger updateCount = [ud integerForKey:defaultsUpdateKey] + 1;
+					if ( updateCount > indexUpdateOptimizeThreshold ) {
+						modifier->optimize();
+						[ud setInteger:0 forKey:defaultsUpdateKey];
+					} else {
+						[ud setInteger:updateCount forKey:defaultsUpdateKey];
+					}
+					modifier->close();
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[self resetSearcher];
+					});
 				}
-				modifier->close();
-				dispatch_async(dispatch_get_main_queue(), ^{
-					[self resetSearcher];
-				});
+			} catch ( CLuceneError &ex ) {
+				finishedUpdateCount = -1;
+				error = [NSError errorWithDomain:@"CLucene" code:ex.number() userInfo:@{@"msg" : [NSString stringWithCLuceneString:ex.twhat()]}];
+				log4Error(@"Error %d adding object to index: %@", ex.number(), [NSString stringWithCLuceneString:ex.twhat()]);
 			}
 			if ( finishedBlock != NULL ) {
 				dispatch_queue_t callbackQueue = (finishedQueue != NULL ? finishedQueue : dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-				dispatch_async(callbackQueue, finishedBlock);
+				dispatch_async(callbackQueue, ^{
+					finishedBlock(finishedUpdateCount, error);
+				});
 			}
 		}
 	});
 }
 
-- (void)bulkUpdateIndexAndWait:(BRSearchServiceIndexUpdateBlock)updateBlock {
+- (BOOL)bulkUpdateIndexAndWait:(BRSearchServiceIndexUpdateBlock)updateBlock error:(NSError *__autoreleasing *)error {
 	NSCondition *condition = [NSCondition new];
 	[condition lock];
 	__block BOOL finished = NO;
-	[self bulkUpdateIndex:updateBlock queue:NULL finished:^ {
+	__block NSError *updateError = nil;
+	[self bulkUpdateIndex:updateBlock queue:NULL finished:^(int updateCount, NSError *localError) {
 		[condition lock];
 		finished = YES;
 		[condition signal];
 		[condition unlock];
+		updateError = localError;
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
@@ -261,6 +272,10 @@ using namespace lucene::store;
 	if ( [NSThread isMainThread] ) {
 		[self resetSearcher];
 	}
+	if ( error != nil ) {
+		*error = updateError;
+	}
+	return (finished && updateError != nil);
 }
 
 - (void)addObjectToIndex:(id<BRIndexable>)object context:(id<BRIndexUpdateContext>)updateContext {
@@ -281,37 +296,39 @@ using namespace lucene::store;
 	}
 }
 
-- (void)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
+- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
-#ifdef LOGGING
-	int32_t deletedCount =
-#endif
-	[ctx modifier]->deleteDocuments(idTerm);
+	int32_t deletedCount = [ctx modifier]->deleteDocuments(idTerm);
 	log4Debug(@"Removed %d documents from search index", deletedCount);
+	ctx.updateCount += deletedCount;
 	delete idTerm, idTerm = NULL;
+	return deletedCount;
 }
 
 - (void)flushBufferedDocuments:(CLuceneIndexUpdateContext *)updateContext {
 	[updateContext enumerateDocumentsUsingBlock:^(Document *doc, BOOL *remove) {
 		log4Debug(@"Adding document %@ to index", [NSString stringWithCLuceneString:doc->get([kBRSearchFieldNameIdentifier asCLuceneString])]);
 		[updateContext modifier]->addDocument(doc);
+		updateContext.updateCount++;
 		*remove = YES;
 	}];
 }
 
-- (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext {
+- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext  {
 	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
-	[self removeObjectsFromIndexWithQuery:query context:(CLuceneIndexUpdateContext *)updateContext];
+	return [self removeObjectsFromIndexWithQuery:query context:(CLuceneIndexUpdateContext *)updateContext];
 }
 
-- (void)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
+- (int)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	std::auto_ptr<Hits> hits([ctx searcher]->search(query.get()));
+	ctx.updateCount += hits->length();
 	IndexModifier *modifier = [ctx modifier];
 	for ( size_t i = 0, len = hits->length(); i < len; i++ ) {
 		modifier->deleteDocument(hits->id(i));
 	}
+	return hits->length();
 }
 
 #pragma mark - Internal support
@@ -382,17 +399,19 @@ using namespace lucene::store;
 
 #pragma mark - Incremental index API
 
-- (void)addObjectToIndex:(id<BRIndexable>)object queue:(dispatch_queue_t)queue finished:(void (^)())finished {
+- (void)addObjectToIndex:(id<BRIndexable>)object queue:(dispatch_queue_t)queue finished:(BRSearchServiceCallbackBlock)finished {
 	[self addObjectsToIndex:(object == nil ? nil : @[object]) queue:queue finished:finished];
 }
 
-- (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finished {
+- (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished {
 	if ( [objects count] < 1 ) {
 		if ( finished != NULL ) {
 			dispatch_queue_t callbackQueue = (finishedQueue != NULL
 											  ? finishedQueue
 											  : dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-			dispatch_async(callbackQueue, finished);
+			dispatch_async(callbackQueue, ^{
+				finished(nil);
+			});
 		}
 		return;
 	}
@@ -401,28 +420,33 @@ using namespace lucene::store;
 		for ( id<BRIndexable> obj in objects ) {
 			[self addObjectToIndex:obj context:updateContext];
 		}
-	} queue:finishedQueue finished:finished];
+	} queue:finishedQueue finished:^(int updateCount, NSError *error) {
+		finished(error);
+	}];
 }
 
-- (void)addObjectToIndexAndWait:(id<BRIndexable>)object {
+- (void)addObjectToIndexAndWait:(id<BRIndexable>)object error:(NSError *__autoreleasing *)error {
 	if ( object == nil ) {
 		return;
 	}
-	[self addObjectsToIndexAndWait:@[object]];
+	[self addObjectsToIndexAndWait:@[object] error:error];
 }
 
-- (void)addObjectsToIndexAndWait:(NSArray *)objects {
+- (void)addObjectsToIndexAndWait:(NSArray *)objects error:(NSError *__autoreleasing *)error {
 	if ( [objects count] < 1 ) {
 		return;
 	}
 	NSCondition *condition = [NSCondition new];
 	[condition lock];
 	__block BOOL finished = NO;
-	[self addObjectsToIndex:objects queue:NULL finished:^ {
+	[self addObjectsToIndex:objects queue:NULL finished:^(NSError *localError) {
 		[condition lock];
 		finished = YES;
 		[condition signal];
 		[condition unlock];
+		if ( error != nil ) {
+			*error = localError;
+		}
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
@@ -447,7 +471,7 @@ using namespace lucene::store;
 	return result;
 }
 
-- (void)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query queue:(dispatch_queue_t)finishedQueue finished:(void (^)())finishedBlock {
+- (void)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceUpdateCallbackBlock)finishedBlock {
 	Query *q = query.release();
 	[self bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
 		std::auto_ptr<Query> localQuery(q);
@@ -456,11 +480,13 @@ using namespace lucene::store;
 }
 
 - (void)removeObjectsFromIndex:(BRSearchObjectType)type withIdentifiers:(NSSet *)identifiers
-						 queue:(dispatch_queue_t)queue finished:(void (^)())finished {
+						 queue:(dispatch_queue_t)queue finished:(BRSearchServiceUpdateCallbackBlock)finished {
 	if ( [identifiers count] < 1 ) {
 		if ( finished != NULL ) {
 			dispatch_queue_t callbackQueue = (queue != NULL ? queue : dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-			dispatch_async(callbackQueue, finished);
+			dispatch_async(callbackQueue, ^{
+				finished(0, nil);
+			});
 		}
 		return;
 	}
@@ -470,18 +496,23 @@ using namespace lucene::store;
 	[self removeObjectsFromIndexWithQuery:query queue:queue finished:finished];
 }
 
-- (void)removeObjectsFromIndexAndWait:(BRSearchObjectType)type withIdentifiers:(NSSet *)identifiers {
+- (int)removeObjectsFromIndexAndWait:(BRSearchObjectType)type withIdentifiers:(NSSet *)identifiers error:(NSError *__autoreleasing *)error {
 	if ( [identifiers count] < 1 ) {
-		return;
+		return 0;
 	}
 	NSCondition *condition = [NSCondition new];
 	[condition lock];
+	__block int result = 0;
 	__block BOOL finished = NO;
-	[self removeObjectsFromIndex:type withIdentifiers:identifiers queue:NULL finished:^ {
+	[self removeObjectsFromIndex:type withIdentifiers:identifiers queue:NULL finished:^(int updateCount, NSError *localError) {
 		[condition lock];
 		finished = YES;
 		[condition signal];
 		[condition unlock];
+		result = updateCount;
+		if ( error != nil ) {
+			*error = localError;
+		}
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
@@ -489,24 +520,30 @@ using namespace lucene::store;
 	if ( [NSThread isMainThread] ) {
 		[self resetSearcher];
 	}
+	return result;
 }
 
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
 										  queue:(dispatch_queue_t)finishedQueue
-									   finished:(void (^)())finished {
+									   finished:(BRSearchServiceUpdateCallbackBlock)finished {
 	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
 	[self removeObjectsFromIndexWithQuery:query queue:finishedQueue finished:finished];
 }
 
-- (void)removeObjectsFromIndexMatchingPredicateAndWait:(NSPredicate *)predicate {
+- (int)removeObjectsFromIndexMatchingPredicateAndWait:(NSPredicate *)predicate error:(NSError *__autoreleasing *)error {
 	NSCondition *condition = [NSCondition new];
 	[condition lock];
+	__block int result = 0;
 	__block BOOL finished = NO;
-	[self removeObjectsFromIndexMatchingPredicate:predicate queue:NULL finished:^ {
+	[self removeObjectsFromIndexMatchingPredicate:predicate queue:NULL finished:^(int updateCount, NSError *localError) {
 		[condition lock];
 		finished = YES;
 		[condition signal];
 		[condition unlock];
+		result = updateCount;
+		if ( error != nil ) {
+			*error = localError;
+		}
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
@@ -514,6 +551,7 @@ using namespace lucene::store;
 	if ( [NSThread isMainThread] ) {
 		[self resetSearcher];
 	}
+	return result;
 }
 
 #pragma mark - Search API
