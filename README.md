@@ -23,7 +23,8 @@ id<BRIndexable> doc = [[BRSimpleIndexable alloc] initWithIdentifier:@"1" data:@{
 					   kBRSearchFieldNameTitle : @"Special document",
 					   kBRSearchFieldNameValue : @"This is a long winded note with really important details in it."
 					   }];
-[service addObjectToIndexAndWait:doc];
+NSError *error = nil;
+[service addObjectToIndexAndWait:doc error:&error];
 
 // search for documents and log contents of each result
 id<BRSearchResults> results = [service search:@"special"];
