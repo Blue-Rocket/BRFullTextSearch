@@ -241,7 +241,7 @@ using namespace lucene::store;
 				}
 			} catch ( CLuceneError &ex ) {
 				finishedUpdateCount = -1;
-				error = [NSError errorWithDomain:@"CLucene" code:ex.number() userInfo:@{@"msg" : [NSString stringWithCLuceneString:ex.twhat()]}];
+				error = [NSError errorWithDomain:BRSearchServiceErrorDomain code:ex.number() userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithCLuceneString:ex.twhat()]}];
 				log4Error(@"Error %d adding object to index: %@", ex.number(), [NSString stringWithCLuceneString:ex.twhat()]);
 			}
 			if ( finishedBlock != NULL ) {

@@ -28,6 +28,8 @@ typedef enum {
 }
 #endif
 
+extern NSString * const BRSearchServiceErrorDomain;
+
 // standard completion callback; if error will be nil unless a problem occurred
 typedef void (^BRSearchServiceCallbackBlock)(NSError *error);
 typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *error);
