@@ -16,6 +16,8 @@
 	static NSDateFormatter *formatter;
 	if ( formatter == nil ) {
 		formatter = [NSDateFormatter new];
+		NSLocale *enUSPOSIXLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		[formatter setLocale:enUSPOSIXLocale];
 		[formatter setTimeZone:[NSTimeZone GMTTimeZone]];
 		[formatter setCalendar:[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar]];
 		[formatter setDateFormat:@"yyyyMMddHHmmss"];
