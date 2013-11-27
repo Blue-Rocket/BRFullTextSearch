@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		C909C2651784CB600016C25E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2641784CB600016C25E /* Foundation.framework */; };
-		C909C2741784CB600016C25E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2731784CB600016C25E /* SenTestingKit.framework */; };
 		C909C2761784CB600016C25E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2751784CB600016C25E /* UIKit.framework */; };
 		C909C2771784CB600016C25E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2641784CB600016C25E /* Foundation.framework */; };
 		C909C27A1784CB600016C25E /* libBRFullTextSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2611784CB600016C25E /* libBRFullTextSearch.a */; };
@@ -410,6 +409,8 @@
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C97940F31786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C97940F41786240100DF0660 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C97940F61786240100DF0660 /* stop-words.txt */; };
+		C99FCBEA18466AA700A90E66 /* TestIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C99FCBE918466AA700A90E66 /* TestIndexable.m */; };
+		C99FCBEC18466FE600A90E66 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEB18466FE600A90E66 /* XCTest.framework */; };
 		C9AE054517E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */; };
 		C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 		C9E6137717C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
@@ -869,6 +870,9 @@
 		C97940F01786022900DF0660 /* BRSimpleIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleIndexable.h; sourceTree = "<group>"; };
 		C97940F11786022900DF0660 /* BRSimpleIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleIndexable.m; sourceTree = "<group>"; };
 		C97940F51786240100DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/stop-words.txt"; sourceTree = "<group>"; };
+		C99FCBE818466AA700A90E66 /* TestIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestIndexable.h; sourceTree = "<group>"; };
+		C99FCBE918466AA700A90E66 /* TestIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestIndexable.m; sourceTree = "<group>"; };
+		C99FCBEB18466FE600A90E66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_BRFullTextSearchAdditionsTests.h; sourceTree = "<group>"; };
 		C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_BRFullTextSearchAdditionsTests.m; sourceTree = "<group>"; };
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
@@ -891,7 +895,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C909C2741784CB600016C25E /* SenTestingKit.framework in Frameworks */,
+				C99FCBEC18466FE600A90E66 /* XCTest.framework in Frameworks */,
 				C909C2761784CB600016C25E /* UIKit.framework in Frameworks */,
 				C909C2771784CB600016C25E /* Foundation.framework in Frameworks */,
 				C909C27A1784CB600016C25E /* libBRFullTextSearch.a in Frameworks */,
@@ -931,6 +935,7 @@
 				C909C2641784CB600016C25E /* Foundation.framework */,
 				C909C2731784CB600016C25E /* SenTestingKit.framework */,
 				C909C2751784CB600016C25E /* UIKit.framework */,
+				C99FCBEB18466FE600A90E66 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -973,6 +978,8 @@
 				C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */,
 				C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */,
 				C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */,
+				C99FCBE818466AA700A90E66 /* TestIndexable.h */,
+				C99FCBE918466AA700A90E66 /* TestIndexable.m */,
 				C909C27C1784CB600016C25E /* Supporting Files */,
 			);
 			path = BRFullTextSearchTests;
@@ -1985,6 +1992,7 @@
 				C909C5281784CF0A0016C25E /* TermInfosReader.cpp in Sources */,
 				C909C52A1784CF0A0016C25E /* TermInfosWriter.cpp in Sources */,
 				C909C52C1784CF0A0016C25E /* Terms.cpp in Sources */,
+				C99FCBEA18466AA700A90E66 /* TestIndexable.m in Sources */,
 				C909C52E1784CF0A0016C25E /* TermVectorReader.cpp in Sources */,
 				C909C5301784CF0A0016C25E /* TermVectorWriter.cpp in Sources */,
 				C909C5321784CF0A0016C25E /* FastCharStream.cpp in Sources */,
@@ -2237,6 +2245,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
@@ -2252,6 +2261,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
 					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
