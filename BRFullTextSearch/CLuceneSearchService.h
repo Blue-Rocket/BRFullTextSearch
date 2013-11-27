@@ -2,6 +2,9 @@
 //  CLuceneSearchService.h
 //  BRFullTextSearch
 //
+//  Implementation of BRSearchService using CLucene. When indexing, only NSString, or
+//  NSArray/NSSet with NSString values, are supported as field values.
+//
 //  Created by Matt on 6/28/13.
 //  Copyright (c) 2013 Blue Rocket. Distributable under the terms of the Apache License, Version 2.0.
 //
