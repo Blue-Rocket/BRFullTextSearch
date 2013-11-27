@@ -76,7 +76,9 @@ clicking the **+** button in the **Link Binary With Libraries** section of the
  * libz
  * libstdc++
 
-Next, add `-ObjC` as an *Other Linker Flags* build setting.
+Next, add `-ObjC` as an *Other Linker Flags* build setting. If you do
+not have any C++ sources in your project, you probably also need to add
+`-stdlib=libstdc++` to this setting as well.
 
 Finally, you'll need to add the path to the directory containing the 
 `BRFullTextSearch.framework` bundle as a **Framework Search Paths** value
