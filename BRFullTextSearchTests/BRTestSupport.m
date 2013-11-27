@@ -35,7 +35,7 @@
 			return nil;
 		}
 	} else {
-		int fileDescriptor = mkstemps(tempFileNameCString, [suffix length]);
+		int fileDescriptor = mkstemps(tempFileNameCString, (int)[suffix length]);
 		if ( fileDescriptor == -1 ) {
 			free(tempFileNameCString);
 			log4Error(@"Failed to create temp file %s", tempFileNameCString);
