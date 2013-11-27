@@ -92,8 +92,8 @@
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
 	searchService.indexUpdateOptimizeThreshold = threshold;
 	
-	for ( int i = 0; i < threshold; i++ ) {
-		n0.title = [NSString stringWithFormat:@"Special note%d", i];
+	for ( NSInteger i = 0; i < threshold; i++ ) {
+		n0.title = [NSString stringWithFormat:@"Special note%ld", (long)i];
 		[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	}
 	
@@ -101,7 +101,7 @@
 	NSInteger updateCount = [[NSUserDefaults standardUserDefaults] integerForKey:[searchService userDefaultsIndexUpdateCountKey]];
 	STAssertEquals(updateCount, threshold, @"update count");
 	
-	n0.title = [NSString stringWithFormat:@"Special note%d", threshold];
+	n0.title = [NSString stringWithFormat:@"Special note%ld", (long)threshold];
 	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	
 	updateCount = [[NSUserDefaults standardUserDefaults] integerForKey:[searchService userDefaultsIndexUpdateCountKey]];
