@@ -88,60 +88,6 @@
 	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
-- (void)testIndexUntokenizedArrayAndSearchForResults {
-	BRSimpleIndexable *n0 = [[BRSimpleIndexable alloc] initWithIdentifier:[BRTestSupport UUID] data:@{
-																									  kBRSearchFieldNameTitle : @"My special note",
-																									  kBRSearchFieldNameValue : @"This is a long winded note with really important details in it.",
-																									  kBRTestIndexableSearchFieldNameTags : @[@"dogs", @"cats", @"mice"],
-																									  }];;
-	n0.date = [n0.date dateByAddingTimeInterval:-4]; // offset dates to test sorting
-	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
-	n1.title = @"My other fancy note.";
-	n1.value = @"This is a cool note with dogs in it.";
-	n1.date = [[NSDate new] dateByAddingTimeInterval:-2];
-	
-	[searchService addObjectsToIndexAndWait:@[n0, n1] error:nil];
-	
-	NSString *n0Id = n0.uid;
-	NSString *n1Id = n1.uid;
-	
-	// first test individual results
-	id<BRSearchResults> results0 = [searchService search:@"dog"];
-	XCTAssertEqual([results0 count], (NSUInteger)1, @"results count");
-	__block NSUInteger count = 0;
-	[results0 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		count++;
-		XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
-	}];
-	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
-	
-	id<BRSearchResults> results1 = [searchService search:@"T:dog"];
-	XCTAssertEqual([results1 count], (NSUInteger)0, @"results count");
-	count = 0;
-	[results1 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		count++;
-	}];
-	XCTAssertEqual(count, (NSUInteger)0, @"results iterated");
-	
-	id<BRSearchResults> results2 = [searchService search:@"T:dogs"];
-	XCTAssertEqual([results2 count], (NSUInteger)1, @"results count");
-	count = 0;
-	[results2 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		count++;
-		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
-	}];
-	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
-	
-	id<BRSearchResults> results3 = [searchService search:@"T:mice"];
-	XCTAssertEqual([results3 count], (NSUInteger)1, @"results count");
-	count = 0;
-	[results3 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		count++;
-		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
-	}];
-	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
-}
-
 - (void)testOptimizeIndexFromUpdateThreshold {
 	const NSInteger threshold = 4;
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
@@ -808,6 +754,64 @@
 	predicate = [NSPredicate predicateWithFormat:@"s < %@", n0.date];
 	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	[self assertSearchResults:results matchingIdentifiers:nil msg:@"< range out of bounds"];
+}
+
+- (void)testIndexUntokenizedArrayAndSearchForResults {
+	TestIndexable *n0 = [[TestIndexable alloc] initWithIdentifier:[BRTestSupport UUID]
+															 data:@{
+																	kBRSearchFieldNameTitle : @"My special note",
+																	kBRSearchFieldNameValue : @"This is a long winded note with really important details in it.",
+																	kBRTestIndexableSearchFieldNameTags : @[@"dogs", @"cats", @"mice"],
+																	}];
+	n0.date = [n0.date dateByAddingTimeInterval:-4]; // offset dates to test sorting
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with dogs in it.";
+	n1.date = [[NSDate new] dateByAddingTimeInterval:-2];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1] error:nil];
+	
+	NSString *n0Id = n0.uid;
+	NSString *n1Id = n1.uid;
+	
+	// first test individual results
+	id<BRSearchResults> results = [searchService search:@"dog"];
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	__block NSUInteger count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+	
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(T == %@)", @"dog"];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	XCTAssertEqual([results count], (NSUInteger)0, @"results count");
+	count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+	}];
+	XCTAssertEqual(count, (NSUInteger)0, @"results iterated");
+	
+	predicate = [NSPredicate predicateWithFormat:@"(T == %@)", @"dogs"];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+	
+	predicate = [NSPredicate predicateWithFormat:@"(T == %@)", @"mice"];
+	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 #pragma mark - Delete from index
