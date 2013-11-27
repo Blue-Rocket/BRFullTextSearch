@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		C909C2651784CB600016C25E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2641784CB600016C25E /* Foundation.framework */; };
-		C909C2761784CB600016C25E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2751784CB600016C25E /* UIKit.framework */; };
 		C909C2771784CB600016C25E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2641784CB600016C25E /* Foundation.framework */; };
 		C909C27A1784CB600016C25E /* libBRFullTextSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2611784CB600016C25E /* libBRFullTextSearch.a */; };
 		C909C2801784CB600016C25E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C909C27E1784CB600016C25E /* InfoPlist.strings */; };
@@ -411,6 +410,8 @@
 		C97940F41786240100DF0660 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C97940F61786240100DF0660 /* stop-words.txt */; };
 		C99FCBEA18466AA700A90E66 /* TestIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C99FCBE918466AA700A90E66 /* TestIndexable.m */; };
 		C99FCBEC18466FE600A90E66 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEB18466FE600A90E66 /* XCTest.framework */; };
+		C99FCBEF1846745E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
+		C99FCBF01846746E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
 		C9AE054517E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */; };
 		C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 		C9E6137717C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
@@ -444,9 +445,7 @@
 		C909C2611784CB600016C25E /* libBRFullTextSearch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBRFullTextSearch.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C909C2641784CB600016C25E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C909C2681784CB600016C25E /* BRFullTextSearch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRFullTextSearch-Prefix.pch"; sourceTree = "<group>"; };
-		C909C2721784CB600016C25E /* BRFullTextSearchTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C909C2731784CB600016C25E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		C909C2751784CB600016C25E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		C909C2721784CB600016C25E /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C909C27D1784CB600016C25E /* BRFullTextSearchTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BRFullTextSearchTests-Info.plist"; sourceTree = "<group>"; };
 		C909C27F1784CB600016C25E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C909C2901784CC320016C25E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -873,6 +872,7 @@
 		C99FCBE818466AA700A90E66 /* TestIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestIndexable.h; sourceTree = "<group>"; };
 		C99FCBE918466AA700A90E66 /* TestIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestIndexable.m; sourceTree = "<group>"; };
 		C99FCBEB18466FE600A90E66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		C99FCBEE1846745E00A90E66 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_BRFullTextSearchAdditionsTests.h; sourceTree = "<group>"; };
 		C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_BRFullTextSearchAdditionsTests.m; sourceTree = "<group>"; };
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
@@ -886,6 +886,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C909C2931784CC380016C25E /* libstdc++.dylib in Frameworks */,
+				C99FCBF01846746E00A90E66 /* UIKit.framework in Frameworks */,
 				C909C2911784CC320016C25E /* libz.dylib in Frameworks */,
 				C909C2651784CB600016C25E /* Foundation.framework in Frameworks */,
 			);
@@ -895,8 +896,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C99FCBEF1846745E00A90E66 /* UIKit.framework in Frameworks */,
 				C99FCBEC18466FE600A90E66 /* XCTest.framework in Frameworks */,
-				C909C2761784CB600016C25E /* UIKit.framework in Frameworks */,
 				C909C2771784CB600016C25E /* Foundation.framework in Frameworks */,
 				C909C27A1784CB600016C25E /* libBRFullTextSearch.a in Frameworks */,
 				C909C2941784CC3E0016C25E /* libstdc++.dylib in Frameworks */,
@@ -922,7 +923,7 @@
 			isa = PBXGroup;
 			children = (
 				C909C2611784CB600016C25E /* libBRFullTextSearch.a */,
-				C909C2721784CB600016C25E /* BRFullTextSearchTests.octest */,
+				C909C2721784CB600016C25E /* BRFullTextSearchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -930,11 +931,10 @@
 		C909C2631784CB600016C25E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C99FCBEE1846745E00A90E66 /* UIKit.framework */,
 				C909C2921784CC380016C25E /* libstdc++.dylib */,
 				C909C2901784CC320016C25E /* libz.dylib */,
 				C909C2641784CB600016C25E /* Foundation.framework */,
-				C909C2731784CB600016C25E /* SenTestingKit.framework */,
-				C909C2751784CB600016C25E /* UIKit.framework */,
 				C99FCBEB18466FE600A90E66 /* XCTest.framework */,
 			);
 			name = Frameworks;
@@ -1653,7 +1653,7 @@
 			);
 			name = BRFullTextSearchTests;
 			productName = BRFullTextSearchTests;
-			productReference = C909C2721784CB600016C25E /* BRFullTextSearchTests.octest */;
+			productReference = C909C2721784CB600016C25E /* BRFullTextSearchTests.xctest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -2169,6 +2169,11 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2203,6 +2208,11 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -2242,32 +2252,22 @@
 		C909C28A1784CB600016C25E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				INFOPLIST_FILE = "BRFullTextSearchTests/BRFullTextSearchTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
 		C909C28B1784CB600016C25E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"\"$(SDKROOT)/Developer/Library/Frameworks\"",
-					"\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				INFOPLIST_FILE = "BRFullTextSearchTests/BRFullTextSearchTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
