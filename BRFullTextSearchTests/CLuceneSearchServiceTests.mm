@@ -13,6 +13,7 @@
 #import "CLuceneSearchResults.h"
 #import "CLuceneSearchService.h"
 #import "NSDate+BRFullTextSearchAdditions.h"
+#import "TestIndexable.h"
 
 @implementation CLuceneSearchServiceTests {
 	CLuceneSearchService *searchService;
@@ -60,31 +61,85 @@
 	
 	// first test individual results
 	id<BRSearchResults> results0 = [searchService search:@"special"];
-	STAssertEquals([results0 count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results0 count], (NSUInteger)1, @"results count");
 	__block NSUInteger count = 0;
 	[results0 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], n0Id, @"object ID");
+		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	id<BRSearchResults> results1 = [searchService search:@"fancy"];
-	STAssertEquals([results1 count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results1 count], (NSUInteger)1, @"results count");
 	count = 0;
 	[results1 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], n1Id, @"object ID");
+		XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	id<BRSearchResults> results2 = [searchService search:@"pretty"];
-	STAssertEquals([results2 count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results2 count], (NSUInteger)1, @"results count");
 	count = 0;
 	[results2 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], n2Id, @"object ID");
+		XCTAssertEqualObjects([result identifier], n2Id, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+}
+
+- (void)testIndexUntokenizedArrayAndSearchForResults {
+	BRSimpleIndexable *n0 = [[BRSimpleIndexable alloc] initWithIdentifier:[BRTestSupport UUID] data:@{
+																									  kBRSearchFieldNameTitle : @"My special note",
+																									  kBRSearchFieldNameValue : @"This is a long winded note with really important details in it.",
+																									  kBRTestIndexableSearchFieldNameTags : @[@"dogs", @"cats", @"mice"],
+																									  }];;
+	n0.date = [n0.date dateByAddingTimeInterval:-4]; // offset dates to test sorting
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with dogs in it.";
+	n1.date = [[NSDate new] dateByAddingTimeInterval:-2];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1] error:nil];
+	
+	NSString *n0Id = n0.uid;
+	NSString *n1Id = n1.uid;
+	
+	// first test individual results
+	id<BRSearchResults> results0 = [searchService search:@"dog"];
+	XCTAssertEqual([results0 count], (NSUInteger)1, @"results count");
+	__block NSUInteger count = 0;
+	[results0 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+	
+	id<BRSearchResults> results1 = [searchService search:@"T:dog"];
+	XCTAssertEqual([results1 count], (NSUInteger)0, @"results count");
+	count = 0;
+	[results1 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+	}];
+	XCTAssertEqual(count, (NSUInteger)0, @"results iterated");
+	
+	id<BRSearchResults> results2 = [searchService search:@"T:dogs"];
+	XCTAssertEqual([results2 count], (NSUInteger)1, @"results count");
+	count = 0;
+	[results2 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+	
+	id<BRSearchResults> results3 = [searchService search:@"T:mice"];
+	XCTAssertEqual([results3 count], (NSUInteger)1, @"results count");
+	count = 0;
+	[results3 iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertEqualObjects([result identifier], n0Id, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 - (void)testOptimizeIndexFromUpdateThreshold {
@@ -99,13 +154,13 @@
 	
 	// at this point, we should have mutliple segment files, and updated count
 	NSInteger updateCount = [[NSUserDefaults standardUserDefaults] integerForKey:[searchService userDefaultsIndexUpdateCountKey]];
-	STAssertEquals(updateCount, threshold, @"update count");
+	XCTAssertEqual(updateCount, threshold, @"update count");
 	
 	n0.title = [NSString stringWithFormat:@"Special note%ld", (long)threshold];
 	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
 	
 	updateCount = [[NSUserDefaults standardUserDefaults] integerForKey:[searchService userDefaultsIndexUpdateCountKey]];
-	STAssertEquals(updateCount, (NSInteger)0, @"update count");
+	XCTAssertEqual(updateCount, (NSInteger)0, @"update count");
 }
 
 - (void)testGetResultsByIndex {
@@ -128,10 +183,10 @@
 	
 	// now search with a sort...
 	id<BRSearchResults> sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([sorted count], (NSUInteger)3, @"sorted count");
-	STAssertEqualObjects([sorted resultAtIndex:0].identifier, n0Id, @"object by index");
-	STAssertEqualObjects([sorted resultAtIndex:1].identifier, n1Id, @"object by index");
-	STAssertEqualObjects([sorted resultAtIndex:2].identifier, n2Id, @"object by index");
+	XCTAssertEqual([sorted count], (NSUInteger)3, @"sorted count");
+	XCTAssertEqualObjects([sorted resultAtIndex:0].identifier, n0Id, @"object by index");
+	XCTAssertEqualObjects([sorted resultAtIndex:1].identifier, n1Id, @"object by index");
+	XCTAssertEqualObjects([sorted resultAtIndex:2].identifier, n2Id, @"object by index");
 }
 
 - (void)testSearchBRSimpleIndexableByIdentifier {
@@ -140,9 +195,9 @@
 	NSString *nIdentifier = n.uid;
 	
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:nIdentifier];
-	STAssertNotNil(result, @"search result");
-	STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
-	STAssertEqualObjects([result identifier], nIdentifier, @"object ID");
+	XCTAssertNotNil(result, @"search result");
+	XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
+	XCTAssertEqualObjects([result identifier], nIdentifier, @"object ID");
 }
 
 - (void)testSearchBRSimpleIndexableByFreeText {
@@ -151,15 +206,15 @@
 	NSString *nID = n.uid;
 	
 	id<BRSearchResults> results = [searchService search:@"special"];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
-	STAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be CLuceneSearchResults");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be CLuceneSearchResults");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 - (void)testSearchBRSimpleIndexableByFreeTextCaseInsensitive {
@@ -168,15 +223,15 @@
 	NSString *nID = n.uid;
 	
 	id<BRSearchResults> results = [searchService search:@"SPECIAL"];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
-	STAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be CLuceneSearchResult");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 - (void)testSearchBRSimpleIndexableByFreeTextStemmed {
@@ -187,23 +242,23 @@
 	
 	// search where the query term is singular, but the index term was plural ("details")
 	id<BRSearchResults> results = [searchService search:@"detail"];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	// search where the query term is plural, but the index term was singular ("flower")
 	results = [searchService search:@"flowers"];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
 	count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 - (void)testSearchBRSimpleIndexableByFreeTextStopWords {
@@ -213,17 +268,17 @@
 	
 	// first confirm normal non-stop word search works as expected
 	id<BRSearchResults> results = [searchService search:@"special"];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	// now search for stop words that were present in the note title, we should have no results
 	results = [searchService search:@"is a in it"];
-	STAssertEquals([results count], (NSUInteger)0, @"results count");
+	XCTAssertEqual([results count], (NSUInteger)0, @"results count");
 }
 
 #pragma mark - Sorted results
@@ -248,7 +303,7 @@
 	
 	// now search with a sort...
 	id<BRSearchResults> sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([sorted count], (NSUInteger)3, @"sorted count");
+	XCTAssertEqual([sorted count], (NSUInteger)3, @"sorted count");
 	__block NSUInteger count = 0;
 	__block NSString *lastTimestamp = nil;
 	NSMutableSet *seen = [NSMutableSet new];
@@ -256,15 +311,15 @@
 		count++;
 		NSString *ts = [result valueForField:kBRSearchFieldNameTimestamp];
 		if ( lastTimestamp != nil ) {
-			STAssertTrue([ts compare:lastTimestamp] == NSOrderedDescending, @"sorted ascending");
+			XCTAssertTrue([ts compare:lastTimestamp] == NSOrderedDescending, @"sorted ascending");
 		}
 		lastTimestamp = ts;
 		[seen addObject:[result identifier]];
 	}];
-	STAssertEquals(count, (NSUInteger)3, @"results iterated");
-	STAssertTrue([seen containsObject:n0Id], @"uid");
-	STAssertTrue([seen containsObject:n1Id], @"uid");
-	STAssertTrue([seen containsObject:n2Id], @"uid");
+	XCTAssertEqual(count, (NSUInteger)3, @"results iterated");
+	XCTAssertTrue([seen containsObject:n0Id], @"uid");
+	XCTAssertTrue([seen containsObject:n1Id], @"uid");
+	XCTAssertTrue([seen containsObject:n2Id], @"uid");
 }
 
 - (void)testSortedResultsDescending {
@@ -287,7 +342,7 @@
 	
 	// reverse sort
 	id<BRSearchResults> sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:NO];
-	STAssertEquals([sorted count], (NSUInteger)3, @"sorted count");
+	XCTAssertEqual([sorted count], (NSUInteger)3, @"sorted count");
 	__block NSUInteger count = 0;
 	__block NSString *lastTimestamp = nil;
 	NSMutableSet *seen = [NSMutableSet new];
@@ -295,15 +350,15 @@
 		count++;
 		NSString *ts = [result valueForField:kBRSearchFieldNameTimestamp];
 		if ( lastTimestamp != nil ) {
-			STAssertTrue([ts compare:lastTimestamp] == NSOrderedAscending, @"sorted descending");
+			XCTAssertTrue([ts compare:lastTimestamp] == NSOrderedAscending, @"sorted descending");
 		}
 		lastTimestamp = ts;
 		[seen addObject:[result identifier]];
 	}];
-	STAssertEquals(count, (NSUInteger)3, @"results iterated");
-	STAssertTrue([seen containsObject:n0Id], @"uid");
-	STAssertTrue([seen containsObject:n1Id], @"uid");
-	STAssertTrue([seen containsObject:n2Id], @"uid");
+	XCTAssertEqual(count, (NSUInteger)3, @"results iterated");
+	XCTAssertTrue([seen containsObject:n0Id], @"uid");
+	XCTAssertTrue([seen containsObject:n1Id], @"uid");
+	XCTAssertTrue([seen containsObject:n2Id], @"uid");
 }
 
 // test that if all docs have the same sort key, they are returned in document order
@@ -326,20 +381,20 @@
 	
 	// now search with a ascending sort...
 	id<BRSearchResults> sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([sorted count], (NSUInteger)3, @"sorted count");
+	XCTAssertEqual([sorted count], (NSUInteger)3, @"sorted count");
 	__block NSUInteger count = 0;
 	[sorted iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		switch ( count ) {
 			case 0:
-				STAssertEqualObjects(result.identifier, n0Id, nil);
+				XCTAssertEqualObjects(result.identifier, n0Id);
 				break;
 				
 			case 1:
-				STAssertEqualObjects(result.identifier, n1Id, nil);
+				XCTAssertEqualObjects(result.identifier, n1Id);
 				break;
 				
 			case 2:
-				STAssertEqualObjects(result.identifier, n2Id, nil);
+				XCTAssertEqualObjects(result.identifier, n2Id);
 				break;
 				
 			default:
@@ -349,24 +404,24 @@
 		}
 		count++;
 	}];
-	STAssertEquals(count, (NSUInteger)3, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)3, @"results iterated");
 	
 	// reverse sort
 	sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:NO];
-	STAssertEquals([sorted count], (NSUInteger)3, @"sorted count");
+	XCTAssertEqual([sorted count], (NSUInteger)3, @"sorted count");
 	count = 0;
 	[sorted iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		switch ( count ) {
 			case 0:
-				STAssertEqualObjects(result.identifier, n2Id, nil);
+				XCTAssertEqualObjects(result.identifier, n2Id);
 				break;
 				
 			case 1:
-				STAssertEqualObjects(result.identifier, n1Id, nil);
+				XCTAssertEqualObjects(result.identifier, n1Id);
 				break;
 				
 			case 2:
-				STAssertEqualObjects(result.identifier, n0Id, nil);
+				XCTAssertEqualObjects(result.identifier, n0Id);
 				break;
 				
 			default:
@@ -376,7 +431,7 @@
 		}
 		count++;
 	}];
-	STAssertEquals(count, (NSUInteger)3, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)3, @"results iterated");
 }
 
 - (void)testSearchResultsGroupedByDay {
@@ -400,14 +455,14 @@
 	// now search with a sort...
 	id<BRSearchResults> sorted = [searchService search:@"note" sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	NSArray *groups = [sorted resultsGroupedByDay:kBRSearchFieldNameTimestamp];
-	STAssertEquals([groups count], (NSUInteger)2, @"group count");
+	XCTAssertEqual([groups count], (NSUInteger)2, @"group count");
 	NSArray *group0 = [groups objectAtIndex:0];
 	NSArray *group1 = [groups objectAtIndex:1];
-	STAssertEquals([group0 count], (NSUInteger)1, @"group 0 count");
-	STAssertEquals([group1 count], (NSUInteger)2, @"group 1 count");
-	STAssertEqualObjects([[group0 objectAtIndex:0] identifier], n0Id, @"object by index");
-	STAssertEqualObjects([[group1 objectAtIndex:0] identifier], n1Id, @"object by index");
-	STAssertEqualObjects([[group1 objectAtIndex:1] identifier], n2Id, @"object by index");
+	XCTAssertEqual([group0 count], (NSUInteger)1, @"group 0 count");
+	XCTAssertEqual([group1 count], (NSUInteger)2, @"group 1 count");
+	XCTAssertEqualObjects([[group0 objectAtIndex:0] identifier], n0Id, @"object by index");
+	XCTAssertEqualObjects([[group1 objectAtIndex:0] identifier], n1Id, @"object by index");
+	XCTAssertEqualObjects([[group1 objectAtIndex:1] identifier], n2Id, @"object by index");
 }
 
 #pragma mark - Index updating
@@ -431,17 +486,17 @@
 	
 	// first test for two results
 	id<BRSearchResults> results = [searchService search:@"special"];
-	STAssertEquals([results count], (NSUInteger)1, @"count");
+	XCTAssertEqual([results count], (NSUInteger)1, @"count");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		switch ( count ) {
 			case 0:
-				STAssertEqualObjects([result identifier], n0Id, @"uid");
+				XCTAssertEqualObjects([result identifier], n0Id, @"uid");
 				break;
 		}
 		count++;
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	// now update note, to change terms...
 	n0.title = @"My pretty note";
@@ -450,22 +505,22 @@
 	
 	// search for old keyword... should NOT find anymore
 	results = [searchService search:@"special"];
-	STAssertEquals([results count], (NSUInteger)0, @"count");
+	XCTAssertEqual([results count], (NSUInteger)0, @"count");
 	
 	
 	// now search for new keywork, and SHOULD find
 	results = [searchService search:@"pretty"];
-	STAssertEquals([results count], (NSUInteger)1, @"count");
+	XCTAssertEqual([results count], (NSUInteger)1, @"count");
 	count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		switch ( count ) {
 			case 0:
-				STAssertEqualObjects([result identifier], n0Id, @"uid");
+				XCTAssertEqualObjects([result identifier], n0Id, @"uid");
 				break;
 		}
 		count++;
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 - (void)testAddTwiceToIndexAndSearchForResults {
@@ -488,29 +543,29 @@
 	
 	// first test for two results
 	id<BRSearchResults> results = [searchService search:@"note"];
-	STAssertEquals([results count], (NSUInteger)2, @"result count");
+	XCTAssertEqual([results count], (NSUInteger)2, @"result count");
 	NSMutableSet *seen = [NSMutableSet new];
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		[seen addObject:[result identifier]];
 	}];
-	STAssertEquals([seen count], (NSUInteger)2, @"results iterated");
-	STAssertTrue([seen containsObject:n0Id], @"uid");
-	STAssertTrue([seen containsObject:n1Id], @"uid");
+	XCTAssertEqual([seen count], (NSUInteger)2, @"results iterated");
+	XCTAssertTrue([seen containsObject:n0Id], @"uid");
+	XCTAssertTrue([seen containsObject:n1Id], @"uid");
 	
 	// now add to index, and search again
 	[searchService addObjectsToIndexAndWait:@[n2] error:nil];
 	[searchService resetSearcher];
 	
 	results = [searchService search:@"note"];
-	STAssertEquals([results count], (NSUInteger)3, @"result count");
+	XCTAssertEqual([results count], (NSUInteger)3, @"result count");
 	[seen removeAllObjects];
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		[seen addObject:[result identifier]];
 	}];
-	STAssertEquals([seen count], (NSUInteger)3, @"results iterated");
-	STAssertTrue([seen containsObject:n0Id], @"uid");
-	STAssertTrue([seen containsObject:n1Id], @"uid");
-	STAssertTrue([seen containsObject:n2Id], @"uid");
+	XCTAssertEqual([seen count], (NSUInteger)3, @"results iterated");
+	XCTAssertTrue([seen containsObject:n0Id], @"uid");
+	XCTAssertTrue([seen containsObject:n1Id], @"uid");
+	XCTAssertTrue([seen containsObject:n2Id], @"uid");
 }
 
 - (void)testBulkAddToIndex {
@@ -532,11 +587,11 @@
 	} error:nil];
 	
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:[n0 indexIdentifier]];
-	STAssertEqualObjects([result identifier], [n0 uid], @"object ID");
+	XCTAssertEqualObjects([result identifier], [n0 uid], @"object ID");
 	result = [searchService findObject:'?' withIdentifier:[n1 indexIdentifier]];
-	STAssertEqualObjects([result identifier], [n1 uid], @"object ID");
+	XCTAssertEqualObjects([result identifier], [n1 uid], @"object ID");
 	result = [searchService findObject:'?' withIdentifier:[n2 indexIdentifier]];
-	STAssertEqualObjects([result identifier], [n2 uid], @"object ID");
+	XCTAssertEqualObjects([result identifier], [n2 uid], @"object ID");
 }
 
 - (void)testSearchWithSimplePredicate {
@@ -546,15 +601,15 @@
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"t like %@", @"special"];
 	
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
-	STAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be CLuceneSearchResults");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be CLuceneSearchResults");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
-		STAssertEqualObjects([result identifier], nID, @"object ID");
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
 #pragma mark - Predicate search
@@ -577,37 +632,37 @@
 	
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(t like %@) AND (v like %@)", @"fancy", @"cool"];
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([results count], (NSUInteger)1, @"results count");
-	STAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		count++;
-		STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
-		STAssertEqualObjects([result identifier], n1Id, @"object ID");
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
+		XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
 	}];
-	STAssertEquals(count, (NSUInteger)1, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 	
 	predicate = [NSPredicate predicateWithFormat:@"((t like %@) AND (v like %@)) OR (t like %@)", @"fancy", @"note", @"pretty"];
 	results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
-	STAssertEquals([results count], (NSUInteger)2, @"results count");
-	STAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
+	XCTAssertEqual([results count], (NSUInteger)2, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be LuceneSearchResults");
 	count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
 		switch ( index ) {
 			case 0:
-				STAssertEqualObjects([result identifier], n1Id, @"object ID");
+				XCTAssertEqualObjects([result identifier], n1Id, @"object ID");
 				break;
 				
 			case 1:
-				STAssertEqualObjects([result identifier], n2Id, @"object ID");
+				XCTAssertEqualObjects([result identifier], n2Id, @"object ID");
 				break;
 				
 		}
 		count++;
-		STAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
 		
 	}];
-	STAssertEquals(count, (NSUInteger)2, @"results iterated");
+	XCTAssertEqual(count, (NSUInteger)2, @"results iterated");
 }
 
 - (void)testSearchWithTimestampPredicateRange {
@@ -697,13 +752,13 @@
 }
 
 - (void)assertSearchResults:(id<BRSearchResults>)results matchingIdentifiers:(NSArray *)expectedIds msg:(NSString *)msg {
-	STAssertEquals([results count], [expectedIds count], @"results count %@", msg);
+	XCTAssertEqual([results count], [expectedIds count], @"results count %@", msg);
 	__block NSUInteger count = 0;
 	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
-		STAssertEqualObjects([result identifier], expectedIds[count], @"object ID %@", msg);
+		XCTAssertEqualObjects([result identifier], expectedIds[count], @"object ID %@", msg);
 		count++;
 	}];
-	STAssertEquals(count, [expectedIds count], @"results iterated %@", msg);
+	XCTAssertEqual(count, [expectedIds count], @"results iterated %@", msg);
 }
 
 - (void)testSearchWithTimestampPredicateOpenEndedRange {
@@ -764,13 +819,13 @@
 	
 	// verify we can find that document
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:nIdentifier];
-	STAssertNotNil(result, @"search result");
+	XCTAssertNotNil(result, @"search result");
 	
 	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet setWithObject:nIdentifier] error:nil];
 	
 	// verify we CANNOT find that document
 	id<BRSearchResult> result2 = [searchService findObject:'?' withIdentifier:nIdentifier];
-	STAssertNil(result2, @"search result not found");
+	XCTAssertNil(result2, @"search result not found");
 	
 }
 

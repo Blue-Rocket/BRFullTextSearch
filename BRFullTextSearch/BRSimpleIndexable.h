@@ -28,4 +28,7 @@ extern const BRSearchObjectType kBRSimpleIndexableSearchObjectType;
 // init with given attributes; a kBRSearchFieldNameTimestamp value is populated automatically
 - (id)initWithType:(BRSearchObjectType)type identifier:(NSString *)identifier data:(NSDictionary *)data;
 
+// directly modify a field value
+- (void)setDataObject:(id)object forKey:(NSString *)key;
+
 @end

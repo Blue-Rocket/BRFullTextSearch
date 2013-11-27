@@ -50,6 +50,13 @@ const BRSearchObjectType kBRSimpleIndexableSearchObjectType = '?';
 	return data;
 }
 
+- (BRIndexableIndexType)indexFieldIndexType:(NSString *)fieldName {
+	if ( [fieldName isEqualToString:kBRSearchFieldNameTimestamp] ) {
+		return BRIndexableIndexTypeUntokenized;
+	}
+	return BRIndexableIndexTypeTokenized;
+}
+
 #pragma mark - Field alias support
 
 - (void)setDataObject:(id)object forKey:(NSString *)key {

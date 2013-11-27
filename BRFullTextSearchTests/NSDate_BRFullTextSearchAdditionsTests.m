@@ -38,19 +38,19 @@
 	NSDateComponents *comp = [self componentsForYear:2013 month:9 day:12 hour:13 minute:5 second:0];
 	NSDate *date = [[self GMTCalendar] dateFromComponents:comp];
 	NSString *result = [date asIndexTimestampString];
-	STAssertEqualObjects(result, @"20130912130500", @"date string");
+	XCTAssertEqualObjects(result, @"20130912130500", @"date string");
 }
 
 - (void)testDecodeDate {
 	NSDate *result = [NSDate dateWithIndexTimestampString:@"20130912130500"];
 	NSDateComponents *comp = [[self GMTCalendar] components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit
 															 |NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit) fromDate:result];
-	STAssertEquals([comp year], (NSInteger)2013, @"year");
-	STAssertEquals([comp month], (NSInteger)9, @"year");
-	STAssertEquals([comp day], (NSInteger)12, @"year");
-	STAssertEquals([comp hour], (NSInteger)13, @"year");
-	STAssertEquals([comp minute], (NSInteger)5, @"year");
-	STAssertEquals([comp second], (NSInteger)0, @"year");
+	XCTAssertEqual([comp year], (NSInteger)2013, @"year");
+	XCTAssertEqual([comp month], (NSInteger)9, @"year");
+	XCTAssertEqual([comp day], (NSInteger)12, @"year");
+	XCTAssertEqual([comp hour], (NSInteger)13, @"year");
+	XCTAssertEqual([comp minute], (NSInteger)5, @"year");
+	XCTAssertEqual([comp second], (NSInteger)0, @"year");
 }
 
 @end

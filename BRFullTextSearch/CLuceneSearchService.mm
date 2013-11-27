@@ -386,15 +386,26 @@ using namespace lucene::store;
 					break;
 			}
 		}
-		Field *f = new Field([fieldName asCLuceneString], storeType | indexType);
 		id fieldValue = [fields objectForKey:fieldName];
-		if ( [fieldValue isKindOfClass:[NSString class]] ) {
-			f->setValue((TCHAR *)[fieldValue asCLuceneString], true);
+		const int fieldFlags = (storeType | indexType);
+		if ( [fieldValue isKindOfClass:[NSArray class]] || [fieldValue isKindOfClass:[NSSet class]] ) {
+			for ( id oneValue in fieldValue ) {
+				[self populateDocument:doc field:fieldName flags:fieldFlags value:oneValue];
+			}
 		} else {
-			NSAssert1(NO, @"Unsupported field value type: %@", NSStringFromClass([fieldValue class]));
+			[self populateDocument:doc field:fieldName flags:fieldFlags value:fieldValue];
 		}
-		doc->add(*f);
 	}
+}
+
+- (void)populateDocument:(Document *)doc field:(NSString *)fieldName flags:(int)flags value:(id)fieldValue {
+	Field *f = new Field([fieldName asCLuceneString], flags);
+	if ( [fieldValue isKindOfClass:[NSString class]] ) {
+		f->setValue((TCHAR *)[fieldValue asCLuceneString], true);
+	} else {
+		NSAssert1(NO, @"Unsupported field value type: %@", NSStringFromClass([fieldValue class]));
+	}
+	doc->add(*f);
 }
 
 #pragma mark - Incremental index API
