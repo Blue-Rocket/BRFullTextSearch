@@ -84,7 +84,8 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id<BRIndexUpdateContext>updateCo
 // results are ordered according to relevancy in descending order (most relevant first)
 - (id<BRSearchResults>)search:(NSString *)query;
 
-// search and sort the results by a field
+// search and sort the results by a field; pass a nil sortFieldName to return results sorted by
+// relevance (sortType and ascending are then ignored)
 - (id<BRSearchResults>)search:(NSString *)query
 					 sortBy:(NSString *)sortFieldName
 				   sortType:(BRSearchSortType)sortType
@@ -93,7 +94,7 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id<BRIndexUpdateContext>updateCo
 // search for a specific object in the index; return nil if not found
 - (id<BRSearchResult>)findObject:(BRSearchObjectType)type withIdentifier:(NSString *)identifier;
 
-// search using a predicate
+// search using a predicate; pass a nil sortFieldName to return results sorted by relevance (sortType and ascending are then ignored)
 - (id<BRSearchResults>)searchWithPredicate:(NSPredicate *)predicate
 									sortBy:(NSString *)sortFieldName
 								  sortType:(BRSearchSortType)sortType

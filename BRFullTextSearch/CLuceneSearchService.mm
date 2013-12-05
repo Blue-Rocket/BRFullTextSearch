@@ -602,17 +602,21 @@ using namespace lucene::store;
 							  sortBy:(NSString *)sortFieldName
 							sortType:(BRSearchSortType)sortType
 						   ascending:(BOOL)ascending {
-	SortField *sortField = new SortField([sortFieldName asCLuceneString], (sortType == BRSearchSortTypeInteger
-														  ? SortField::INT
-														  : SortField::STRING), !ascending);
-	
-	// this ensures we have consistent results of sortField has duplicate values
-	SortField *docField = (ascending ? SortField::FIELD_DOC() : new SortField(NULL, SortField::DOC, true));
-	SortField *fields[] = {sortField, docField, NULL}; // requires NULL last element
-	std::auto_ptr<Sort> sort(new Sort(fields)); // assumes ownership of fields
 	std::tr1::shared_ptr<Searcher> s = [self searcher];
-	std::auto_ptr<Hits> hits(s->search(query.get(), sort.get()));
-	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
+	if ( sortFieldName != nil ) {
+		SortField *sortField = new SortField([sortFieldName asCLuceneString], (sortType == BRSearchSortTypeInteger
+															  ? SortField::INT
+															  : SortField::STRING), !ascending);
+		
+		// this ensures we have consistent results of sortField has duplicate values
+		SortField *docField = (ascending ? SortField::FIELD_DOC() : new SortField(NULL, SortField::DOC, true));
+		SortField *fields[] = {sortField, docField, NULL}; // requires NULL last element
+		std::auto_ptr<Sort> sort(new Sort(fields)); // assumes ownership of fields
+		std::auto_ptr<Hits> hits(s->search(query.get(), sort.get()));
+		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
+	}
+	std::auto_ptr<Hits> hits(s->search(query.get()));
+	return [[CLuceneSearchResults alloc] initWithHits:hits];
 }
 
 - (id<BRSearchResults>)search:(NSString *)query
