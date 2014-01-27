@@ -71,7 +71,7 @@
 			NSManagedObject<BRIndexable> *localObj = (NSManagedObject<BRIndexable> *)[obj MR_inThreadContext];
 			[self.searchService addObjectToIndex:localObj context:updateContext];
 		}
-	} queue:dispatch_get_main_queue() finished:^{
+	} queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:SearchIndexDidChange object:nil];
 	}];
 }
