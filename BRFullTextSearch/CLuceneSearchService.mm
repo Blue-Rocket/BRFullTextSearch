@@ -114,7 +114,7 @@ using namespace lucene::store;
 
 + (const TCHAR **)stopWordsArrayForStemmerProgram:(NSString *)lang bundle:(NSBundle *)bundle {
 	NSSet *words = [self stopWordsForStemmerProgram:lang bundle:bundle];
-	const TCHAR **result = (const TCHAR **)malloc(sizeof(TCHAR) * [words count] + 1);
+	const TCHAR **result = (const TCHAR **)malloc(sizeof(TCHAR*) * [words count] + 1);
 	NSUInteger i = 0;
 	for ( NSString *word in words ) {
 		result[i++] = [word asCLuceneString];
