@@ -21,7 +21,7 @@ extern "C" {
 typedef enum {
 	BRSearchSortTypeString = 0,
 	BRSearchSortTypeInteger,
-	BRSearchObjectTypeFloat,
+	BRSearchSortTypeFloat,
 } BRSearchSortType;
 
 #ifdef __cplusplus
