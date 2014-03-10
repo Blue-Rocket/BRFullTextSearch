@@ -432,7 +432,9 @@ using namespace lucene::store;
 			[self addObjectToIndex:obj context:updateContext];
 		}
 	} queue:finishedQueue finished:^(int updateCount, NSError *error) {
-		finished(error);
+		if ( finished != NULL ) {
+			finished(error);
+		}
 	}];
 }
 
