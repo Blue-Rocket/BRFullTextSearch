@@ -146,6 +146,21 @@
 	XCTAssertEqualObjects([result identifier], nIdentifier, @"object ID");
 }
 
+- (void)testSearchResultDictionaryRepresentation {
+	BRSimpleIndexable *n = [self createTestIndexableInstance];
+	[searchService addObjectToIndexAndWait:n error:nil];
+	NSString *nIdentifier = n.uid;
+	
+	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:nIdentifier];
+	NSDictionary *data = [result dictionaryRepresentation];
+	XCTAssertNotNil(data, @"dictionary result");
+	NSString *expectedIdentifier = [NSString stringWithFormat:@"%c%@", '?', nIdentifier];
+	XCTAssertEqualObjects(data[kBRSearchFieldNameIdentifier], expectedIdentifier, @"object ID");
+	XCTAssertEqualObjects(data[kBRSearchFieldNameTitle], n.title, @"title");
+	XCTAssertEqualObjects(data[kBRSearchFieldNameValue], n.value, @"value");
+	XCTAssertNotNil(data[kBRSearchFieldNameTimestamp], @"timestamp");
+}
+
 - (void)testSearchBRSimpleIndexableByFreeText {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
 	[searchService addObjectToIndexAndWait:n error:nil];
