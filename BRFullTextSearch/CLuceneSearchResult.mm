@@ -87,7 +87,7 @@ using namespace lucene::search;
 
 - (NSDictionary *)dictionaryRepresentation {
 	NSMutableDictionary *dict = [NSMutableDictionary new];
-	const Document doc = hits->doc(index);
+	const Document &doc = hits->doc(index);
 	const Document::FieldsType fields = doc.getFields();
 	Document::FieldsType::const_iterator itr;
 	for ( itr = fields.begin(); itr != fields.end(); itr++ ){
