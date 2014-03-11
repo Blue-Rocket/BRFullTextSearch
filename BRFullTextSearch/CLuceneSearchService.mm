@@ -325,10 +325,11 @@ using namespace lucene::store;
 	std::auto_ptr<Hits> hits([ctx searcher]->search(query.get()));
 	ctx.updateCount += hits->length();
 	IndexModifier *modifier = [ctx modifier];
-	for ( size_t i = 0, len = hits->length(); i < len; i++ ) {
+	// Hmm: length() returns size_t, while id() expects int32_t... why the mismatch?
+	for ( int32_t i = 0, len = (int32_t)hits->length(); i < len; i++ ) {
 		modifier->deleteDocument(hits->id(i));
 	}
-	return hits->length();
+	return (int)hits->length();
 }
 
 #pragma mark - Internal support
@@ -463,7 +464,7 @@ using namespace lucene::store;
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
-	log4Debug(@"%@ %d objects to index", (finished ? @"Added" : @"Failed to add"), [objects count]);
+	log4Debug(@"%@ %lu objects to index", (finished ? @"Added" : @"Failed to add"), (unsigned long)[objects count]);
 	[condition unlock];
 	if ( [NSThread isMainThread] ) {
 		[self resetSearcher];
@@ -648,9 +649,9 @@ using namespace lucene::store;
 	if ( [predicate isKindOfClass:[NSComparisonPredicate class]] ) {
 		NSComparisonPredicate *comparison = (NSComparisonPredicate *)predicate;
 		NSExpression *lhs = [comparison leftExpression];
-		NSAssert1([lhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [lhs expressionType]);
+		NSAssert1([lhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %lu", (unsigned long)[lhs expressionType]);
 		NSExpression *rhs = [comparison rightExpression];
-		NSAssert1([rhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [rhs expressionType]);
+		NSAssert1([rhs expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %lu", (unsigned long)[rhs expressionType]);
 		switch ( [comparison predicateOperatorType] ) {
 			case NSEqualToPredicateOperatorType:
 			case NSNotEqualToPredicateOperatorType:
@@ -727,7 +728,7 @@ using namespace lucene::store;
 					if ( [closingRangePredicate isKindOfClass:[NSComparisonPredicate class]] ) {
 						NSComparisonPredicate *closingRangeComparison = (NSComparisonPredicate *)closingRangePredicate;
 						NSExpression *closingRangeLhs = [closingRangeComparison leftExpression];
-						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %d", [closingRangeLhs expressionType]);
+						NSAssert1([closingRangeLhs expressionType] == NSKeyPathExpressionType, @"Unsupported LHS expression type %lu", (unsigned long)[closingRangeLhs expressionType]);
 						if ( [[closingRangeLhs keyPath] isEqualToString:[lhs keyPath]] ) {
 							if ( lessExpression && ([closingRangeComparison predicateOperatorType] == NSGreaterThanPredicateOperatorType
 												   || [closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType) ) {
@@ -736,7 +737,7 @@ using namespace lucene::store;
 								}
 								lowerExpression = [closingRangeComparison rightExpression];
 								lowerInclusive = ([closingRangeComparison predicateOperatorType] == NSGreaterThanOrEqualToPredicateOperatorType);
-								NSAssert1([lowerExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [lowerExpression expressionType]);
+								NSAssert1([lowerExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %lu", (unsigned long)[lowerExpression expressionType]);
 							} else if ( !lessExpression && ([closingRangeComparison predicateOperatorType] == NSLessThanPredicateOperatorType
 															|| [closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType) ) {
 								if ( firstPredicate ) {
@@ -744,7 +745,7 @@ using namespace lucene::store;
 								}
 								upperExpression = [closingRangeComparison rightExpression];
 								upperInclusive = ([closingRangeComparison predicateOperatorType] == NSLessThanOrEqualToPredicateOperatorType);
-								NSAssert1([upperExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %d", [upperExpression expressionType]);
+								NSAssert1([upperExpression expressionType] == NSConstantValueExpressionType, @"Unsupported RHS expression type %lu", (unsigned long)[upperExpression expressionType]);
 							}
 						}
 					}
@@ -763,7 +764,7 @@ using namespace lucene::store;
 				break;
 				
 			default:
-				NSAssert1(NO, @"Unsupported predicate operator type: %d", [comparison predicateOperatorType]);
+				NSAssert1(NO, @"Unsupported predicate operator type: %lu", (unsigned long)[comparison predicateOperatorType]);
 				break;
 		}
 		
