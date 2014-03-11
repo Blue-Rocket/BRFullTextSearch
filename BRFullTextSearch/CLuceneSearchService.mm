@@ -224,6 +224,7 @@ using namespace lucene::store;
 				@try {
 					updateBlock(ctx);
 					[self flushBufferedDocuments:ctx];
+					finishedUpdateCount = ctx.updateCount;
 				} @finally {
 					// keep track of index updates, to optimize index
 					NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
