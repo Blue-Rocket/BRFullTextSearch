@@ -93,7 +93,7 @@ using namespace lucene::search;
 	for ( itr = fields->begin(); itr != fields->end(); itr++ ){
 		Field *f = *itr;
 		NSString *fName = [NSString stringWithCLuceneString:f->name()];
-		NSString *fValue = [NSString stringWithCLuceneString:doc.get(f->name())];
+		NSString *fValue = [NSString stringWithCLuceneString:f->stringValue()];
 		id existing = [dict objectForKey:fName];
 		if ( existing == nil ) {
 			[dict setObject:fValue forKey:fName];

@@ -242,6 +242,20 @@
 	XCTAssertEqual([results count], (NSUInteger)0, @"results count");
 }
 
+- (void)testIndexAndViewArrayField {
+	BRSimpleIndexable *n = [self createTestIndexableInstance];
+	NSArray *array = @[@"1", @"2", @"3"];
+	[n setDataObject:array forKey:@"array"];
+	[searchService addObjectToIndexAndWait:n error:nil];
+	
+	id<BRSearchResult> result = [searchService findObject:kBRSimpleIndexableSearchObjectType withIdentifier:n.uid];
+	XCTAssertNotNil(result);
+	NSDictionary *data = [result dictionaryRepresentation];
+	id obj = data[@"array"];
+	XCTAssertTrue([obj isKindOfClass:[NSArray class]], @"array field should be returned as an array");
+	XCTAssertEqualObjects(obj, array);
+}
+
 #pragma mark - Sorted results
 
 - (void)testSortedResultsAscending {
