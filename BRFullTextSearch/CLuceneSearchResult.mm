@@ -8,6 +8,7 @@
 
 #import "CLuceneSearchResult.h"
 
+#import "CLucene/_ApiHeader.h"
 #import "NSDate+BRFullTextSearchAdditions.h"
 #import "NSDateComponents+BRFullTextSearchAdditions.h"
 #import "NSString+CLuceneAdditions.h"
@@ -72,11 +73,30 @@ using namespace lucene::search;
 }
 
 - (id)valueForField:(NSString *)fieldName {
-	const TCHAR *val = hits->doc(index).get([fieldName asCLuceneString]);
-	if ( val == NULL ) {
-		return nil;
+	const Document &doc = hits->doc(index);
+	const Document::FieldsType *fields = doc.getFields();
+	const TCHAR *name = [fieldName asCLuceneString];
+	Document::FieldsType::const_iterator itr;
+	id result = nil;
+	NSMutableArray *array = nil;
+	for ( itr = fields->begin(); itr != fields->end(); itr++ ){
+		Field *f = *itr;
+		if ( _tcscmp(f->name(), name) == 0 && f->stringValue() != NULL ) {
+			if ( result == nil ) {
+				// put first match into result to start
+				result = [NSString stringWithCLuceneString:f->stringValue()];
+			} else  {
+				// multi-value result... stash in array
+				if ( array == nil ) {
+					array = [NSMutableArray arrayWithCapacity:4];
+					[array addObject:result];
+					result = array;
+				}
+				[array addObject:[NSString stringWithCLuceneString:f->stringValue()]];
+			}
+		}
 	}
-	return [NSString stringWithCLuceneString:val];
+	return result;
 }
 
 - (NSDateComponents *)localDayForTimestampField:(NSString *)fieldName {

@@ -254,6 +254,10 @@
 	id obj = data[@"array"];
 	XCTAssertTrue([obj isKindOfClass:[NSArray class]], @"array field should be returned as an array");
 	XCTAssertEqualObjects(obj, array);
+	
+	obj = [result valueForField:@"array"];
+	XCTAssertTrue([obj isKindOfClass:[NSArray class]], @"array field should be returned as an array");
+	XCTAssertEqualObjects(obj, array);
 }
 
 #pragma mark - Sorted results
