@@ -2,6 +2,9 @@
 // Prefix header for all source files of the 'BRFullTextSearch' target in the 'BRFullTextSearch' project
 //
 
+// for deployment < iOS 6, this is needed to manually manage blocks
+#define OS_OBJECT_USE_OBJC 0
+
 #ifdef __OBJC__
 	#import <Foundation/Foundation.h>
 #endif
