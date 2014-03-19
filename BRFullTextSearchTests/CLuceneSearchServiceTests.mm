@@ -121,7 +121,9 @@
 	n2.value = @"Oh this is a note, buddy.";
 	n2.date = [NSDate new];
 	
-	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:nil];
+	NSError *error = nil;
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2] error:&error];
+	XCTAssertNil(error, @"Update: %@", [error localizedDescription]);
 	
 	NSString *n0Id = n0.uid;
 	NSString *n1Id = n1.uid;
@@ -559,11 +561,12 @@
 	n2.date = n0.date;
 	
 	NSArray *notes = @[n0, n1, n2];
-	[searchService bulkUpdateIndexAndWait:^(id<BRIndexUpdateContext>updateContext) {
+	BOOL updateResult = [searchService bulkUpdateIndexAndWait:^(id<BRIndexUpdateContext>updateContext) {
 		for ( BRSimpleIndexable *n in notes ) {
 			[searchService addObjectToIndex:n context:updateContext];
 		}
 	} error:nil];
+	XCTAssertTrue(updateResult, @"Update result");
 	
 	id<BRSearchResult> result = [searchService findObject:'?' withIdentifier:[n0 indexIdentifier]];
 	XCTAssertEqualObjects([result identifier], [n0 uid], @"object ID");
