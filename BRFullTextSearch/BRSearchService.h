@@ -56,6 +56,7 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id<BRIndexUpdateContext>updateCo
 // return count of documents removed, or -1 for error
 - (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier context:(id<BRIndexUpdateContext>)updateContext;
 - (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext;
+- (int)removeAllObjectsFromIndex:(id<BRIndexUpdateContext>)updateContext;
 
 // remove a set of objects from the index based on their identifiers, calling the finished block on completion (if not NULL)
 // using the provided queue or a global queue if queue is NULL

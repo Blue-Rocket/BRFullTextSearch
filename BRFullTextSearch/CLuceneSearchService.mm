@@ -333,6 +333,17 @@ using namespace lucene::store;
 	return (int)hits->length();
 }
 
+- (int)removeAllObjectsFromIndex:(id<BRIndexUpdateContext>)updateContext {
+	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
+	IndexModifier *modifier = [ctx modifier];
+	int32_t docCount = modifier->docCount();
+	int32_t i;
+	for ( i = 0; i < docCount; i++ ) {
+		modifier->deleteDocument(i);
+	}
+	return (int)docCount;
+}
+
 #pragma mark - Internal support
 
 - (NSString *)idValueForType:(BRSearchObjectType)objectType identifier:(NSString *)identifier {

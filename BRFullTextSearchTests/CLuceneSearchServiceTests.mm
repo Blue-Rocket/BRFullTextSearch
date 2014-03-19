@@ -576,6 +576,48 @@
 	XCTAssertEqualObjects([result identifier], [n2 uid], @"object ID");
 }
 
+#pragma mark - Delete
+
+- (void)testDeleteAllDocuments {
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
+	n1.title = @"My other fancy note.";
+	n1.value = @"This is a cool note with other stuff in it.";
+	n1.date = n0.date;
+	BRSimpleIndexable *n2 = [self createTestIndexableInstance];
+	n2.title = @"My pretty note.";
+	n2.value = @"Oh this is a note, buddy.";
+	n2.date = n0.date;
+	
+	NSArray *notes = @[n0, n1, n2];
+	BOOL updateResult = [searchService bulkUpdateIndexAndWait:^(id<BRIndexUpdateContext>updateContext) {
+		for ( BRSimpleIndexable *n in notes ) {
+			[searchService addObjectToIndex:n context:updateContext];
+		}
+	} error:nil];
+	XCTAssertTrue(updateResult, @"Update result");
+	
+	// verify search returns docs
+	id<BRSearchResults> results = [searchService searchWithPredicate:[NSPredicate predicateWithFormat:@"o == %@", @"?"] sortBy:nil sortType:BRSearchSortTypeString ascending:NO];
+	XCTAssertEqual([results count], 3U, @"Doc count");
+	
+	NSError *error = nil;
+	__block int deleteCount = 0;
+	updateResult = [searchService bulkUpdateIndexAndWait:^(id<BRIndexUpdateContext> updateContext) {
+		deleteCount = [searchService removeAllObjectsFromIndex:updateContext];
+	} error:&error];
+	
+	XCTAssertTrue(updateResult, @"Delete result");
+	XCTAssertEqual(deleteCount, 3, @"Delete count");
+	
+	// verify search does not return docs
+	results = [searchService searchWithPredicate:[NSPredicate predicateWithFormat:@"o == %@", @"?"] sortBy:nil sortType:BRSearchSortTypeString ascending:NO];
+	XCTAssertEqual([results count], 0U, @"Doc count");
+
+}
+
+#pragma mark - Predicate search
+
 - (void)testSearchWithSimplePredicate {
 	BRSimpleIndexable *n = [self createTestIndexableInstance];
 	[searchService addObjectToIndexAndWait:n error:nil];
@@ -593,8 +635,6 @@
 	}];
 	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
-
-#pragma mark - Predicate search
 
 - (void)testSearchWithCompoundPredicate {
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
