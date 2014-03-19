@@ -276,7 +276,7 @@ using namespace lucene::store;
 	if ( error != nil ) {
 		*error = updateError;
 	}
-	return (finished && updateError != nil);
+	return (finished && updateError == nil);
 }
 
 - (void)addObjectToIndex:(id<BRIndexable>)object context:(id<BRIndexUpdateContext>)updateContext {
