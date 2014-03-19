@@ -771,6 +771,22 @@ using namespace lucene::store;
 		
 	} else if ( [predicate isKindOfClass:[NSCompoundPredicate class]] ) {
 		NSCompoundPredicate *compound = (NSCompoundPredicate *)predicate;
+		NSMutableArray *subpredicates = [[NSMutableArray alloc] initWithCapacity:[[compound subpredicates] count]];
+		
+		// special case for AND (NOT (...)), which we don't want to end up as a MUST (MUST NOT (...)) BooleanQuery
+		// because that will never match anything
+		NSMutableArray *childNotCompoundPredicates = nil;
+		for ( NSPredicate *subpredicate in [compound subpredicates] ) {
+			if ( [subpredicate isKindOfClass:[NSCompoundPredicate class]] && [(NSCompoundPredicate *)subpredicate compoundPredicateType] == NSNotPredicateType ) {
+				if ( childNotCompoundPredicates == nil ) {
+					childNotCompoundPredicates = [NSMutableArray arrayWithCapacity:[[compound subpredicates] count]];
+				}
+				[childNotCompoundPredicates addObject:subpredicate];
+			} else {
+				[subpredicates addObject:subpredicate];
+			}
+		}
+		
 		BooleanQuery *boolean = new BooleanQuery(false);
 		BooleanClause::Occur occur;
 		switch ( [compound compoundPredicateType] ) {
@@ -787,7 +803,7 @@ using namespace lucene::store;
 				break;
 		}
 		
-		for ( NSPredicate *subpredicate in [compound subpredicates] ) {
+		for ( NSPredicate *subpredicate in subpredicates ) {
 			std::auto_ptr<Query> subQuery = [self queryForPredicate:subpredicate analyzer:theAnalyzer parent:compound];
 			// subQuery might be NULL (in case of range query)
 			if ( subQuery.get() != NULL ) {
@@ -798,7 +814,27 @@ using namespace lucene::store;
 					occur = BooleanClause::MUST_NOT;
 				}
 				
-				boolean->add(subQuery.release(), true, occur); // transfer ownership of subQuery to boolean
+				boolean->add(subQuery.get(), true, occur); // transfer ownership of subQuery to boolean
+				subQuery.release();
+			}
+		}
+		if ( [childNotCompoundPredicates count] > 0 ) {
+			occur = BooleanClause::MUST_NOT;
+			for ( NSCompoundPredicate *subNot in childNotCompoundPredicates ) {
+				for ( NSPredicate *subpredicate in [subNot subpredicates] ) {
+					std::auto_ptr<Query> subQuery = [self queryForPredicate:subpredicate analyzer:theAnalyzer parent:compound];
+					// subQuery might be NULL (in case of range query)
+					if ( subQuery.get() != NULL ) {
+						// check for !=
+						if ( [subpredicate isKindOfClass:[NSComparisonPredicate class]]
+							&& [(NSComparisonPredicate *)subpredicate predicateOperatorType] == NSNotEqualToPredicateOperatorType ) {
+							occur = BooleanClause::MUST_NOT;
+						}
+						
+						boolean->add(subQuery.get(), true, occur); // transfer ownership of subQuery to boolean
+						subQuery.release();
+					}
+				}
 			}
 		}
 		result.reset(boolean);
