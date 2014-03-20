@@ -9,6 +9,7 @@
 #import "CLuceneSearchService.h"
 
 #import "CLucene.h"
+#import "CLucene/_ApiHeader.h"
 #import "ConstantScoreQuery.h"
 #import "BRNoLockFactory.h"
 #import "BRSnowballAnalyzer.h"
@@ -308,7 +309,7 @@ using namespace lucene::store;
 	int32_t deletedCount = [ctx modifier]->deleteDocuments(idTerm);
 	log4Debug(@"Removed %d documents from search index", deletedCount);
 	ctx.updateCount += deletedCount;
-	delete idTerm, idTerm = NULL;
+	_CLLDECDELETE(idTerm);
 	return deletedCount;
 }
 
@@ -497,8 +498,9 @@ using namespace lucene::store;
 	std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
 	for ( NSString *identifier in identifiers ) {
 		Term *term = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
-		TermQuery *termQuery = new TermQuery(term); // assumes ownership of Term
+		TermQuery *termQuery = new TermQuery(term);
 		rootQuery->add(termQuery, true, BooleanClause::SHOULD); // rootQuery assumes ownership of TermQuery
+		_CLLDECDELETE(term);
 	}
 	result.reset(rootQuery.release());
 	return result;
@@ -610,13 +612,14 @@ using namespace lucene::store;
 - (id<BRSearchResult>)findObject:(BRSearchObjectType)type withIdentifier:(NSString *)identifier {
 	NSString *idValue = [self idValueForType:type identifier:identifier];
 	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
-	std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm)); // assumes ownership of idTerm
+	std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm));
 	std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
 	CLuceneSearchResult *result = nil;
 	if ( hits->length() > 0 ) {
 		// return first match, taking owning the Hits pointer
 		result = [[[CLuceneSearchResult searchResultClassForDocument:hits->doc(0)] alloc] initWithOwnedHits:hits index:0];
 	}
+	_CLLDECDELETE(idTerm);
 	return result;
 }
 
@@ -676,7 +679,8 @@ using namespace lucene::store;
 			case NSNotEqualToPredicateOperatorType:
 			{
 				Term *term = new Term([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString]);
-				result.reset(new TermQuery(term)); // TermQuery assumes ownership of idTerm
+				result.reset(new TermQuery(term));
+				_CLLDECDELETE(term);
 			}
 				break;
 				
@@ -699,7 +703,8 @@ using namespace lucene::store;
 			case NSBeginsWithPredicateOperatorType:
 			{
 				Term *term = new Term([[lhs keyPath] asCLuceneString], [rhs constantValueCLuceneString]);
-				result.reset(new PrefixQuery(term)); // PrefixQuery assumes ownership of Term
+				result.reset(new PrefixQuery(term));
+				_CLLDECDELETE(term);
 			}
 				break;
 				
