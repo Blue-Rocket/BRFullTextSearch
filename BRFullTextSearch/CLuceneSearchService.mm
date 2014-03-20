@@ -19,6 +19,9 @@
 #import "NSString+CLuceneAdditions.h"
 #import "CLucene/util/_MD5Digester.h"
 
+#define queue_retain(queue) if ( queue != NULL ) { dispatch_retain(queue); }
+#define queue_release(queue) if ( queue != NULL ) { dispatch_release(queue); }
+
 static const char * kWriteQueueName = "us.bluerocket.CLucene.IndexWrite";
 static const NSInteger kDefaultIndexUpdateOptimizeThreshold = 25;
 static const NSInteger kDefaultIndexUpdateBatchBufferSize = 50;
@@ -212,6 +215,7 @@ using namespace lucene::store;
 #pragma mark - Bulk API
 
 - (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceUpdateCallbackBlock)finishedBlock {
+	queue_retain(finishedQueue);
 	dispatch_async(IndexWriteQueue, ^{
 		@autoreleasepool {
 			NSError *error = nil;
@@ -252,6 +256,7 @@ using namespace lucene::store;
 				});
 			}
 		}
+		queue_release(finishedQueue);
 	});
 }
 
@@ -421,10 +426,13 @@ using namespace lucene::store;
 	doc->add(*f);
 }
 
+
 #pragma mark - Incremental index API
 
 - (void)addObjectToIndex:(id<BRIndexable>)object queue:(dispatch_queue_t)queue finished:(BRSearchServiceCallbackBlock)finished {
+	queue_retain(queue);
 	[self addObjectsToIndex:(object == nil ? nil : @[object]) queue:queue finished:finished];
+	queue_release(queue);
 }
 
 - (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished {
@@ -439,7 +447,6 @@ using namespace lucene::store;
 		}
 		return;
 	}
-	
 	[self bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
 		for ( id<BRIndexable> obj in objects ) {
 			[self addObjectToIndex:obj context:updateContext];
