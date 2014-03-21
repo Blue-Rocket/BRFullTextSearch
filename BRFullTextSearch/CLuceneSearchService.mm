@@ -72,7 +72,7 @@ using namespace lucene::store;
 		indexPath = path;
 		indexUpdateOptimizeThreshold = kDefaultIndexUpdateOptimizeThreshold;
 		bundle = [NSBundle mainBundle];
-		defaultAnalyzerLanguage = @"en";
+		defaultAnalyzerLanguage = [[NSLocale preferredLanguages] firstObject];
 		
 		NSFileManager *fm = [NSFileManager new];
 		if ( ![fm fileExistsAtPath:indexPath] ) {

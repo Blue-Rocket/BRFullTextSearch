@@ -26,6 +26,7 @@
 	[[NSFileManager defaultManager] createDirectoryAtPath:tmpIndexDir withIntermediateDirectories:YES attributes:nil error:nil];
 	searchService = [[CLuceneSearchService alloc] initWithIndexPath:tmpIndexDir];
 	searchService.bundle = self.bundle;
+	searchService.defaultAnalyzerLanguage = @"en";
 	indexPath = tmpIndexDir;
 	
 	// make sure this always starts at 0
