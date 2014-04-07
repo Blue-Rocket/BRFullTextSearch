@@ -58,7 +58,7 @@ static const NSUInteger kNumDocs = 50;
 																	object:@((double)i / (double)kNumDocs)];
 			}
 		}
-	} queue:NULL finished:^{
+	} queue:NULL finished:^(int updateCount, NSError *error) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kIndexProgressNotification object:@(100)];
 	}];
 }
