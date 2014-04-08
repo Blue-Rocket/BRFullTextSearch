@@ -2187,7 +2187,13 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = "-fvisibility=default";
+				OTHER_CFLAGS = (
+					"-fvisibility=default",
+					"-fPIC",
+					"-D_UCS2",
+					"-D_UNICODE",
+					"-D_REENTRANT",
+				);
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/clucene/src/shared\" \"$(PROJECT_DIR)/clucene/src/core\"";
 			};
@@ -2216,7 +2222,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				OTHER_CFLAGS = "-fvisibility=default";
+				OTHER_CFLAGS = (
+					"-fvisibility=default",
+					"-fPIC",
+					"-D_UCS2",
+					"-D_UNICODE",
+					"-D_REENTRANT",
+					"-DNDEBUG",
+				);
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "\"$(PROJECT_DIR)/BRFullTextSearch\" \"$(PROJECT_DIR)/clucene/src/shared\" \"$(PROJECT_DIR)/clucene/src/core\"";
 				VALIDATE_PRODUCT = YES;
@@ -2229,13 +2242,6 @@
 				DSTROOT = /tmp/BRFullTextSearch.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
-				OTHER_CFLAGS = (
-					"-fvisibility=default",
-					"-fPIC",
-					"-D_UCS2",
-					"-D_REENTRANT",
-					"-D_UNICODE",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2254,14 +2260,6 @@
 				GCC_OPTIMIZATION_LEVEL = 1;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
-				OTHER_CFLAGS = (
-					"-fvisibility=default",
-					"-fPIC",
-					"-D_UCS2",
-					"-D_REENTRANT",
-					"-D_UNICODE",
-					"-DNDEBUG",
-				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
