@@ -50,7 +50,8 @@ using namespace lucene::search;
 
 - (void)iterateWithBlock:(BRSearchServiceSearchResultsIterator)iterator {
 	BOOL stop = NO;
-	size_t i, len;
+	int32_t i;
+	size_t len;
 	for ( i = 0, len = hits->length(); i < len && stop == NO; i++ ) {
 		@autoreleasepool {
 			Document &doc = hits->doc(i);
@@ -64,7 +65,8 @@ using namespace lucene::search;
 	NSMutableArray *result = [NSMutableArray new];
 	NSMutableArray *currGroup = nil;
 	id lastValue = nil;
-	size_t i, len;
+	int32_t i;
+	size_t len;
 	for ( i = 0, len = hits->length(); i < len; i++ ) {
 		Document &doc = hits->doc(i);
 		CLuceneSearchResult *sr = [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:i];
@@ -83,7 +85,8 @@ using namespace lucene::search;
 	NSMutableArray *result = [NSMutableArray new];
 	NSMutableArray *currGroup = nil;
 	NSDateComponents *lastValue = nil;
-	size_t i, len;
+	int32_t i;
+	size_t len;
 	for ( i = 0, len = hits->length(); i < len; i++ ) {
 		Document &doc = hits->doc(i);
 		CLuceneSearchResult *sr = [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:i];
