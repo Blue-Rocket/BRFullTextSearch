@@ -9,8 +9,6 @@
 	#import <Foundation/Foundation.h>
 #endif
 
-#define _REENTRANT
-
 #ifdef LOGGING
 #define log4Error NSLog
 #define log4Info NSLog
