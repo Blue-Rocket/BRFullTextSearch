@@ -403,6 +403,19 @@
 		C909C67D1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */; };
 		C909C6801784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
 		C909C6811784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
+		C94198EC19143B65002E27D2 /* Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198D019143B65002E27D2 /* Encoder.cpp */; };
+		C94198ED19143B65002E27D2 /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198D219143B65002E27D2 /* Formatter.cpp */; };
+		C94198EE19143B65002E27D2 /* Fragmenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198D419143B65002E27D2 /* Fragmenter.cpp */; };
+		C94198EF19143B65002E27D2 /* Highlighter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198D619143B65002E27D2 /* Highlighter.cpp */; };
+		C94198F019143B65002E27D2 /* QueryScorer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198D919143B65002E27D2 /* QueryScorer.cpp */; };
+		C94198F119143B65002E27D2 /* QueryTermExtractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198DB19143B65002E27D2 /* QueryTermExtractor.cpp */; };
+		C94198F219143B65002E27D2 /* SimpleFragmenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198DE19143B65002E27D2 /* SimpleFragmenter.cpp */; };
+		C94198F319143B65002E27D2 /* SimpleHTMLEncoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198E019143B65002E27D2 /* SimpleHTMLEncoder.cpp */; };
+		C94198F419143B65002E27D2 /* SimpleHTMLFormatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198E219143B65002E27D2 /* SimpleHTMLFormatter.cpp */; };
+		C94198F519143B65002E27D2 /* TextFragment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198E419143B65002E27D2 /* TextFragment.cpp */; };
+		C94198F619143B65002E27D2 /* TokenGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198E619143B65002E27D2 /* TokenGroup.cpp */; };
+		C94198F719143B65002E27D2 /* TokenSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198E819143B65002E27D2 /* TokenSources.cpp */; };
+		C94198F819143B65002E27D2 /* WeightedTerm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C94198EA19143B65002E27D2 /* WeightedTerm.cpp */; };
 		C97940EB178600C900DF0660 /* BRTestSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940EA178600C900DF0660 /* BRTestSupport.m */; };
 		C97940EE1786015200DF0660 /* CLuceneSearchServiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */; };
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
@@ -862,6 +875,34 @@
 		C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimeZone+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
 		C909C67E1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+BRFullTextSearchAdditions.h"; sourceTree = "<group>"; };
 		C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
+		C94198D019143B65002E27D2 /* Encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Encoder.cpp; sourceTree = "<group>"; };
+		C94198D119143B65002E27D2 /* Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encoder.h; sourceTree = "<group>"; };
+		C94198D219143B65002E27D2 /* Formatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatter.cpp; sourceTree = "<group>"; };
+		C94198D319143B65002E27D2 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
+		C94198D419143B65002E27D2 /* Fragmenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fragmenter.cpp; sourceTree = "<group>"; };
+		C94198D519143B65002E27D2 /* Fragmenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fragmenter.h; sourceTree = "<group>"; };
+		C94198D619143B65002E27D2 /* Highlighter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Highlighter.cpp; sourceTree = "<group>"; };
+		C94198D719143B65002E27D2 /* Highlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Highlighter.h; sourceTree = "<group>"; };
+		C94198D819143B65002E27D2 /* HighlightScorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HighlightScorer.h; sourceTree = "<group>"; };
+		C94198D919143B65002E27D2 /* QueryScorer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueryScorer.cpp; sourceTree = "<group>"; };
+		C94198DA19143B65002E27D2 /* QueryScorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryScorer.h; sourceTree = "<group>"; };
+		C94198DB19143B65002E27D2 /* QueryTermExtractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueryTermExtractor.cpp; sourceTree = "<group>"; };
+		C94198DC19143B65002E27D2 /* QueryTermExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryTermExtractor.h; sourceTree = "<group>"; };
+		C94198DD19143B65002E27D2 /* Scorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scorer.h; sourceTree = "<group>"; };
+		C94198DE19143B65002E27D2 /* SimpleFragmenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleFragmenter.cpp; sourceTree = "<group>"; };
+		C94198DF19143B65002E27D2 /* SimpleFragmenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleFragmenter.h; sourceTree = "<group>"; };
+		C94198E019143B65002E27D2 /* SimpleHTMLEncoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleHTMLEncoder.cpp; sourceTree = "<group>"; };
+		C94198E119143B65002E27D2 /* SimpleHTMLEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleHTMLEncoder.h; sourceTree = "<group>"; };
+		C94198E219143B65002E27D2 /* SimpleHTMLFormatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleHTMLFormatter.cpp; sourceTree = "<group>"; };
+		C94198E319143B65002E27D2 /* SimpleHTMLFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleHTMLFormatter.h; sourceTree = "<group>"; };
+		C94198E419143B65002E27D2 /* TextFragment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextFragment.cpp; sourceTree = "<group>"; };
+		C94198E519143B65002E27D2 /* TextFragment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFragment.h; sourceTree = "<group>"; };
+		C94198E619143B65002E27D2 /* TokenGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenGroup.cpp; sourceTree = "<group>"; };
+		C94198E719143B65002E27D2 /* TokenGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenGroup.h; sourceTree = "<group>"; };
+		C94198E819143B65002E27D2 /* TokenSources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TokenSources.cpp; sourceTree = "<group>"; };
+		C94198E919143B65002E27D2 /* TokenSources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokenSources.h; sourceTree = "<group>"; };
+		C94198EA19143B65002E27D2 /* WeightedTerm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WeightedTerm.cpp; sourceTree = "<group>"; };
+		C94198EB19143B65002E27D2 /* WeightedTerm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeightedTerm.h; sourceTree = "<group>"; };
 		C97940E9178600C900DF0660 /* BRTestSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRTestSupport.h; sourceTree = "<group>"; };
 		C97940EA178600C900DF0660 /* BRTestSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRTestSupport.m; sourceTree = "<group>"; };
 		C97940EC1786015200DF0660 /* CLuceneSearchServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLuceneSearchServiceTests.h; sourceTree = "<group>"; };
@@ -1566,6 +1607,7 @@
 				C909C6431784CF640016C25E /* clucene-config.h */,
 				C909C6441784CF640016C25E /* _clucene-config.h */,
 				C909C2D51784CF090016C25E /* core */,
+				C94198CF19143B65002E27D2 /* highlighter */,
 				C909C2961784CF090016C25E /* shared */,
 				C909C43B1784CF0A0016C25E /* snowball */,
 			);
@@ -1606,6 +1648,42 @@
 				C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		C94198CF19143B65002E27D2 /* highlighter */ = {
+			isa = PBXGroup;
+			children = (
+				C94198D019143B65002E27D2 /* Encoder.cpp */,
+				C94198D119143B65002E27D2 /* Encoder.h */,
+				C94198D219143B65002E27D2 /* Formatter.cpp */,
+				C94198D319143B65002E27D2 /* Formatter.h */,
+				C94198D419143B65002E27D2 /* Fragmenter.cpp */,
+				C94198D519143B65002E27D2 /* Fragmenter.h */,
+				C94198D619143B65002E27D2 /* Highlighter.cpp */,
+				C94198D719143B65002E27D2 /* Highlighter.h */,
+				C94198D819143B65002E27D2 /* HighlightScorer.h */,
+				C94198D919143B65002E27D2 /* QueryScorer.cpp */,
+				C94198DA19143B65002E27D2 /* QueryScorer.h */,
+				C94198DB19143B65002E27D2 /* QueryTermExtractor.cpp */,
+				C94198DC19143B65002E27D2 /* QueryTermExtractor.h */,
+				C94198DD19143B65002E27D2 /* Scorer.h */,
+				C94198DE19143B65002E27D2 /* SimpleFragmenter.cpp */,
+				C94198DF19143B65002E27D2 /* SimpleFragmenter.h */,
+				C94198E019143B65002E27D2 /* SimpleHTMLEncoder.cpp */,
+				C94198E119143B65002E27D2 /* SimpleHTMLEncoder.h */,
+				C94198E219143B65002E27D2 /* SimpleHTMLFormatter.cpp */,
+				C94198E319143B65002E27D2 /* SimpleHTMLFormatter.h */,
+				C94198E419143B65002E27D2 /* TextFragment.cpp */,
+				C94198E519143B65002E27D2 /* TextFragment.h */,
+				C94198E619143B65002E27D2 /* TokenGroup.cpp */,
+				C94198E719143B65002E27D2 /* TokenGroup.h */,
+				C94198E819143B65002E27D2 /* TokenSources.cpp */,
+				C94198E919143B65002E27D2 /* TokenSources.h */,
+				C94198EA19143B65002E27D2 /* WeightedTerm.cpp */,
+				C94198EB19143B65002E27D2 /* WeightedTerm.h */,
+			);
+			name = highlighter;
+			path = "clucene/src/contribs-lib/CLucene/highlighter";
 			sourceTree = "<group>";
 		};
 		C97940EF178601D200DF0660 /* Support */ = {
@@ -1722,7 +1800,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "TARGET=BRFullTextSearch\nACTION=\"clean build\"\nLIB=libBRFullTextSearch.a\nPRODUCT=BRFullTextSearch\n\nOUTPUT_DIR=\"${PROJECT_DIR}/Framework\"\nHEADERS_DIR=\"${OUTPUT_DIR}/Headers\"\nRESOURCE_DIR=\"${OUTPUT_DIR}/Resources\"\n\n# Start clean by removing output dir\nrm -rf ${HEADERS_DIR}\nmkdir -p \"${HEADERS_DIR}\"\n\n# Copy source headers into flat Headers directory\nrsync -a --include '*/' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/clucene/src/shared/CLucene \"${HEADERS_DIR}/\"\nrsync -a --include '*/' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/clucene/src/core/CLucene \"${HEADERS_DIR}/\"\nrsync -a --include '*/' --include '**/Snowball*.h' --exclude '*' --prune-empty-dirs ${PROJECT_DIR}/clucene/src/contribs-lib/CLucene \"${HEADERS_DIR}/\"\nrsync -a ${PROJECT_DIR}/clucene/src/contribs-lib/CLucene/snowball/libstemmer.h \"${HEADERS_DIR}/\"\nrsync -a --include 'CLucene' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/${PRODUCT}/ \"${HEADERS_DIR}/\"\nrsync -a --include '*.lproj/' --include '*.lproj/*' --exclude '*' ${PROJECT_DIR}/${PRODUCT}/ \"${RESOURCE_DIR}/\"\n\necho \"Output to: ${OUTPUT_DIR}\"\n\n# change to \"Release Debug\" to build both\nCONFIGURATIONS=\"Debug Release\"\nfor CONFIG in ${CONFIGURATIONS}; do\n    FRAMEWORK_DIR=\"${OUTPUT_DIR}/${CONFIG}/${PRODUCT}.framework\"\n\n    echo \"Building $CONFIG build to ${FRAMEWORK_DIR}\"\n    rm -rf \"${FRAMEWORK_DIR}\"\n\n    DEVICE_DIR=${SYMROOT}/${CONFIG}-iphoneos\n    SIMULATOR_DIR=${SYMROOT}/${CONFIG}-iphonesimulator\n    UNIVERSAL_DIR=${SYMROOT}/${CONFIG}-universal\n\n    cd ${PROJECT_DIR}\n    xcodebuild -configuration ${CONFIG} -target ${TARGET} -sdk iphoneos ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO CONFIGURATION_BUILD_DIR=${DEVICE_DIR} >/dev/null\n    xcodebuild -configuration ${CONFIG} -target ${TARGET} -sdk iphonesimulator ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO CONFIGURATION_BUILD_DIR=${SIMULATOR_DIR} >/dev/null\n\n    rm -rf \"${UNIVERSAL_DIR}\"\n    mkdir \"${UNIVERSAL_DIR}\"\n\n    lipo -create -output \"${UNIVERSAL_DIR}/${PRODUCT}\" \"${DEVICE_DIR}/${LIB}\" \"${SIMULATOR_DIR}/${LIB}\"\n\n    mkdir -p \"${FRAMEWORK_DIR}/Versions/A\"\n\n    cd \"${FRAMEWORK_DIR}/Versions\"\n    ln -sf A Current\n\n    cp -r \"${HEADERS_DIR}\" \"${FRAMEWORK_DIR}/Versions/Current/\"\n  cp -r \"${RESOURCE_DIR}\" \"${FRAMEWORK_DIR}/Versions/Current/\"\n    cp \"${UNIVERSAL_DIR}/${PRODUCT}\" \"${FRAMEWORK_DIR}/Versions/Current\"\n\n    cd \"${FRAMEWORK_DIR}\"\n    ln -sf \"Versions/Current/${PRODUCT}\" \"${PRODUCT}\"\n    ln -sf Versions/Current/Headers Headers\n  ln -sf Versions/Current/Resources Resources\ndone\n";
+			shellScript = "TARGET=BRFullTextSearch\nACTION=\"clean build\"\nLIB=libBRFullTextSearch.a\nPRODUCT=BRFullTextSearch\n\nOUTPUT_DIR=\"${PROJECT_DIR}/Framework\"\nHEADERS_DIR=\"${OUTPUT_DIR}/Headers\"\nRESOURCE_DIR=\"${OUTPUT_DIR}/Resources\"\n\n# Start clean by removing output dir\nrm -rf ${HEADERS_DIR}\nmkdir -p \"${HEADERS_DIR}\"\n\n# Copy source headers into flat Headers directory\nrsync -a --include '*/' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/clucene/src/shared/CLucene \"${HEADERS_DIR}/\"\nrsync -a --include '*/' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/clucene/src/core/CLucene \"${HEADERS_DIR}/\"\nrsync -a --include '*/' --include '**/Snowball*.h' --include 'highlighter/*.h' --exclude '*' --prune-empty-dirs ${PROJECT_DIR}/clucene/src/contribs-lib/CLucene \"${HEADERS_DIR}/\"\nrsync -a ${PROJECT_DIR}/clucene/src/contribs-lib/CLucene/snowball/libstemmer.h \"${HEADERS_DIR}/\"\nrsync -a --include 'CLucene' --include '**/*.h' --exclude '*' ${PROJECT_DIR}/${PRODUCT}/ \"${HEADERS_DIR}/\"\nrsync -a --include '*.lproj/' --include '*.lproj/*' --exclude '*' ${PROJECT_DIR}/${PRODUCT}/ \"${RESOURCE_DIR}/\"\n\necho \"Output to: ${OUTPUT_DIR}\"\n\n# change to \"Release Debug\" to build both\nCONFIGURATIONS=\"Debug Release\"\nfor CONFIG in ${CONFIGURATIONS}; do\n    FRAMEWORK_DIR=\"${OUTPUT_DIR}/${CONFIG}/${PRODUCT}.framework\"\n\n    echo \"Building $CONFIG build to ${FRAMEWORK_DIR}\"\n    rm -rf \"${FRAMEWORK_DIR}\"\n\n    DEVICE_DIR=${SYMROOT}/${CONFIG}-iphoneos\n    SIMULATOR_DIR=${SYMROOT}/${CONFIG}-iphonesimulator\n    UNIVERSAL_DIR=${SYMROOT}/${CONFIG}-universal\n\n    cd ${PROJECT_DIR}\n    xcodebuild -configuration ${CONFIG} -target ${TARGET} -sdk iphoneos ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO CONFIGURATION_BUILD_DIR=${DEVICE_DIR} >/dev/null\n    xcodebuild -configuration ${CONFIG} -target ${TARGET} -sdk iphonesimulator ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO CONFIGURATION_BUILD_DIR=${SIMULATOR_DIR} >/dev/null\n\n    rm -rf \"${UNIVERSAL_DIR}\"\n    mkdir \"${UNIVERSAL_DIR}\"\n\n    lipo -create -output \"${UNIVERSAL_DIR}/${PRODUCT}\" \"${DEVICE_DIR}/${LIB}\" \"${SIMULATOR_DIR}/${LIB}\"\n\n    mkdir -p \"${FRAMEWORK_DIR}/Versions/A\"\n\n    cd \"${FRAMEWORK_DIR}/Versions\"\n    ln -sf A Current\n\n    cp -r \"${HEADERS_DIR}\" \"${FRAMEWORK_DIR}/Versions/Current/\"\n  cp -r \"${RESOURCE_DIR}\" \"${FRAMEWORK_DIR}/Versions/Current/\"\n    cp \"${UNIVERSAL_DIR}/${PRODUCT}\" \"${FRAMEWORK_DIR}/Versions/Current\"\n\n    cd \"${FRAMEWORK_DIR}\"\n    ln -sf \"Versions/Current/${PRODUCT}\" \"${PRODUCT}\"\n    ln -sf Versions/Current/Headers Headers\n  ln -sf Versions/Current/Resources Resources\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1740,6 +1818,7 @@
 				C909C49A1784CF0A0016C25E /* repl_tcstoll.cpp in Sources */,
 				C909C49C1784CF0A0016C25E /* repl_tprintf.cpp in Sources */,
 				C909C49E1784CF0A0016C25E /* threads.cpp in Sources */,
+				C94198EC19143B65002E27D2 /* Encoder.cpp in Sources */,
 				C909C4A01784CF0A0016C25E /* utf8.cpp in Sources */,
 				C909C4A21784CF0A0016C25E /* condition.cpp in Sources */,
 				C909C4A41784CF0A0016C25E /* SharedHeader.cpp in Sources */,
@@ -1758,6 +1837,7 @@
 				C909C4DD1784CF0A0016C25E /* Document.cpp in Sources */,
 				C909C4DF1784CF0A0016C25E /* Field.cpp in Sources */,
 				C909C4E11784CF0A0016C25E /* FieldSelector.cpp in Sources */,
+				C94198F419143B65002E27D2 /* SimpleHTMLFormatter.cpp in Sources */,
 				C909C4E31784CF0A0016C25E /* NumberTools.cpp in Sources */,
 				C909C4E51784CF0A0016C25E /* CompoundFile.cpp in Sources */,
 				C909C4E71784CF0A0016C25E /* DirectoryIndexReader.cpp in Sources */,
@@ -1786,6 +1866,7 @@
 				C909C5151784CF0A0016C25E /* SegmentReader.cpp in Sources */,
 				C909C5171784CF0A0016C25E /* SegmentTermDocs.cpp in Sources */,
 				C909C5191784CF0A0016C25E /* SegmentTermEnum.cpp in Sources */,
+				C94198F819143B65002E27D2 /* WeightedTerm.cpp in Sources */,
 				C909C51B1784CF0A0016C25E /* SegmentTermPositions.cpp in Sources */,
 				C909C51D1784CF0A0016C25E /* SegmentTermVector.cpp in Sources */,
 				C909C51F1784CF0A0016C25E /* SkipListReader.cpp in Sources */,
@@ -1813,6 +1894,7 @@
 				C909C54B1784CF0A0016C25E /* BooleanScorer2.cpp in Sources */,
 				C909C54D1784CF0A0016C25E /* CachingSpanFilter.cpp in Sources */,
 				C909C54F1784CF0A0016C25E /* CachingWrapperFilter.cpp in Sources */,
+				C94198F319143B65002E27D2 /* SimpleHTMLEncoder.cpp in Sources */,
 				C909C5511784CF0A0016C25E /* ChainedFilter.cpp in Sources */,
 				C909C5531784CF0A0016C25E /* Compare.cpp in Sources */,
 				C909C5551784CF0A0016C25E /* ConjunctionScorer.cpp in Sources */,
@@ -1822,6 +1904,7 @@
 				C909C55D1784CF0A0016C25E /* ExactPhraseScorer.cpp in Sources */,
 				C909C55F1784CF0A0016C25E /* Explanation.cpp in Sources */,
 				C909C5611784CF0A0016C25E /* FieldCache.cpp in Sources */,
+				C94198F719143B65002E27D2 /* TokenSources.cpp in Sources */,
 				C909C5631784CF0A0016C25E /* FieldCacheImpl.cpp in Sources */,
 				C909C5651784CF0A0016C25E /* FieldDocSortedHitQueue.cpp in Sources */,
 				C909C5671784CF0A0016C25E /* FieldSortedHitQueue.cpp in Sources */,
@@ -1832,6 +1915,7 @@
 				C909C5731784CF0A0016C25E /* IndexSearcher.cpp in Sources */,
 				C909C5751784CF0A0016C25E /* MatchAllDocsQuery.cpp in Sources */,
 				C909C5771784CF0A0016C25E /* MultiPhraseQuery.cpp in Sources */,
+				C94198F619143B65002E27D2 /* TokenGroup.cpp in Sources */,
 				C909C5791784CF0A0016C25E /* MultiSearcher.cpp in Sources */,
 				C909C57B1784CF0A0016C25E /* MultiTermQuery.cpp in Sources */,
 				C909C57D1784CF0A0016C25E /* PhrasePositions.cpp in Sources */,
@@ -1859,6 +1943,7 @@
 				C909C5A91784CF0A0016C25E /* SpanWeight.cpp in Sources */,
 				C909C5AB1784CF0A0016C25E /* TermSpans.cpp in Sources */,
 				C909C5AD1784CF0A0016C25E /* TermQuery.cpp in Sources */,
+				C94198F119143B65002E27D2 /* QueryTermExtractor.cpp in Sources */,
 				C909C5AF1784CF0A0016C25E /* TermScorer.cpp in Sources */,
 				C909C5B11784CF0A0016C25E /* WildcardQuery.cpp in Sources */,
 				C909C5B31784CF0A0016C25E /* WildcardTermEnum.cpp in Sources */,
@@ -1869,6 +1954,7 @@
 				C909C5BD1784CF0A0016C25E /* IndexOutput.cpp in Sources */,
 				C909C5BF1784CF0A0016C25E /* Lock.cpp in Sources */,
 				C909C5C11784CF0A0016C25E /* LockFactory.cpp in Sources */,
+				C94198EF19143B65002E27D2 /* Highlighter.cpp in Sources */,
 				C909C5C31784CF0A0016C25E /* MMapInput.cpp in Sources */,
 				C909C5C51784CF0A0016C25E /* RAMDirectory.cpp in Sources */,
 				C909C5C71784CF0A0016C25E /* BitSet.cpp in Sources */,
@@ -1902,20 +1988,25 @@
 				C909C62A1784CF0A0016C25E /* stem_UTF_8_french.c in Sources */,
 				C909C62C1784CF0A0016C25E /* stem_UTF_8_german.c in Sources */,
 				C909C62E1784CF0A0016C25E /* stem_UTF_8_italian.c in Sources */,
+				C94198F019143B65002E27D2 /* QueryScorer.cpp in Sources */,
 				C909C6301784CF0A0016C25E /* stem_UTF_8_norwegian.c in Sources */,
 				C909C6321784CF0A0016C25E /* stem_UTF_8_porter.c in Sources */,
 				C909C6341784CF0A0016C25E /* stem_UTF_8_portuguese.c in Sources */,
 				C909C6361784CF0A0016C25E /* stem_UTF_8_russian.c in Sources */,
 				C909C6381784CF0A0016C25E /* stem_UTF_8_spanish.c in Sources */,
 				C909C63A1784CF0A0016C25E /* stem_UTF_8_swedish.c in Sources */,
+				C94198ED19143B65002E27D2 /* Formatter.cpp in Sources */,
+				C94198EE19143B65002E27D2 /* Fragmenter.cpp in Sources */,
 				C909C64A1784D00C0016C25E /* BRSnowballAnalyzer.cpp in Sources */,
 				C909C64C1784D00C0016C25E /* BRNoLockFactory.cpp in Sources */,
 				C909C65D1784D4B70016C25E /* NSString+CLuceneAdditions.mm in Sources */,
 				C909C6691784D5000016C25E /* CLuceneIndexUpdateContext.mm in Sources */,
 				C909C66B1784D5000016C25E /* CLuceneSearchResult.mm in Sources */,
+				C94198F219143B65002E27D2 /* SimpleFragmenter.cpp in Sources */,
 				C909C66D1784D5000016C25E /* CLuceneSearchResults.mm in Sources */,
 				C909C66F1784D5000016C25E /* CLuceneSearchService.mm in Sources */,
 				C909C6741784D64D0016C25E /* BRSearchFields.m in Sources */,
+				C94198F519143B65002E27D2 /* TextFragment.cpp in Sources */,
 				C909C6781784DB700016C25E /* NSDate+BRFullTextSearchAdditions.m in Sources */,
 				C909C67C1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m in Sources */,
 				C909C6801784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */,
