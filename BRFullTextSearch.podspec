@@ -35,8 +35,6 @@ Pod::Spec.new do |s|
 
   s.requires_arc = true
   
-  s.prepare_command = 'sh Support/prepare.sh'
-  
   s.default_subspec = 'Core'
   
   s.subspec 'Core' do |as|
