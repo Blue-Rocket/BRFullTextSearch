@@ -1,7 +1,7 @@
 [submodule "clucene"]
 	path = clucene
 	url = git@github.com:Blue-Rocket/clucene.git
-	branch = develop
+	branch = feature/cocoapods
 [submodule "MagicalRecord"]
 	path = MagicalRecord
 	url = git://github.com/magicalpanda/MagicalRecord.git
