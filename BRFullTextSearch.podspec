@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "5.0"
 
   s.source       = { :git => "https://github.com/Blue-Rocket/BRFullTextSearch.git", 
-  					 :branch => "develop", :submodules => true }
+  					 :branch => "feature/cocoapods", :submodules => true }
   
   s.libraries		= 'stdc++', 'z'
   s.compiler_flags	= '-Wmost', 
