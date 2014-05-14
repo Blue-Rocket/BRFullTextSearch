@@ -31,14 +31,14 @@
 		char *result = mkdtemp(tempFileNameCString);
 		if ( !result ) {
 			free(tempFileNameCString);
-			log4Error(@"Failed to create temp directory %s", tempFileNameCString);
+			NSLog(@"Failed to create temp directory %s", tempFileNameCString);
 			return nil;
 		}
 	} else {
 		int fileDescriptor = mkstemps(tempFileNameCString, (int)[suffix length]);
 		if ( fileDescriptor == -1 ) {
 			free(tempFileNameCString);
-			log4Error(@"Failed to create temp file %s", tempFileNameCString);
+			NSLog(@"Failed to create temp file %s", tempFileNameCString);
 			return nil;
 		}
 	}
