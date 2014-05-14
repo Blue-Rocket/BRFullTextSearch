@@ -74,7 +74,8 @@ Pod::Spec.new do |s|
   
   s.subspec 'CLucene-Core-API' do |as|
   	as.requires_arc = false
-  	as.source_files = "clucene/src/core/CLucene/**/*.h"
+  	as.source_files = "clucene/src/core/CLucene.h",
+  	                  "clucene/src/core/CLucene/**/*.h"
   	as.header_mappings_dir = 'clucene/src/core'
   	as.exclude_files = "clucene/src/core/CLucene/CLMonolithic.*",
   						"clucene/src/core/CLucene/search/FilterResultCache.*"
