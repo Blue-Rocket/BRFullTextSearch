@@ -39,8 +39,10 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |as|
   	as.dependency 'BRFullTextSearch/API'
-  	as.dependency 'BRFullTextSearch/CLucene'
-  	as.dependency 'BRFullTextSearch/BRFTS-CLucene'
+  	as.dependency 'BRFullTextSearch/CLucene-Shared'
+ 	as.dependency 'BRFullTextSearch/CLucene-Core'
+ 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
+  	as.dependency 'BRFullTextSearch/Implementation-CLucene'
   end
   
   s.subspec 'API' do |as|
@@ -50,7 +52,7 @@ Pod::Spec.new do |s|
   						"BRFUllTextSearch/*Analyzer*"
   end
   
-  s.subspec 'BRFTS-CLucene' do |as|
+  s.subspec 'Implementation-CLucene' do |as|
   	as.source_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
   						"BRFUllTextSearch/*Analyzer*"
