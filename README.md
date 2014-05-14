@@ -1,7 +1,6 @@
-FullTextSearch
-==============
+# BRFullTextSearch
 
-iOS Objective-C full-text search engine.
+iOS Objective-C full text search engine.
 
 This project provides a way to integrate full-text search capabilities
 into your iOS project. First, it provides a protocol-based API for a 
