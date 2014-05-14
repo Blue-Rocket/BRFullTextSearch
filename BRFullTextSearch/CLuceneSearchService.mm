@@ -296,7 +296,7 @@ using namespace lucene::store;
 	std::auto_ptr<Document> d(doc);
 	[self populateDocument:doc withObject:object];
 	[ctx addDocument:d];
-	log4Debug(@"Buffered document %@ for indexing later (%lu buffered)", [self idValue:object], (unsigned long)[ctx documentCount]);
+	//log4Debug(@"Buffered document %@ for indexing later (%lu buffered)", [self idValue:object], (unsigned long)[ctx documentCount]);
 	
 	if ( [ctx documentCount] >= kDefaultIndexUpdateBatchBufferSize ) {
 		[self flushBufferedDocuments:updateContext];
@@ -307,7 +307,7 @@ using namespace lucene::store;
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [[self idValueForType:type identifier:identifier] asCLuceneString]);
 	int32_t deletedCount = [ctx modifier]->deleteDocuments(idTerm);
-	log4Debug(@"Removed %d documents from search index", deletedCount);
+	//log4Debug(@"Removed %d documents from search index", deletedCount);
 	ctx.updateCount += deletedCount;
 	_CLLDECDELETE(idTerm);
 	return deletedCount;
@@ -315,7 +315,7 @@ using namespace lucene::store;
 
 - (void)flushBufferedDocuments:(CLuceneIndexUpdateContext *)updateContext {
 	[updateContext enumerateDocumentsUsingBlock:^(Document *doc, BOOL *remove) {
-		log4Debug(@"Adding document %@ to index", [NSString stringWithCLuceneString:doc->get([kBRSearchFieldNameIdentifier asCLuceneString])]);
+		//log4Debug(@"Adding document %@ to index", [NSString stringWithCLuceneString:doc->get([kBRSearchFieldNameIdentifier asCLuceneString])]);
 		[updateContext modifier]->addDocument(doc);
 		updateContext.updateCount++;
 		*remove = YES;
@@ -484,7 +484,7 @@ using namespace lucene::store;
 	}];
 	
 	[condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:kMaxWait]];
-	log4Debug(@"%@ %lu objects to index", (finished ? @"Added" : @"Failed to add"), (unsigned long)[objects count]);
+	//log4Debug(@"%@ %lu objects to index", (finished ? @"Added" : @"Failed to add"), (unsigned long)[objects count]);
 	[condition unlock];
 	if ( [NSThread isMainThread] ) {
 		[self resetSearcher];
