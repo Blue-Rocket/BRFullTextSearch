@@ -23,25 +23,26 @@ Pod::Spec.new do |s|
   
   s.libraries		= 'stdc++', 'z'
   s.compiler_flags	= '-Wmost', 
-  					  '-Wno-four-char-constants', '-Wno-unknown-pragmas', 
+#  					  '-Wno-four-char-constants', '-Wno-unknown-pragmas', 
   					  '-fvisibility=default', '-fPIC', '-D_UCS2', '-D_UNICODE', '-D_REENTRANT',
   					  '-DNDEBUG'
   					  
   s.xcconfig		= { 
-  						'ALWAYS_SEARCH_USER_PATHS' => 'NO',
   						'CLANG_CXX_LANGUAGE_STANDARD' => 'gnu++98', 
   						'CLANG_CXX_LIBRARY' => 'libstdc++',
-  						'CLANG_ENABLE_MODULES' => 'NO',
   						'GCC_OPTIMIZATION_LEVEL' => '1',
   					  }
 
   s.requires_arc = true
+  
+  s.prepare_command = 'sh Support/prepare.sh'
   
   s.default_subspec = 'Core'
   
   s.subspec 'Core' do |as|
   	as.dependency 'BRFullTextSearch/API'
   	as.dependency 'BRFullTextSearch/CLucene'
+  	as.dependency 'BRFullTextSearch/BRFTS-CLucene'
   end
   
   s.subspec 'API' do |as|
@@ -49,6 +50,16 @@ Pod::Spec.new do |s|
   	as.exclude_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
   						"BRFUllTextSearch/*Analyzer*"
+  end
+  
+  s.subspec 'BRFTS-CLucene' do |as|
+  	as.source_files = "BRFullTextSearch/*CLucene*", 
+  						"BRFullTextSearch/BRNoLockFactory.*",
+  						"BRFUllTextSearch/*Analyzer*"
+  	as.dependency 'BRFullTextSearch/API'
+  	as.dependency 'BRFullTextSearch/CLucene-Shared-API'
+ 	as.dependency 'BRFullTextSearch/CLucene-Core-API'
+ 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
   end
   
   s.subspec 'CLucene' do |as|
@@ -98,6 +109,14 @@ Pod::Spec.new do |s|
   	as.header_mappings_dir = 'clucene/src/core'
   	as.exclude_files = "clucene/src/core/CLucene/CLMonolithic.*",
   						"clucene/src/core/CLucene/search/FilterResultCache.*"
+    as.dependency 'BRFullTextSearch/CLucene-Core-API'
+    as.dependency 'BRFullTextSearch/CLucene-Shared-API'
+  end
+
+  s.subspec 'CLucene-Contribs-Lib' do |as|
+  	as.requires_arc = false
+  	as.source_files = "clucene/src/contribs-lib/CLucene/**/*.{h,c,cpp}"
+  	as.header_mappings_dir = 'clucene/src/contribs-lib'
     as.dependency 'BRFullTextSearch/CLucene-Core-API'
     as.dependency 'BRFullTextSearch/CLucene-Shared-API'
   end
