@@ -74,7 +74,7 @@ Using this approach you'll build a static library framework that you can manuall
 integrate into your own project. After cloning the BRFullTextSearch repository,
 first initialize git submodules. For example:
 
-	git clone git@github.com:Blue-Rocket/BRFullTextSearch.git
+	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
 	
@@ -117,7 +117,7 @@ builds a static library. You can use that target as a dependency in your own pro
 After cloning the BRFullTextSearch repository, first initialize git submodules. For
 example:
 
-	git clone git@github.com:Blue-Rocket/BRFullTextSearch.git
+	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
 	
