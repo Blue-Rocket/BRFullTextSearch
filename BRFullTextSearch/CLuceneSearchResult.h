@@ -10,6 +10,9 @@
 #import "CLucene.h"
 #import "BRSearchResult.h"
 
+/**
+ * CLucene internal implementation of `BRSearchResult`.
+ */
 @interface CLuceneSearchResult : NSObject <BRSearchResult>
 
 + (Class)searchResultClassForObjectTypeField:(const TCHAR *)objectTypeValue;

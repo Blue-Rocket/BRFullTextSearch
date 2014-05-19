@@ -19,6 +19,9 @@ namespace lucene {
 	}
 }
 
+/**
+ * CLucene internal implementation of `BRSearchResults`.
+ */
 @interface CLuceneSearchResults : NSObject <BRSearchResults>
 
 - (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)hits;

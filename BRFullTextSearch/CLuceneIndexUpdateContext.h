@@ -13,6 +13,9 @@
 #import "CLucene.h"
 #import "Clucene/index/IndexModifier.h"
 
+/**
+ * CLucene internal implementation of `BRIndexUpdateContext` to support bulk index modifications.
+ */
 @interface CLuceneIndexUpdateContext : NSObject <BRIndexUpdateContext>
 
 - (id)initWithIndexModifier:(lucene::index::IndexModifier *)modifier;
