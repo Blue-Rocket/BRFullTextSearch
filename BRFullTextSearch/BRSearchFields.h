@@ -10,10 +10,19 @@
 extern "C" {
 #endif
 
+/** Search field constant for the search document unique identifier value (`id`). */
 extern NSString *const kBRSearchFieldNameIdentifier;
+
+/** Search field constant for the search document object type value (`o`). */
 extern NSString *const kBRSearchFieldNameObjectType;
+
+/** Search field constant for a title value (`t`). */
 extern NSString *const kBRSearchFieldNameTitle;
+
+/** Search field constant for a name value (`v`). */
 extern NSString *const kBRSearchFieldNameValue;
+
+/** Search field constant for a date value (`s`). */
 extern NSString *const kBRSearchFieldNameTimestamp;
 
 /** Type definition for a "type of" search object flag. */
