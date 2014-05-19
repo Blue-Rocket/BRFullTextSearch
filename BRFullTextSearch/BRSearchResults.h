@@ -10,20 +10,62 @@
 
 #import "BRSearchResult.h"
 
-typedef void (^BRSearchServiceSearchResultsIterator)(NSUInteger index, id<BRSearchResult> result, BOOL *stop);
+/**
+ * Block for iterating over search result matches.
+ *
+ * @param index the zero-based index of the match
+ * @param result the match
+ * @param stop if set to `YES` then iteration will be stopped
+ */
+typedef void (^BRSearchServiceSearchResultsIterator)(NSUInteger index, id <BRSearchResult> result, BOOL *stop);
 
+/**
+ * API for the results of executing a search.
+ *
+ * The results  object is a collection of `BRSearchResult` match objects
+ */
 @protocol BRSearchResults <NSObject>
 
+/**
+ * Get the total count of matches in the result of the search.
+ *
+ * @return number of matches
+ */
 - (NSUInteger)count;
-- (id<BRSearchResult>)resultAtIndex:(NSUInteger)index;
+
+/**
+ * Get a match object for a given result index.
+ *
+ * @param index the zero-based match index to get
+ * @return the match object for the given index
+ */
+- (id <BRSearchResult> )resultAtIndex:(NSUInteger)index;
+
+/**
+ * Iterate over all matches, in search result order.
+ *
+ * @param iterator the block to execute for each available match
+ */
 - (void)iterateWithBlock:(BRSearchServiceSearchResultsIterator)iterator;
 
-// group all results by a given field; the results are assumed to be already sorted
-// appropriately; return array of arrays for each group
+/**
+ * Group all matches by a given field.
+ *
+ * The results are assumed to be ordered appropriately for the grouping operation to
+ * make sense. The resulting array will contain `NSArray` objects for each group, whose
+ * values will be `id<BRSearchResult>` objects.
+ *
+ * @param fieldName the field name by which to group the results
+ */
 - (NSArray *)resultsGroupedByField:(NSString *)fieldName;
 
-// group all results by a given field; the field is assumed to contain a time stamp string key;
-// the results are assumed to be already sorted appropriately; return array of arrays for each group
+/**
+ * Group all matches by a timestamp field, at day precision.
+ *
+ * The results are assumed to be ordered by date. The grouping keys will be created by
+ * calling `localDayForTimestampField:` on each match. The resulting array will contain `NSArray`
+ * objects for each group, whose values will be `id<BRSearchResult>` objects.
+ */
 - (NSArray *)resultsGroupedByDay:(NSString *)fieldName;
 
 @end
