@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, "5.0"
 
   s.source       = { :git => "https://github.com/Blue-Rocket/BRFullTextSearch.git", 
-  					 :branch => "develop", :submodules => true }
+  					 :tag => s.version.to_s, :submodules => true }
   
   s.libraries		= 'stdc++', 'z'
   s.compiler_flags	= '-Wmost', 
@@ -31,18 +31,19 @@ Pod::Spec.new do |s|
   						'CLANG_CXX_LANGUAGE_STANDARD' => 'gnu++98', 
   						'CLANG_CXX_LIBRARY' => 'libstdc++',
   						'GCC_OPTIMIZATION_LEVEL' => '1',
+  						'OTHER_LDFLAGS' => '-stdlib=libstdc++',
   					  }
 
   s.requires_arc = true
-  
-  s.prepare_command = 'sh Support/prepare.sh'
   
   s.default_subspec = 'Core'
   
   s.subspec 'Core' do |as|
   	as.dependency 'BRFullTextSearch/API'
-  	as.dependency 'BRFullTextSearch/CLucene'
-  	as.dependency 'BRFullTextSearch/BRFTS-CLucene'
+  	as.dependency 'BRFullTextSearch/CLucene-Shared'
+ 	as.dependency 'BRFullTextSearch/CLucene-Core'
+ 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
+  	as.dependency 'BRFullTextSearch/Implementation-CLucene'
   end
   
   s.subspec 'API' do |as|
@@ -52,7 +53,7 @@ Pod::Spec.new do |s|
   						"BRFUllTextSearch/*Analyzer*"
   end
   
-  s.subspec 'BRFTS-CLucene' do |as|
+  s.subspec 'Implementation-CLucene' do |as|
   	as.source_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
   						"BRFUllTextSearch/*Analyzer*"
