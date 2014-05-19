@@ -13,6 +13,11 @@
 
 CL_NS_DEF(store)
 
+/**
+ * A replacement for `lucene::store::NoLockFactory`, which causes a crash because
+ * its singleton lock is deleted by `IndexWriter.close()`. To fix that, we don't use a
+ * singleton lock in this implementation.
+ */
 class CLUCENE_EXPORT BRNoLockFactory : public lucene::store::LockFactory {
 public:
 	static BRNoLockFactory* singleton;
