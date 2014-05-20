@@ -1,4 +1,4 @@
 platform :ios, '7.0'
 
-pod 'BRFullTextSearch', 		'~> 1.0'
-pod 'MagicalRecord',			'~> 2.2'
+pod 'BRFullTextSearch', 		'~> 1.0', :inhibit_warnings => true
+pod 'MagicalRecord',			'~> 2.2', :inhibit_warnings => true
