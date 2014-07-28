@@ -24,7 +24,6 @@ namespace lucene {
  */
 @interface CLuceneSearchResults : NSObject <BRSearchResults>
 
-- (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)hits;
 - (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)theHits
 			  sort:(std::auto_ptr<lucene::search::Sort>)theSort
 			 query:(std::auto_ptr<lucene::search::Query>)theQuery

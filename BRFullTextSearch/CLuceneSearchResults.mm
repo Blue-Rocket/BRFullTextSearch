@@ -22,10 +22,6 @@ using namespace lucene::search;
 	std::tr1::shared_ptr<Searcher> searcher;
 }
 
-- (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)theHits {
-	return [self initWithHits:theHits sort:sort query:query searcher:searcher];
-}
-
 - (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)theHits
 			  sort:(std::auto_ptr<lucene::search::Sort>)theSort
 			 query:(std::auto_ptr<lucene::search::Query>)theQuery
