@@ -606,7 +606,9 @@ using namespace lucene::store;
 		}
 	}
 	std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
-	return [[CLuceneSearchResults alloc] initWithHits:hits];
+	std::auto_ptr<Sort> sort;
+	std::auto_ptr<Query> resultQuery(rootQuery);
+	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:[self searcher]];
 }
 
 - (id<BRSearchResult>)findObject:(BRSearchObjectType)type withIdentifier:(NSString *)identifier {
@@ -641,7 +643,8 @@ using namespace lucene::store;
 		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
 	}
 	std::auto_ptr<Hits> hits(s->search(query.get()));
-	return [[CLuceneSearchResults alloc] initWithHits:hits];
+	std::auto_ptr<Sort> sort;
+	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
 }
 
 - (id<BRSearchResults>)search:(NSString *)query
