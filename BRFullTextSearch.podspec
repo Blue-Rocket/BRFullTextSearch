@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BRFullTextSearch"
-  s.version      = "1.0.1"
+  s.version      = "1.0.2"
   s.summary      = "iOS Objective-C full text search engine."
   s.description  = <<-DESC
                    This project provides a way to integrate full-text search
