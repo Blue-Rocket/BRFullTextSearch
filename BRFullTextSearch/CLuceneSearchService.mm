@@ -16,6 +16,7 @@
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "NSData+CLuceneAdditions.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
 #import "CLucene/util/_MD5Digester.h"
@@ -420,7 +421,8 @@ using namespace lucene::store;
 - (void)populateDocument:(Document *)doc field:(NSString *)fieldName flags:(int)flags value:(id)fieldValue {
 	Field *f = new Field([fieldName asCLuceneString], flags);
 	if ( [fieldValue isKindOfClass:[NSString class]] ) {
-		f->setValue((TCHAR *)[fieldValue asCLuceneString], true);
+		NSData *fieldStringData = [fieldValue asCLuceneStringData];
+		f->setValue((TCHAR *)[fieldStringData asCLuceneString], true);
 	} else {
 		NSAssert1(NO, @"Unsupported field value type: %@", NSStringFromClass([fieldValue class]));
 	}
