@@ -40,8 +40,9 @@ using namespace lucene::search;
 }
 
 - (id<BRSearchResult>)resultAtIndex:(NSUInteger)index {
-	Document &doc = hits->doc(index);
-	return [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:index];
+	int32_t luceneIndex = (int32_t)index;
+	Document &doc = hits->doc(luceneIndex);
+	return [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:luceneIndex];
 }
 
 - (void)iterateWithBlock:(BRSearchServiceSearchResultsIterator)iterator {
