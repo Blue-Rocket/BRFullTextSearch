@@ -330,7 +330,7 @@ using namespace lucene::store;
 - (int)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	std::auto_ptr<Hits> hits([ctx searcher]->search(query.get()));
-	ctx.updateCount += hits->length();
+	ctx.updateCount += (uint32_t)hits->length();
 	IndexModifier *modifier = [ctx modifier];
 	// Hmm: length() returns size_t, while id() expects int32_t... why the mismatch?
 	for ( int32_t i = 0, len = (int32_t)hits->length(); i < len; i++ ) {
