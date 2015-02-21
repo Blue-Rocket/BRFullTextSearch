@@ -13,10 +13,26 @@
 - (const TCHAR *)asCLuceneString {
 	return (const TCHAR *)[self cStringUsingEncoding:NSUTF32LittleEndianStringEncoding];
 }
+
+- (NSData *)asCLuceneStringData {
+	NSData *bytes = [self dataUsingEncoding:NSUTF32LittleEndianStringEncoding];
+	NSMutableData *terminated = [NSMutableData dataWithData:bytes];
+	TCHAR eof = '\0';
+	[terminated appendBytes:&eof length:sizeof(TCHAR)];
+	return terminated;
+}
+
 + (NSString *)stringWithCLuceneString:(const TCHAR *)charText {
-    return [[NSString alloc] initWithBytes:charText
-									length:wcslen(charText) * sizeof(*charText)
-								  encoding:NSUTF32LittleEndianStringEncoding];
+	if ( charText == NULL ) {
+		return nil;
+	}
+	const NSUInteger len = wcslen(charText) * sizeof(TCHAR);
+    NSString *result = [[NSString alloc] initWithBytes:charText length:len encoding:NSUTF32LittleEndianStringEncoding];
+	// might return nil here
+	if ( result == nil ) {
+		NSLog(@"Error decoding CLucene string length %lu to NSString", (unsigned long)len);
+	}
+	return result;
 }
 
 @end

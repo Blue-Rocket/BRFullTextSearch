@@ -403,6 +403,8 @@
 		C909C67D1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */; };
 		C909C6801784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
 		C909C6811784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
+		C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
+		C9575E821A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C97940EB178600C900DF0660 /* BRTestSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940EA178600C900DF0660 /* BRTestSupport.m */; };
 		C97940EE1786015200DF0660 /* CLuceneSearchServiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */; };
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
@@ -862,6 +864,8 @@
 		C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimeZone+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
 		C909C67E1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+BRFullTextSearchAdditions.h"; sourceTree = "<group>"; };
 		C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
+		C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CLuceneAdditions.h"; sourceTree = "<group>"; };
+		C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 		C97940E9178600C900DF0660 /* BRTestSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRTestSupport.h; sourceTree = "<group>"; };
 		C97940EA178600C900DF0660 /* BRTestSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRTestSupport.m; sourceTree = "<group>"; };
 		C97940EC1786015200DF0660 /* CLuceneSearchServiceTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLuceneSearchServiceTests.h; sourceTree = "<group>"; };
@@ -1587,6 +1591,8 @@
 				C909C6661784D5000016C25E /* CLuceneSearchResults.mm */,
 				C909C6671784D5000016C25E /* CLuceneSearchService.h */,
 				C909C6681784D5000016C25E /* CLuceneSearchService.mm */,
+				C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */,
+				C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */,
 				C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */,
 				C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */,
 				C909C6571784D4B70016C25E /* NSString+CLuceneAdditions.h */,
@@ -1654,7 +1660,7 @@
 			name = BRFullTextSearchTests;
 			productName = BRFullTextSearchTests;
 			productReference = C909C2721784CB600016C25E /* BRFullTextSearchTests.xctest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1838,6 +1844,7 @@
 				C909C57F1784CF0A0016C25E /* PhraseQuery.cpp in Sources */,
 				C909C5811784CF0A0016C25E /* PhraseScorer.cpp in Sources */,
 				C909C5831784CF0A0016C25E /* PrefixQuery.cpp in Sources */,
+				C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */,
 				C909C5851784CF0A0016C25E /* QueryFilter.cpp in Sources */,
 				C909C5871784CF0A0016C25E /* RangeFilter.cpp in Sources */,
 				C909C5891784CF0A0016C25E /* RangeQuery.cpp in Sources */,
@@ -2122,6 +2129,7 @@
 				C97940F31786022900DF0660 /* BRSimpleIndexable.m in Sources */,
 				C9F87C3F17D94AA700485FAE /* BRSearchService.m in Sources */,
 				C9AE054517E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m in Sources */,
+				C9575E821A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

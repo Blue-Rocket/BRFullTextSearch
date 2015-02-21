@@ -114,6 +114,10 @@ using namespace lucene::search;
 		Field *f = *itr;
 		NSString *fName = [NSString stringWithCLuceneString:f->name()];
 		NSString *fValue = [NSString stringWithCLuceneString:f->stringValue()];
+		if ( fValue == nil ) {
+			// could be from garbage string :-(
+			continue;
+		}
 		id existing = [dict objectForKey:fName];
 		if ( existing == nil ) {
 			[dict setObject:fValue forKey:fName];

@@ -1,5 +1,5 @@
 //
-//  CLuceneSearchService.m
+//  CLuceneSearchService.mm
 //  BRFullTextSearch
 //
 //  Created by Matt on 6/28/13.
@@ -16,6 +16,7 @@
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "NSData+CLuceneAdditions.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
 #import "CLucene/util/_MD5Digester.h"
@@ -330,7 +331,7 @@ using namespace lucene::store;
 - (int)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
 	CLuceneIndexUpdateContext *ctx = (CLuceneIndexUpdateContext *)updateContext;
 	std::auto_ptr<Hits> hits([ctx searcher]->search(query.get()));
-	ctx.updateCount += hits->length();
+	ctx.updateCount += (uint32_t)hits->length();
 	IndexModifier *modifier = [ctx modifier];
 	// Hmm: length() returns size_t, while id() expects int32_t... why the mismatch?
 	for ( int32_t i = 0, len = (int32_t)hits->length(); i < len; i++ ) {
@@ -420,7 +421,8 @@ using namespace lucene::store;
 - (void)populateDocument:(Document *)doc field:(NSString *)fieldName flags:(int)flags value:(id)fieldValue {
 	Field *f = new Field([fieldName asCLuceneString], flags);
 	if ( [fieldValue isKindOfClass:[NSString class]] ) {
-		f->setValue((TCHAR *)[fieldValue asCLuceneString], true);
+		NSData *fieldStringData = [fieldValue asCLuceneStringData];
+		f->setValue((TCHAR *)[fieldStringData asCLuceneString], true);
 	} else {
 		NSAssert1(NO, @"Unsupported field value type: %@", NSStringFromClass([fieldValue class]));
 	}

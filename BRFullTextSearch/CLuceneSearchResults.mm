@@ -35,13 +35,26 @@ using namespace lucene::search;
 	return self;
 }
 
+- (NSString *)description {
+	NSString *queryDescription = nil;
+
+	TCHAR *queryDebug = NULL;
+	queryDebug = query->toString();
+	if ( queryDebug != NULL ) {
+		queryDescription = [NSString stringWithCLuceneString:queryDebug];
+		free(queryDebug);
+	}
+	return [NSString stringWithFormat:@"CLuceneSearchResults{hits=%lu, query=%@}", (unsigned long)[self count], queryDescription];
+}
+
 - (NSUInteger)count {
 	return (NSUInteger)hits->length();
 }
 
 - (id<BRSearchResult>)resultAtIndex:(NSUInteger)index {
-	Document &doc = hits->doc(index);
-	return [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:index];
+	int32_t luceneIndex = (int32_t)index;
+	Document &doc = hits->doc(luceneIndex);
+	return [[[CLuceneSearchResult searchResultClassForDocument:doc] alloc] initWithHits:hits.get() index:luceneIndex];
 }
 
 - (void)iterateWithBlock:(BRSearchServiceSearchResultsIterator)iterator {

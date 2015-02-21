@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "CLucene.h"
+#import "CLucene/_ApiHeader.h"
 
 @interface NSExpression (CLuceneAdditions)
 
