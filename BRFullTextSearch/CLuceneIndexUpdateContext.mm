@@ -16,7 +16,7 @@ using namespace lucene::search;
 	std::list<Document*> docs; // default constructor called in alloc by runtime, and delete in dealloc
 	IndexModifier *modifier;
 	std::auto_ptr<Searcher> searcher;
-	int updateCount;
+	uint32_t updateCount;
 }
 
 @synthesize updateCount;

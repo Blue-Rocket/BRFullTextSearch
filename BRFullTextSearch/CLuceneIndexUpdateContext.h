@@ -20,7 +20,7 @@
 
 - (id)initWithIndexModifier:(lucene::index::IndexModifier *)modifier;
 
-@property (nonatomic) int updateCount;
+@property (nonatomic) uint32_t updateCount;
 
 - (lucene::index::IndexModifier *)modifier;
 - (lucene::search::Searcher *)searcher;
