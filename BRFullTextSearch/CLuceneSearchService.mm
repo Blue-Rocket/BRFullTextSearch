@@ -1,5 +1,5 @@
 //
-//  CLuceneSearchService.m
+//  CLuceneSearchService.mm
 //  BRFullTextSearch
 //
 //  Created by Matt on 6/28/13.
