@@ -35,6 +35,18 @@ using namespace lucene::search;
 	return self;
 }
 
+- (NSString *)description {
+	NSString *queryDescription = nil;
+
+	TCHAR *queryDebug = NULL;
+	queryDebug = query->toString();
+	if ( queryDebug != NULL ) {
+		queryDescription = [NSString stringWithCLuceneString:queryDebug];
+		free(queryDebug);
+	}
+	return [NSString stringWithFormat:@"CLuceneSearchResults{hits=%lu, query=%@}", (unsigned long)[self count], queryDescription];
+}
+
 - (NSUInteger)count {
 	return (NSUInteger)hits->length();
 }
