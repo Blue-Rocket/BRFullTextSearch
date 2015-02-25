@@ -22,6 +22,9 @@
 
 @property (nonatomic) uint32_t updateCount;
 
+/** Boolean flag to indicate that the index should be optimized for searching when the update is complete. */
+@property (nonatomic) BOOL optimizeWhenDone;
+
 - (lucene::index::IndexModifier *)modifier;
 - (lucene::search::Searcher *)searcher;
 - (void)addDocument:(std::auto_ptr<lucene::document::Document>)doc;

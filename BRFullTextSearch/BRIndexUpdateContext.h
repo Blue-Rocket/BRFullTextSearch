@@ -16,4 +16,9 @@
  */
 @protocol BRIndexUpdateContext <NSObject>
 
+@optional
+
+/** Boolean flag to request that the index should be optimized for searching when the update is complete. */
+@property (nonatomic) BOOL optimizeWhenDone;
+
 @end

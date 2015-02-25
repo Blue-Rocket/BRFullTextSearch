@@ -235,7 +235,7 @@ using namespace lucene::store;
 					// keep track of index updates, to optimize index
 					NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
 					const NSInteger updateCount = [ud integerForKey:defaultsUpdateKey] + 1;
-					if ( updateCount > indexUpdateOptimizeThreshold ) {
+					if ( updateCount > indexUpdateOptimizeThreshold || ctx.optimizeWhenDone ) {
 						modifier->optimize();
 						[ud setInteger:0 forKey:defaultsUpdateKey];
 					} else {
