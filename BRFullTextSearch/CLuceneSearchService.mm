@@ -53,6 +53,7 @@ using namespace lucene::store;
 
 @synthesize indexUpdateOptimizeThreshold;
 @synthesize bundle, defaultAnalyzerLanguage;
+@synthesize indexPath;
 
 - (id)init {
 	NSString *applicationName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(NSString *)kCFBundleNameKey];
