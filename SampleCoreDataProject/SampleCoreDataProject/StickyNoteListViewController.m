@@ -9,6 +9,7 @@
 #import "StickyNoteListViewController.h"
 
 #import <BRFullTextSearch/NSDate+BRFullTextSearchAdditions.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "Notifications.h"
 #import "StickyNote.h"
 #import "StickyNoteViewController.h"
