@@ -58,7 +58,7 @@
  * 
  * This should be a 2-character language code. Defaults to `en`.
  */
-@property (nonatomic, strong ) NSString *defaultAnalyzerLanguage;
+@property (nonatomic, strong) NSString *defaultAnalyzerLanguage;
 
 /**
  * Init the search service with a given path to use to store the index files.
@@ -67,6 +67,11 @@
  * @return new instance
  */
 - (instancetype)initWithIndexPath:(NSString *)indexPath;
+
+/**
+ Get the configured index path, which is a directory that contains the Lucene index files.
+ */
+@property (nonatomic, readonly) NSString *indexPath;
 
 /**
  * Reset the searcher immediately.
