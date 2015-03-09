@@ -8,6 +8,7 @@
 
 #import "StickyNoteViewController.h"
 
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "StickyNote.h"
 
 @implementation StickyNoteViewController

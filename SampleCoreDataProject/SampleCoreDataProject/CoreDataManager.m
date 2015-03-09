@@ -9,6 +9,7 @@
 #import "CoreDataManager.h"
 
 #import <BRFullTextSearch/BRFullTextSearch.h>
+#import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "Notifications.h"
 
 @implementation CoreDataManager
