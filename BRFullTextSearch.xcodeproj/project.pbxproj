@@ -864,6 +864,7 @@
 		C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimeZone+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
 		C909C67E1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+BRFullTextSearchAdditions.h"; sourceTree = "<group>"; };
 		C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
+		C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = BRFullTextSearch.podspec; sourceTree = SOURCE_ROOT; };
 		C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 		C97940E9178600C900DF0660 /* BRTestSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRTestSupport.h; sourceTree = "<group>"; };
@@ -969,6 +970,7 @@
 				C97940F61786240100DF0660 /* stop-words.txt */,
 				C909C6491784D00C0016C25E /* BRFullTextSearch.h */,
 				C909C2681784CB600016C25E /* BRFullTextSearch-Prefix.pch */,
+				C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
