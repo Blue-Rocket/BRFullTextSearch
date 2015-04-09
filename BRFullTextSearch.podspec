@@ -92,7 +92,8 @@ Pod::Spec.new do |s|
   	                  "clucene/src/core/CLucene/**/*.h"
   	as.header_mappings_dir = 'clucene/src/core'
   	as.exclude_files = "clucene/src/core/CLucene/CLMonolithic.*",
-  						"clucene/src/core/CLucene/search/FilterResultCache.*"
+						"clucene/src/core/CLucene/search/FilterResultCache.*",
+						"clucene/src/core/CLucene/queryParser/legacy"
     as.dependency 'BRFullTextSearch/CLucene-Config'
   end
   
@@ -111,17 +112,18 @@ Pod::Spec.new do |s|
   	as.source_files = "clucene/src/core/CLucene/**/*.{c,cpp}"
   	as.header_mappings_dir = 'clucene/src/core'
   	as.exclude_files = "clucene/src/core/CLucene/CLMonolithic.*",
-  						"clucene/src/core/CLucene/search/FilterResultCache.*"
+  						"clucene/src/core/CLucene/search/FilterResultCache.*",
+  						"clucene/src/core/CLucene/queryParser/legacy"
     as.dependency 'BRFullTextSearch/CLucene-Core-API'
-    as.dependency 'BRFullTextSearch/CLucene-Shared-API'
+    as.dependency 'BRFullTextSearch/CLucene-Shared'
   end
 
   s.subspec 'CLucene-Contribs-Lib' do |as|
   	as.requires_arc = false
   	as.source_files = "clucene/src/contribs-lib/CLucene/**/*.{h,c,cpp}"
   	as.header_mappings_dir = 'clucene/src/contribs-lib'
-    as.dependency 'BRFullTextSearch/CLucene-Core-API'
-    as.dependency 'BRFullTextSearch/CLucene-Shared-API'
+    as.dependency 'BRFullTextSearch/CLucene-Core'
+    as.dependency 'BRFullTextSearch/CLucene-Shared'
   end
 
 end
