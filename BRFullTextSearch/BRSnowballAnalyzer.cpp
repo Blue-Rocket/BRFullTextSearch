@@ -8,13 +8,12 @@
 
 #include "CLucene/_ApiHeader.h"
 #include "BRSnowballAnalyzer.h"
-#include "SnowballFilter.h"
+#include "SnowballPrefixFilter.h"
 #include "CLucene/util/Misc.h"
 #include "CLucene/util/CLStreams.h"
 #include "CLucene/analysis/Analyzers.h"
 #include "CLucene/analysis/standard/StandardTokenizer.h"
 #include "CLucene/analysis/standard/StandardFilter.h"
-#include "SnowballPrefixFilter.h"
 
 CL_NS_USE(analysis)
 CL_NS_USE(util)
