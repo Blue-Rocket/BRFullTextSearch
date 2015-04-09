@@ -1,42 +1,42 @@
 PODS:
-  - BRFullTextSearch (1.0.0):
-    - BRFullTextSearch/Core
-  - BRFullTextSearch/API (1.0.0)
-  - BRFullTextSearch/CLucene-Config (1.0.0)
-  - BRFullTextSearch/CLucene-Contribs-Lib (1.0.0):
-    - BRFullTextSearch/CLucene-Core-API
-    - BRFullTextSearch/CLucene-Shared-API
-  - BRFullTextSearch/CLucene-Core (1.0.0):
-    - BRFullTextSearch/CLucene-Core-API
-    - BRFullTextSearch/CLucene-Shared-API
-  - BRFullTextSearch/CLucene-Core-API (1.0.0):
-    - BRFullTextSearch/CLucene-Config
-  - BRFullTextSearch/CLucene-Shared (1.0.0):
-    - BRFullTextSearch/CLucene-Core-API
-    - BRFullTextSearch/CLucene-Shared-API
-  - BRFullTextSearch/CLucene-Shared-API (1.0.0):
-    - BRFullTextSearch/CLucene-Config
-  - BRFullTextSearch/Core (1.0.0):
-    - BRFullTextSearch/API
+  - BRFullTextSearch (1.0.5):
+    - BRFullTextSearch/Core (= 1.0.5)
+  - BRFullTextSearch/API (1.0.5)
+  - BRFullTextSearch/CLucene (1.0.5):
     - BRFullTextSearch/CLucene-Contribs-Lib
     - BRFullTextSearch/CLucene-Core
     - BRFullTextSearch/CLucene-Shared
-    - BRFullTextSearch/Implementation-CLucene
-  - BRFullTextSearch/Implementation-CLucene (1.0.0):
-    - BRFullTextSearch/API
-    - BRFullTextSearch/CLucene-Contribs-Lib
+  - BRFullTextSearch/CLucene-Config (1.0.5)
+  - BRFullTextSearch/CLucene-Contribs-Lib (1.0.5):
+    - BRFullTextSearch/CLucene-Core
+    - BRFullTextSearch/CLucene-Shared
+  - BRFullTextSearch/CLucene-Core (1.0.5):
     - BRFullTextSearch/CLucene-Core-API
-    - BRFullTextSearch/CLucene-Shared-API
+    - BRFullTextSearch/CLucene-Shared
+  - BRFullTextSearch/CLucene-Core-API (1.0.5):
+    - BRFullTextSearch/CLucene-Config
+  - BRFullTextSearch/CLucene-Shared (1.0.5):
+    - BRFullTextSearch/CLucene-Core-API
+  - BRFullTextSearch/Core (1.0.5):
+    - BRFullTextSearch/API
+    - BRFullTextSearch/Implementation-CLucene
+  - BRFullTextSearch/Implementation-CLucene (1.0.5):
+    - BRFullTextSearch/API
+    - BRFullTextSearch/CLucene
   - MagicalRecord (2.2):
-    - MagicalRecord/Core
+    - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
 
 DEPENDENCIES:
-  - BRFullTextSearch (~> 1.0)
+  - BRFullTextSearch (from `../`)
   - MagicalRecord (~> 2.2)
 
-SPEC CHECKSUMS:
-  BRFullTextSearch: 4eba577a98a0b84a8407d61aa66f14b1c0fcbe85
-  MagicalRecord: 95d49d74ef752cd52f6ad87bcb474817fc3978cf
+EXTERNAL SOURCES:
+  BRFullTextSearch:
+    :path: ../
 
-COCOAPODS: 0.32.1
+SPEC CHECKSUMS:
+  BRFullTextSearch: a76ca2fe3c565f4746b2813cf924469efa6977fa
+  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+
+COCOAPODS: 0.36.3
