@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BRFullTextSearch"
-  s.version      = "1.0.4"
+  s.version      = "1.0.5"
   s.summary      = "iOS Objective-C full text search engine."
   s.description  = <<-DESC
                    This project provides a way to integrate full-text search
@@ -50,13 +50,15 @@ Pod::Spec.new do |s|
   	as.source_files = "BRFullTextSearch/*.{h,m}"
   	as.exclude_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
-  						"BRFUllTextSearch/*Analyzer*"
+  						"BRFUllTextSearch/*Analyzer*",
+  						"BRFullTextSearch/*Filter*"
   end
   
   s.subspec 'Implementation-CLucene' do |as|
   	as.source_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
-  						"BRFUllTextSearch/*Analyzer*"
+  						"BRFUllTextSearch/*Analyzer*",
+  						"BRFullTextSearch/*Filter*"
   	as.dependency 'BRFullTextSearch/API'
   	as.dependency 'BRFullTextSearch/CLucene-Shared-API'
  	as.dependency 'BRFullTextSearch/CLucene-Core-API'

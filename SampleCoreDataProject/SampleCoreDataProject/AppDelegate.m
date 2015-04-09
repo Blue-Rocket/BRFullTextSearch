@@ -21,6 +21,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// set up search, core data
 	searchService = [CLuceneSearchService new];
+	searchService.supportStemmedPrefixSearches = YES; // new in 1.0.5
+	NSLog(@"Lucene index initialized at %@", searchService.indexPath);
 	coreDataManager = [CoreDataManager new];
 	coreDataManager.searchService = searchService;
 	

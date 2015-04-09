@@ -14,6 +14,7 @@
 #include "CLucene/analysis/Analyzers.h"
 #include "CLucene/analysis/standard/StandardTokenizer.h"
 #include "CLucene/analysis/standard/StandardFilter.h"
+#include "SnowballPrefixFilter.h"
 
 CL_NS_USE(analysis)
 CL_NS_USE(util)
@@ -57,11 +58,12 @@ BRSnowballAnalyzer::~BRSnowballAnalyzer(){
 
 /** Builds the named analyzer with the given stop words.
  */
-BRSnowballAnalyzer::BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords) {
+BRSnowballAnalyzer::BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords, bool prefixModeEnabled) {
     this->language = STRDUP_TtoT(language);
 	
     stopSet = _CLNEW CLTCSetList(true);
 	StopFilter::fillStopTable(stopSet,stopWords);
+	prefixMode = prefixModeEnabled;
 }
 
 TokenStream* BRSnowballAnalyzer::tokenStream(const TCHAR* fieldName, CL_NS(util)::Reader* reader) {
@@ -81,9 +83,14 @@ TokenStream* BRSnowballAnalyzer::tokenStream(const TCHAR* fieldName, CL_NS(util)
 	
 	result = _CLNEW StandardFilter(result, true);
     result = _CLNEW CL_NS(analysis)::LowerCaseFilter(result, true);
-    if (stopSet != NULL)
+	if (stopSet != NULL) {
 		result = _CLNEW CL_NS(analysis)::StopFilter(result, true, stopSet);
-    result = _CLNEW SnowballFilter(result, language, true);
+	}
+	if ( prefixMode ) {
+		result = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(result, true, language);
+	} else {
+		result = _CLNEW SnowballFilter(result, language, true);
+	}
     return result;
 }
 
@@ -102,12 +109,24 @@ TokenStream* BRSnowballAnalyzer::reusableTokenStream(const TCHAR* fieldName, Rea
 		streams->filteredTokenStream = _CLNEW StandardFilter(streams->tokenStream, true);
 		streams->filteredTokenStream = _CLNEW LowerCaseFilter(streams->filteredTokenStream, true);
 		streams->filteredTokenStream = _CLNEW StopFilter(streams->filteredTokenStream, true, stopSet);
-		streams->filteredTokenStream = _CLNEW SnowballFilter(streams->filteredTokenStream, language, true);
+		if ( prefixMode ) {
+			streams->filteredTokenStream = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(streams->filteredTokenStream, true, language);
+		} else {
+			streams->filteredTokenStream = _CLNEW SnowballFilter(streams->filteredTokenStream, language, true);
+		}
 	} else {
 		streams->tokenStream->reset(reader);
 	}
 	
 	return streams->filteredTokenStream;
+}
+
+bool BRSnowballAnalyzer::getPrefixMode() {
+	return prefixMode;
+}
+
+void BRSnowballAnalyzer::setPrefixMode(bool mode) {
+	prefixMode = mode;
 }
 
 CL_NS_END2
