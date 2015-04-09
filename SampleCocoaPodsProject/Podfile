@@ -1,4 +1,8 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 platform :ios, '7.0'
 
-pod 'BRFullTextSearch', 		'~> 1.0', :inhibit_warnings => true
-pod 'MagicalRecord',			'~> 2.2', :inhibit_warnings => true
+inhibit_all_warnings!
+
+pod 'BRFullTextSearch', 		:path => '../'
+pod 'MagicalRecord',			'~> 2.2'
