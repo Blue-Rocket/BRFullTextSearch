@@ -50,13 +50,15 @@ Pod::Spec.new do |s|
   	as.source_files = "BRFullTextSearch/*.{h,m}"
   	as.exclude_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
-  						"BRFUllTextSearch/*Analyzer*"
+  						"BRFUllTextSearch/*Analyzer*",
+  						"BRFullTextSearch/*Filter*"
   end
   
   s.subspec 'Implementation-CLucene' do |as|
   	as.source_files = "BRFullTextSearch/*CLucene*", 
   						"BRFullTextSearch/BRNoLockFactory.*",
-  						"BRFUllTextSearch/*Analyzer*"
+  						"BRFUllTextSearch/*Analyzer*",
+  						"BRFullTextSearch/*Filter*"
   	as.dependency 'BRFullTextSearch/API'
   	as.dependency 'BRFullTextSearch/CLucene-Shared-API'
  	as.dependency 'BRFullTextSearch/CLucene-Core-API'
