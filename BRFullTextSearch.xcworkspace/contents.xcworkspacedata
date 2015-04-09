@@ -10,7 +10,4 @@
    <FileRef
       location = "group:SampleStaticLibraryProject/SampleStaticLibraryProject.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:SampleCoreDataProject/SampleCoreDataProject.xcodeproj">
-   </FileRef>
 </Workspace>
