@@ -40,9 +40,6 @@ Pod::Spec.new do |s|
   
   s.subspec 'Core' do |as|
   	as.dependency 'BRFullTextSearch/API'
-  	as.dependency 'BRFullTextSearch/CLucene-Shared'
- 	as.dependency 'BRFullTextSearch/CLucene-Core'
- 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
   	as.dependency 'BRFullTextSearch/Implementation-CLucene'
   end
   
@@ -59,16 +56,13 @@ Pod::Spec.new do |s|
   						"BRFullTextSearch/BRNoLockFactory.*",
   						"BRFullTextSearch/*Analyzer*",
   						"BRFullTextSearch/*Filter*"
-  	as.dependency 'BRFullTextSearch/API'
-  	as.dependency 'BRFullTextSearch/CLucene-Shared-API'
- 	as.dependency 'BRFullTextSearch/CLucene-Core-API'
- 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
+  	as.dependency 'BRFullTextSearch/CLucene'
   end
   
   s.subspec 'CLucene' do |as|
-  	as.dependency 'BRFullTextSearch/API'
   	as.dependency 'BRFullTextSearch/CLucene-Shared'
  	as.dependency 'BRFullTextSearch/CLucene-Core'
+ 	as.dependency 'BRFullTextSearch/CLucene-Contribs-Lib'
   end
   
   s.subspec 'CLucene-Config' do |as|
@@ -77,15 +71,6 @@ Pod::Spec.new do |s|
   	as.header_mappings_dir = 'BRFullTextSearch'
   end
 
-  s.subspec 'CLucene-Shared-API' do |as|
-  	as.requires_arc = false
-  	as.source_files = "clucene/src/shared/CLucene/**/*.h"
-  	as.header_mappings_dir = 'clucene/src/shared'
-  	as.exclude_files = "clucene/src/shared/CLucene/CLSharedMonolithic.*",
-                    	"clucene/src/shared/CLucene/util/deflate.*"
-    as.dependency 'BRFullTextSearch/CLucene-Config'
-  end
-  
   s.subspec 'CLucene-Core-API' do |as|
   	as.requires_arc = false
   	as.source_files = "clucene/src/core/CLucene.h",
@@ -99,12 +84,11 @@ Pod::Spec.new do |s|
   
   s.subspec 'CLucene-Shared' do |as|
   	as.requires_arc = false
-  	as.source_files = "clucene/src/shared/CLucene/**/*.{c,cpp}"
+  	as.source_files = "clucene/src/shared/CLucene/**/*.{h,c,cpp}"
   	as.header_mappings_dir = 'clucene/src/shared'
   	as.exclude_files = "clucene/src/shared/CLucene/CLSharedMonolithic.*",
                     	"clucene/src/shared/CLucene/util/deflate.*"
     as.dependency 'BRFullTextSearch/CLucene-Core-API'
-    as.dependency 'BRFullTextSearch/CLucene-Shared-API'
   end
 
   s.subspec 'CLucene-Core' do |as|
