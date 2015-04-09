@@ -56,7 +56,8 @@ Pod::Spec.new do |s|
   						"BRFullTextSearch/BRNoLockFactory.*",
   						"BRFullTextSearch/*Analyzer*",
   						"BRFullTextSearch/*Filter*"
-  	as.dependency 'BRFullTextSearch/CLucene'
+  	as.dependency 'BRFullTextSearch/API'
+	as.dependency 'BRFullTextSearch/CLucene'
   end
   
   s.subspec 'CLucene' do |as|
