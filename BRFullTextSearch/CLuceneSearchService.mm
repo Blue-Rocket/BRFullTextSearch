@@ -196,6 +196,23 @@ using namespace lucene::store;
 
 #pragma mark - Supporting API
 
+- (BOOL)isSupportStemmedPrefixSearches {
+	Analyzer *analyzer = [self defaultAnalyzer];
+	lucene::analysis::snowball::BRSnowballAnalyzer *snowball = dynamic_cast<lucene::analysis::snowball::BRSnowballAnalyzer *>(analyzer);
+	if ( snowball != NULL ) {
+		return (snowball->getPrefixMode() ? YES : NO);
+	}
+	return NO;
+}
+
+- (void)setSupportStemmedPrefixSearches:(BOOL)supportStemmedPrefixSearches {
+	Analyzer *analyzer = [self defaultAnalyzer];
+	lucene::analysis::snowball::BRSnowballAnalyzer *snowball = dynamic_cast<lucene::analysis::snowball::BRSnowballAnalyzer *>(analyzer);
+	if ( snowball != NULL ) {
+		snowball->setPrefixMode(supportStemmedPrefixSearches ? true : false);
+	}
+}
+
 - (void)resetSearcher {
 	if ( searcher.get() != NULL ) {
 		searcher->close();

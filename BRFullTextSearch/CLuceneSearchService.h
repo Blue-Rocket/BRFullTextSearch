@@ -61,6 +61,13 @@
 @property (nonatomic, strong) NSString *defaultAnalyzerLanguage;
 
 /**
+ * Turn support for prefix-based searches on tokenized and stemmed fields. Defaults to @c NO.
+ * 
+ * @since 1.0.5
+ */
+@property (nonatomic, getter=isSupportStemmedPrefixSearches) BOOL supportStemmedPrefixSearches;
+
+/**
  * Init the search service with a given path to use to store the index files.
  *
  * @param indexPath a directory in which to write the CLucene index files in
