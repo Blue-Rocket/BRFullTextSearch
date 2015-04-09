@@ -24,17 +24,23 @@ CL_NS_DEF2(analysis,snowball)
 class CLUCENE_CONTRIBS_EXPORT BRSnowballAnalyzer : public Analyzer {
 	TCHAR* language;
 	CLTCSetList* stopSet;
+	bool prefixMode;
 	
 	class SavedStreams;
+	
 public:
-	/** Builds the named analyzer with no stop words. */
+	/** Builds the named analyzer with no stop words and prefix mode disabled. */
 	BRSnowballAnalyzer(const TCHAR* language=_T("english"));
 	
-	/** Builds the named analyzer with the given stop words.
-	 */
-	BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords);
+	/** Builds the named analyzer with the given stop words. */
+	BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords, bool prefixModeEnabled = false);
 	
 	~BRSnowballAnalyzer();
+	
+	
+	bool getPrefixMode();
+	void setPrefixMode(bool mode);
+
 	
 	/** Constructs a {@link StandardTokenizer} filtered by a {@link
 	 StandardFilter}, a {@link LowerCaseFilter} and a {@link StopFilter}. */

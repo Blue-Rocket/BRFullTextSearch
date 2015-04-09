@@ -415,6 +415,7 @@
 		C99FCBEF1846745E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
 		C99FCBF01846746E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
 		C9AE054517E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */; };
+		C9D6EC231AD619B9006D23F4 /* SnowballPrefixFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */; };
 		C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 		C9E6137717C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 		C9F87C3E17D94AA700485FAE /* BRSearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F87C3D17D94AA700485FAE /* BRSearchService.m */; };
@@ -880,6 +881,8 @@
 		C99FCBEE1846745E00A90E66 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_BRFullTextSearchAdditionsTests.h; sourceTree = "<group>"; };
 		C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_BRFullTextSearchAdditionsTests.m; sourceTree = "<group>"; };
+		C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SnowballPrefixFilter.cpp; sourceTree = "<group>"; };
+		C9D6EC201AD615FC006D23F4 /* SnowballPrefixFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnowballPrefixFilter.h; sourceTree = "<group>"; };
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSExpression+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 		C9F87C3D17D94AA700485FAE /* BRSearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSearchService.m; sourceTree = "<group>"; };
@@ -1599,6 +1602,8 @@
 				C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */,
 				C909C6571784D4B70016C25E /* NSString+CLuceneAdditions.h */,
 				C909C6581784D4B70016C25E /* NSString+CLuceneAdditions.mm */,
+				C9D6EC201AD615FC006D23F4 /* SnowballPrefixFilter.h */,
+				C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */,
 			);
 			name = CLucene;
 			sourceTree = "<group>";
@@ -1770,6 +1775,7 @@
 				C909C4E51784CF0A0016C25E /* CompoundFile.cpp in Sources */,
 				C909C4E71784CF0A0016C25E /* DirectoryIndexReader.cpp in Sources */,
 				C909C4E91784CF0A0016C25E /* DocumentsWriter.cpp in Sources */,
+				C9D6EC231AD619B9006D23F4 /* SnowballPrefixFilter.cpp in Sources */,
 				C909C4EB1784CF0A0016C25E /* DocumentsWriterThreadState.cpp in Sources */,
 				C909C4ED1784CF0A0016C25E /* FieldInfos.cpp in Sources */,
 				C909C4EF1784CF0A0016C25E /* FieldsReader.cpp in Sources */,
