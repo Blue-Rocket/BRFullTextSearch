@@ -405,6 +405,7 @@
 		C909C6811784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
 		C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C9575E821A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
+		C96985F71AD6719E00B26977 /* SnowballPrefixFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */; };
 		C97940EB178600C900DF0660 /* BRTestSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940EA178600C900DF0660 /* BRTestSupport.m */; };
 		C97940EE1786015200DF0660 /* CLuceneSearchServiceTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */; };
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
@@ -2062,6 +2063,7 @@
 				C909C5961784CF0A0016C25E /* Sort.cpp in Sources */,
 				C909C5981784CF0A0016C25E /* SpanQueryFilter.cpp in Sources */,
 				C909C59A1784CF0A0016C25E /* NearSpansOrdered.cpp in Sources */,
+				C96985F71AD6719E00B26977 /* SnowballPrefixFilter.cpp in Sources */,
 				C909C59C1784CF0A0016C25E /* NearSpansUnordered.cpp in Sources */,
 				C909C59E1784CF0A0016C25E /* SpanFirstQuery.cpp in Sources */,
 				C909C5A01784CF0A0016C25E /* SpanNearQuery.cpp in Sources */,
