@@ -11,6 +11,7 @@
 #import <BRFullTextSearch/BRFullTextSearch.h>
 #import <BRFullTextSearch/CLuceneSearchService.h>
 #import "CoreDataManager.h"
+#import "SettingsViewController.h"
 #import "StickyNoteListViewController.h"
 
 @implementation AppDelegate {
@@ -31,7 +32,27 @@
 	self.viewController.searchService = searchService;
 	self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     [self.window makeKeyAndVisible];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged:) name:NSUserDefaultsDidChangeNotification object:nil];
     return YES;
+}
+
+- (void)settingsChanged:(NSNotification *)notification {
+	NSUserDefaults *defaults = notification.object;
+	const BOOL stemmingDisabled = [defaults boolForKey:kStemmingDisabledKey];
+	const BOOL stemmingPrefixEnabled = [defaults boolForKey:kStemmingPrefixSupportEnabledKey];
+	BOOL reindex = NO;
+	if ( stemmingDisabled != searchService.stemmingDisabled ) {
+		searchService.stemmingDisabled = stemmingDisabled;
+		reindex = YES;
+	}
+	if ( stemmingPrefixEnabled != searchService.supportStemmedPrefixSearches ) {
+		searchService.supportStemmedPrefixSearches = stemmingPrefixEnabled;
+		reindex = YES;
+	}
+	if ( reindex ) {
+		[coreDataManager reindex];
+	}
 }
 
 @end

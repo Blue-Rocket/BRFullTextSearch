@@ -11,6 +11,7 @@
 #import <BRFullTextSearch/BRFullTextSearch.h>
 #import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "Notifications.h"
+#import "StickyNote.h"
 
 @implementation CoreDataManager
 
@@ -73,6 +74,19 @@
 			[self.searchService addObjectToIndex:localObj context:updateContext];
 		}
 	} queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:SearchIndexDidChange object:nil];
+	}];
+}
+
+- (void)reindex {
+	[self.searchService bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
+		NSLog(@"Reindexing...");
+		[NSManagedObjectContext MR_resetContextForCurrentThread]; // make sure we pull in latest data
+		for ( StickyNote *note in [StickyNote MR_findAll] ) {
+			[self.searchService addObjectToIndex:note context:updateContext];
+		}
+	} queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
+		NSLog(@"Reindexing complete.");
 		[[NSNotificationCenter defaultCenter] postNotificationName:SearchIndexDidChange object:nil];
 	}];
 }

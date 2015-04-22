@@ -11,6 +11,7 @@
 #import <BRFullTextSearch/NSDate+BRFullTextSearchAdditions.h>
 #import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "Notifications.h"
+#import "SettingsViewController.h"
 #import "StickyNote.h"
 #import "StickyNoteViewController.h"
 
@@ -25,7 +26,9 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     if ( (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) ) {
 		self.navigationItem.title = @"Sticky Notes";
-		self.navigationItem.leftBarButtonItem = self.editButtonItem;
+		
+		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithTitle:@"Setup" style:UIBarButtonItemStylePlain target:self action:@selector(viewSettings:)];
+		self.navigationItem.leftBarButtonItems = @[self.editButtonItem, settings];
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																							   target:self
 																							   action:@selector(addStickyNote:)];
@@ -43,6 +46,11 @@
 		stickyNotesModel = [StickyNote MR_fetchAllGroupedBy:nil withPredicate:nil sortedBy:@"created" ascending:NO delegate:self];
 		[self.tableView reloadData];
 	}
+}
+
+- (IBAction)viewSettings:(id)sender {
+	SettingsViewController *dest = [[SettingsViewController alloc] initWithNibName:@"SettingsViewController" bundle:nil];
+	[self.navigationController pushViewController:dest animated:YES];
 }
 
 - (IBAction)addStickyNote:(id)sender {
