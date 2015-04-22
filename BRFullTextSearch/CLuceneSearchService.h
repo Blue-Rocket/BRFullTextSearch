@@ -61,6 +61,13 @@
 @property (nonatomic, strong) NSString *defaultAnalyzerLanguage;
 
 /**
+ * Turn stemming for tokenized fields on/off. Defaults to @c NO.
+ *
+ * @since 1.0.6
+ */
+@property (nonatomic, getter=isStemmingDisabled) BOOL stemmingDisabled;
+
+/**
  * Turn support for prefix-based searches on tokenized and stemmed fields. Defaults to @c NO.
  * 
  * @since 1.0.5
