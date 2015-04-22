@@ -47,22 +47,21 @@ BRSnowballAnalyzer::BRSnowballAnalyzer(const TCHAR* language) {
 	stopSet = NULL;
 }
 
+/** Builds the named analyzer with the given stop words. */
+BRSnowballAnalyzer::BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords, bool prefixModeEnabled) {
+	this->language = STRDUP_TtoT(language);
+	
+	stopSet = _CLNEW CLTCSetList(true);
+	StopFilter::fillStopTable(stopSet,stopWords);
+	prefixMode = prefixModeEnabled;
+}
+
 BRSnowballAnalyzer::~BRSnowballAnalyzer(){
 	SavedStreams* t = reinterpret_cast<SavedStreams*>(this->getPreviousTokenStream());
 	if (t) _CLDELETE(t->filteredTokenStream);
 	_CLDELETE_CARRAY(language);
 	if ( stopSet != NULL )
 		_CLDELETE(stopSet);
-}
-
-/** Builds the named analyzer with the given stop words.
- */
-BRSnowballAnalyzer::BRSnowballAnalyzer(const TCHAR* language, const TCHAR** stopWords, bool prefixModeEnabled) {
-    this->language = STRDUP_TtoT(language);
-	
-    stopSet = _CLNEW CLTCSetList(true);
-	StopFilter::fillStopTable(stopSet,stopWords);
-	prefixMode = prefixModeEnabled;
 }
 
 TokenStream* BRSnowballAnalyzer::tokenStream(const TCHAR* fieldName, CL_NS(util)::Reader* reader) {
@@ -85,10 +84,12 @@ TokenStream* BRSnowballAnalyzer::tokenStream(const TCHAR* fieldName, CL_NS(util)
 	if (stopSet != NULL) {
 		result = _CLNEW CL_NS(analysis)::StopFilter(result, true, stopSet);
 	}
-	if ( prefixMode ) {
-		result = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(result, true, language);
-	} else {
-		result = _CLNEW SnowballFilter(result, language, true);
+	if ( !stemmingDisabled ) {
+		if ( prefixMode ) {
+			result = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(result, true, language);
+		} else {
+			result = _CLNEW SnowballFilter(result, language, true);
+		}
 	}
     return result;
 }
@@ -108,10 +109,12 @@ TokenStream* BRSnowballAnalyzer::reusableTokenStream(const TCHAR* fieldName, Rea
 		streams->filteredTokenStream = _CLNEW StandardFilter(streams->tokenStream, true);
 		streams->filteredTokenStream = _CLNEW LowerCaseFilter(streams->filteredTokenStream, true);
 		streams->filteredTokenStream = _CLNEW StopFilter(streams->filteredTokenStream, true, stopSet);
-		if ( prefixMode ) {
-			streams->filteredTokenStream = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(streams->filteredTokenStream, true, language);
-		} else {
-			streams->filteredTokenStream = _CLNEW SnowballFilter(streams->filteredTokenStream, language, true);
+		if ( !stemmingDisabled ) {
+			if ( prefixMode ) {
+				streams->filteredTokenStream = _CLNEW bluerocket::lucene::analysis::SnowballPrefixFilter(streams->filteredTokenStream, true, language);
+			} else {
+				streams->filteredTokenStream = _CLNEW SnowballFilter(streams->filteredTokenStream, language, true);
+			}
 		}
 	} else {
 		streams->tokenStream->reset(reader);
@@ -126,6 +129,14 @@ bool BRSnowballAnalyzer::getPrefixMode() {
 
 void BRSnowballAnalyzer::setPrefixMode(bool mode) {
 	prefixMode = mode;
+}
+
+bool BRSnowballAnalyzer::getStemmingDisabled() {
+	return stemmingDisabled;
+}
+
+void BRSnowballAnalyzer::setStemmingDisabled(bool disabled) {
+	stemmingDisabled = disabled;
 }
 
 CL_NS_END2

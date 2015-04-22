@@ -14,7 +14,8 @@
 CL_CLASS_DEF(util,BufferedReader)
 CL_NS_DEF2(analysis,snowball)
 
-/** Filters {@link StandardTokenizer} with {@link StandardFilter}, {@link
+/** 
+ * Filters {@link StandardTokenizer} with {@link StandardFilter}, {@link
  * LowerCaseFilter}, {@link StopFilter} and {@link SnowballFilter}.
  *
  * Available stemmers are listed in {@link net.sf.snowball.ext}.  The name of a
@@ -25,6 +26,7 @@ class CLUCENE_CONTRIBS_EXPORT BRSnowballAnalyzer : public Analyzer {
 	TCHAR* language;
 	CLTCSetList* stopSet;
 	bool prefixMode;
+	bool stemmingDisabled = false;
 	
 	class SavedStreams;
 	
@@ -41,6 +43,8 @@ public:
 	bool getPrefixMode();
 	void setPrefixMode(bool mode);
 
+	bool getStemmingDisabled();
+	void setStemmingDisabled(bool disabled);
 	
 	/** Constructs a {@link StandardTokenizer} filtered by a {@link
 	 StandardFilter}, a {@link LowerCaseFilter} and a {@link StopFilter}. */

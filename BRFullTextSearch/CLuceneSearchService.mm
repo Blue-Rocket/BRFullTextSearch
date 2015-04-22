@@ -213,6 +213,23 @@ using namespace lucene::store;
 	}
 }
 
+- (BOOL)isStemmingDisabled {
+	Analyzer *analyzer = [self defaultAnalyzer];
+	lucene::analysis::snowball::BRSnowballAnalyzer *snowball = dynamic_cast<lucene::analysis::snowball::BRSnowballAnalyzer *>(analyzer);
+	if ( snowball != NULL ) {
+		return (snowball->getStemmingDisabled() ? YES : NO);
+	}
+	return NO;
+}
+
+- (void)setStemmingDisabled:(BOOL)stemmingDisabled {
+	Analyzer *analyzer = [self defaultAnalyzer];
+	lucene::analysis::snowball::BRSnowballAnalyzer *snowball = dynamic_cast<lucene::analysis::snowball::BRSnowballAnalyzer *>(analyzer);
+	if ( snowball != NULL ) {
+		snowball->setStemmingDisabled(stemmingDisabled ? true : false);
+	}
+}
+
 - (void)resetSearcher {
 	if ( searcher.get() != NULL ) {
 		searcher->close();

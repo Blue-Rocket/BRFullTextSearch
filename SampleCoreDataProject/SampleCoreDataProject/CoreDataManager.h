@@ -14,4 +14,6 @@
 
 @property (nonatomic, strong) id<BRSearchService> searchService;
 
+- (void)reindex;
+
 @end

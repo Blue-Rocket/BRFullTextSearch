@@ -29,6 +29,8 @@
 		C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9049BB917CAD3860099F480 /* StickyNoteViewController.xib */; };
 		C9049BC217CAE7700099F480 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C9049BC017CAE7700099F480 /* stop-words.txt */; };
 		C9049BC517CB10800099F480 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C9049BC417CB10800099F480 /* Notifications.m */; };
+		C9B506F71AE72F1B00108562 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9B506F51AE72F1B00108562 /* SettingsViewController.m */; };
+		C9B506F81AE72F1B00108562 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9B506F61AE72F1B00108562 /* SettingsViewController.xib */; };
 		EED3B88A827168F2772DB75F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A06DBFE5733C082A1D5847E4 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +93,9 @@
 		C9049BC117CAE7700099F480 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "stop-words.txt"; sourceTree = "<group>"; };
 		C9049BC317CB10800099F480 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		C9049BC417CB10800099F480 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
+		C9B506F41AE72F1B00108562 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		C9B506F51AE72F1B00108562 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		C9B506F61AE72F1B00108562 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -164,6 +169,9 @@
 				C9049BA917CAC6BA0099F480 /* CoreDataManager.m */,
 				C9049BC317CB10800099F480 /* Notifications.h */,
 				C9049BC417CB10800099F480 /* Notifications.m */,
+				C9B506F41AE72F1B00108562 /* SettingsViewController.h */,
+				C9B506F51AE72F1B00108562 /* SettingsViewController.m */,
+				C9B506F61AE72F1B00108562 /* SettingsViewController.xib */,
 				C9049BB217CACD870099F480 /* StickyNoteListViewController.h */,
 				C9049BB317CACD870099F480 /* StickyNoteListViewController.m */,
 				C9049BB417CACD870099F480 /* StickyNoteListViewController.xib */,
@@ -298,6 +306,7 @@
 				C9049B2117CAC48E0099F480 /* InfoPlist.strings in Resources */,
 				C9049B2917CAC48F0099F480 /* Default.png in Resources */,
 				C9049B2B17CAC48F0099F480 /* Default@2x.png in Resources */,
+				C9B506F81AE72F1B00108562 /* SettingsViewController.xib in Resources */,
 				C9049B2D17CAC48F0099F480 /* Default-568h@2x.png in Resources */,
 				C9049BB617CACD870099F480 /* StickyNoteListViewController.xib in Resources */,
 				C9049BBB17CAD3860099F480 /* StickyNoteViewController.xib in Resources */,
@@ -348,6 +357,7 @@
 				C9049B2317CAC48E0099F480 /* main.m in Sources */,
 				C9049B2717CAC48E0099F480 /* AppDelegate.m in Sources */,
 				C9049BAA17CAC6BA0099F480 /* CoreDataManager.m in Sources */,
+				C9B506F71AE72F1B00108562 /* SettingsViewController.m in Sources */,
 				C9049BAD17CAC9CD0099F480 /* Model.xcdatamodeld in Sources */,
 				C9049BB017CACA5C0099F480 /* StickyNote.m in Sources */,
 				C9049BB517CACD870099F480 /* StickyNoteListViewController.m in Sources */,
