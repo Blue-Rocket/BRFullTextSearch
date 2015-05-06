@@ -30,7 +30,6 @@ Pod::Spec.new do |s|
   s.xcconfig		= { 
   						'CLANG_CXX_LANGUAGE_STANDARD' => 'gnu++98', 
   						'CLANG_CXX_LIBRARY' => 'libstdc++',
-  						'GCC_OPTIMIZATION_LEVEL' => '1',
   						'OTHER_LDFLAGS' => '-stdlib=libstdc++',
   					  }
 
