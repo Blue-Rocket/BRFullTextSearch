@@ -68,6 +68,9 @@ $ pod install
 ```
 Open your project in Xcode using the **.xcworkspace** file CocoaPods generated.
 
+**Note:** the `use_frameworks!` option is not supported, see #4. Any pull requests
+to allow for building as a dynamic framework are very welcome!
+
 ## via static framework
 
 Using this approach you'll build a static library framework that you can manually
