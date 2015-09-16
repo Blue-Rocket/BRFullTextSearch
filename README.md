@@ -30,6 +30,100 @@ id<BRSearchResults> results = [service search:@"special"];
 }];
 ```
 
+# Predicate queries
+
+The `BRSearchService` API supports `NSPredicate` based queries:
+
+```objc
+- (id<BRSearchResults>)searchWithPredicate:(NSPredicate *)predicate
+                                    sortBy:(NSString *)sortFieldName
+                                  sortType:(BRSearchSortType)sortType
+                                 ascending:(BOOL)ascending;
+```
+
+This method of querying can be quite useful when constructing a query out of user-supplied query text.
+For example, you could support _prefix_ based queries (for example, searching for `ca*` to match `cat`):
+
+```objc
+// get query as string, from text field for Example
+NSString * query = ...;
+
+static NSExpression *ValueExpression;
+if ( ValueExpression == nil ) {
+    ValueExpression = [NSExpression expressionForKeyPath:kBRSearchFieldNameValue];
+}
+NSArray *tokens = [[query stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+                   componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+NSMutableArray *predicates = [NSMutableArray arrayWithCapacity:([tokens count] * 2)];
+for ( NSString *token in tokens ) {
+    [predicates addObject:[NSComparisonPredicate predicateWithLeftExpression:ValueExpression
+                                                             rightExpression:[NSExpression expressionForConstantValue:token]
+                                                                    modifier:NSDirectPredicateModifier
+                                                                        type:NSLikePredicateOperatorType
+                                                                     options:0]];
+    [predicates addObject:[NSComparisonPredicate predicateWithLeftExpression:ValueExpression
+                                                             rightExpression:[NSExpression expressionForConstantValue:token]
+                                                                    modifier:NSDirectPredicateModifier
+                                                                        type:NSBeginsWithPredicateOperatorType
+                                                                     options:0]];
+}
+NSPredicate *predicateQuery = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
+searchResults = [searchService searchWithPredicate:predicateQuery sortBy:nil sortType:0 ascending:NO];
+```
+
+# Batch API
+
+When indexing many documents at once, `BRSearchService` provides a set of methods specifically designed
+for efficient bulk operations:
+
+```objc
+// bulk block callback function.
+typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> updateContext);
+
+// perform a bulk operation, calling the passed on block
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock 
+                  queue:(dispatch_queue_t)finishedQueue
+               finished:(BRSearchServiceUpdateCallbackBlock)finished;
+
+// from within the block, the following methods can be used (notice the updateContext parameter):
+
+- (void)addObjectToIndex:(id <BRIndexable> )object context:(id <BRIndexUpdateContext> )updateContext;
+
+- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier 
+                     context:(id <BRIndexUpdateContext> )updateContext;
+
+- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate 
+                                       context:(id <BRIndexUpdateContext> )updateContext;
+
+- (int)removeAllObjectsFromIndex:(id <BRIndexUpdateContext> )updateContext;
+```
+
+Here's an example of a bulk operation that adds 100,000 documents to the index; notice the strategic
+use of `@autoreleasepool` to keep a lid on memory use during the operation:
+
+```objc
+id<BRSearchService> service = ...;
+[service bulkUpdateIndex:^(id<BRIndexUpdateContext> updateContext) {
+
+    if ( [updateContext respondsToSelector:@selector(setOptimizeWhenDone:)] ) {
+        updateContext.optimizeWhenDone = YES;
+    }
+
+    // add a bunch of documents to the index, in small autorelease batches
+    for ( int i = 0; i < 100000; i+= 1000 ) {
+        @autoreleasepool {
+            for ( int j = 0; j < 1000; j++ ) {
+                id<BRIndexable> doc = ...;
+                [service addObjectToIndex:doc context:updateContext];
+            }
+        }
+    }
+
+} queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
+    // all finished here
+}];
+``` 
+
 # Core Data support
 
 It's pretty easy to integrate BRFullTextSearch with Core Data, to maintain a search
