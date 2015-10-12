@@ -880,6 +880,7 @@
 		C99FCBE918466AA700A90E66 /* TestIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestIndexable.m; sourceTree = "<group>"; };
 		C99FCBEB18466FE600A90E66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C99FCBEE1846745E00A90E66 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C9A68F3D1BCB6376003E6AE1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_BRFullTextSearchAdditionsTests.h; sourceTree = "<group>"; };
 		C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_BRFullTextSearchAdditionsTests.m; sourceTree = "<group>"; };
 		C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SnowballPrefixFilter.cpp; sourceTree = "<group>"; };
@@ -971,6 +972,7 @@
 		C909C2671784CB600016C25E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C9A68F3D1BCB6376003E6AE1 /* README.md */,
 				C97940F61786240100DF0660 /* stop-words.txt */,
 				C909C6491784D00C0016C25E /* BRFullTextSearch.h */,
 				C909C2681784CB600016C25E /* BRFullTextSearch-Prefix.pch */,
@@ -1676,7 +1678,7 @@
 		C909C2591784CB600016C25E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Blue Rocket";
 			};
 			buildConfigurationList = C909C25C1784CB600016C25E /* Build configuration list for PBXProject "BRFullTextSearch" */;
@@ -2186,6 +2188,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -2204,7 +2207,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-fvisibility=default",
 					"-fPIC",
@@ -2295,6 +2298,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				INFOPLIST_FILE = "BRFullTextSearchTests/BRFullTextSearchTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -2306,6 +2310,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				INFOPLIST_FILE = "BRFullTextSearchTests/BRFullTextSearchTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};

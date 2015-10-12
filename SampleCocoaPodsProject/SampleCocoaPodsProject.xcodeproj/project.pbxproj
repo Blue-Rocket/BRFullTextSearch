@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		182C0BCFE26E400C9567DBC9 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93862DD2F770400AB73C2C7B /* libPods.a */; };
 		C9D347D3192412DF0021FF0B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D347D2192412DF0021FF0B /* Foundation.framework */; };
 		C9D347D5192412DF0021FF0B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D347D4192412DF0021FF0B /* CoreGraphics.framework */; };
 		C9D347D7192412DF0021FF0B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9D347D6192412DF0021FF0B /* UIKit.framework */; };
@@ -22,6 +21,7 @@
 		C9D34825192413830021FF0B /* StickyNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3481D192413830021FF0B /* StickyNote.m */; };
 		C9D34826192413830021FF0B /* StickyNoteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D3481F192413830021FF0B /* StickyNoteListViewController.m */; };
 		C9D34827192413830021FF0B /* StickyNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9D34821192413830021FF0B /* StickyNoteViewController.m */; };
+		EA838DCEC4BB4D0AE5A719D3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93862DD2F770400AB73C2C7B /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,7 +62,7 @@
 				C9D347D5192412DF0021FF0B /* CoreGraphics.framework in Frameworks */,
 				C9D347D7192412DF0021FF0B /* UIKit.framework in Frameworks */,
 				C9D347D3192412DF0021FF0B /* Foundation.framework in Frameworks */,
-				182C0BCFE26E400C9567DBC9 /* libPods.a in Frameworks */,
+				EA838DCEC4BB4D0AE5A719D3 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,6 +162,7 @@
 				C9D347CC192412DF0021FF0B /* Frameworks */,
 				C9D347CD192412DF0021FF0B /* Resources */,
 				0D1275ABF81240DE8C7BDDA0 /* Copy Pods Resources */,
+				C1ED7AF19AC72C71D482605C /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -178,7 +179,7 @@
 		C9D347C7192412DF0021FF0B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Blue Rocket, Inc.";
 			};
 			buildConfigurationList = C9D347CA192412DF0021FF0B /* Build configuration list for PBXProject "SampleCocoaPodsProject" */;
@@ -243,6 +244,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		C1ED7AF19AC72C71D482605C /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -301,6 +317,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -363,6 +380,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleCocoaPodsProject/SampleCocoaPodsProject-Prefix.pch";
 				INFOPLIST_FILE = "SampleCocoaPodsProject/SampleCocoaPodsProject-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -377,6 +395,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleCocoaPodsProject/SampleCocoaPodsProject-Prefix.pch";
 				INFOPLIST_FILE = "SampleCocoaPodsProject/SampleCocoaPodsProject-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

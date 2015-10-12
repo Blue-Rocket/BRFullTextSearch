@@ -160,10 +160,20 @@ Install into your project:
 ``` bash
 $ pod install
 ```
+
 Open your project in Xcode using the **.xcworkspace** file CocoaPods generated.
 
 **Note:** the `use_frameworks!` option is not supported, see #4. Any pull requests
 to allow for building as a dynamic framework are very welcome!
+
+**Note:** CocoaPods as of version 0.39 might not produce a valid project for this pod.
+You can work around it by running `pod` like this:
+
+``` bash
+$ COCOAPODS_DISABLE_DETERMINISTIC_UUIDS=YES pod install
+```
+or you can manually modify the target membership of any files that are the cause of linker
+errors to be included in the `BRFullTextSearch` target in Xcode.
 
 ## via static framework
 
