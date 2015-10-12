@@ -43,6 +43,27 @@ typedef NS_ENUM (unsigned int, BRSearchSortType) {
 extern NSString *const BRSearchServiceErrorDomain;
 
 /**
+ A general exception name. The exact meaning is implementation specific.
+ 
+ @since 1.0.10
+ */
+extern NSString * const BRSearchServiceException;
+
+/**
+ An exception name for when too many results of some kind are encountered. The exact meaning is implementation specific.
+ 
+ @since 1.0.10
+ */
+extern NSString * const BRSearchServiceTooManyResultsException;
+
+/**
+ An exception name for when a query cannot be parsed properly.
+ 
+ @since 1.0.10
+ */
+extern NSString * const BRSearchServiceQueryParsingException;
+
+/**
  * A simple completion block callback.
  *
  * @param error an error, or `nil` if no error occurred

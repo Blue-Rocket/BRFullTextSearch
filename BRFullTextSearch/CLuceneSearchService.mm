@@ -358,9 +358,29 @@ using namespace lucene::store;
 	}];
 }
 
+- (NSException *)exceptionForLuceneError:(CLuceneError)err userInfo:(NSDictionary *)dict {
+	NSException *result;
+	NSString *str = [NSString stringWithCLuceneString:err.twhat()];
+	NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] initWithCapacity:4];
+	[userInfo addEntriesFromDictionary:dict];
+	userInfo[@"CLuceneErrorNumber"] = @(err.number());
+	if ( err.number() == CL_ERR_TooManyClauses ) {
+		result = [NSException exceptionWithName:BRSearchServiceTooManyResultsException reason:([str length] > 0 ? str : @"Too many query clauses.") userInfo:userInfo];
+	} else if ( err.number() == CL_ERR_Parse || err.number()==CL_ERR_TokenMgr ) {
+		result = [NSException exceptionWithName:BRSearchServiceQueryParsingException reason:([str length] > 0 ? str : @"Error parsing query.") userInfo:userInfo];
+	} else {
+		result = [NSException exceptionWithName:BRSearchServiceException reason:([str length] > 0 ? str : @"Unknown CLucene error.") userInfo:userInfo];
+	}
+	return result;
+}
+
 - (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate context:(id<BRIndexUpdateContext>)updateContext  {
-	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
-	return [self removeObjectsFromIndexWithQuery:query context:(CLuceneIndexUpdateContext *)updateContext];
+	try {
+		std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
+		return [self removeObjectsFromIndexWithQuery:query context:(CLuceneIndexUpdateContext *)updateContext];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : predicate}];
+	}
 }
 
 - (int)removeObjectsFromIndexWithQuery:(std::auto_ptr<Query>)query context:(id<BRIndexUpdateContext>)updateContext {
@@ -564,8 +584,12 @@ using namespace lucene::store;
 	}
 
 	// search for all matching objects to delete
-	std::auto_ptr<Query> query = [self queryForObjects:type withIdentifiers:identifiers];
-	[self removeObjectsFromIndexWithQuery:query queue:queue finished:finished];
+	try {
+		std::auto_ptr<Query> query = [self queryForObjects:type withIdentifiers:identifiers];
+		[self removeObjectsFromIndexWithQuery:query queue:queue finished:finished];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"delete" : identifiers, @"type" : @(type)}];
+	}
 }
 
 - (int)removeObjectsFromIndexAndWait:(BRSearchObjectType)type withIdentifiers:(NSSet *)identifiers error:(NSError *__autoreleasing *)error {
@@ -598,8 +622,12 @@ using namespace lucene::store;
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
 										  queue:(dispatch_queue_t)finishedQueue
 									   finished:(BRSearchServiceUpdateCallbackBlock)finished {
-	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
-	[self removeObjectsFromIndexWithQuery:query queue:finishedQueue finished:finished];
+	try {
+		std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:nil parent:nil];
+		[self removeObjectsFromIndexWithQuery:query queue:finishedQueue finished:finished];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : predicate}];
+	}
 }
 
 - (int)removeObjectsFromIndexMatchingPredicateAndWait:(NSPredicate *)predicate error:(NSError *__autoreleasing *)error {
@@ -632,34 +660,38 @@ using namespace lucene::store;
 	if ( [query length] < 1 ) {
 		return nil;
 	}
-	std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
-	QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
-	for ( NSString *fieldName in generalTextFields ) {
-		try {
+	try {
+		std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
+		QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
+		for ( NSString *fieldName in generalTextFields ) {
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
 			rootQuery.get()->add(q, true, BooleanClause::SHOULD);
-		} catch ( CLuceneError &ex ) {
-			NSLog(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
+		std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
+		std::auto_ptr<Sort> sort;
+		std::auto_ptr<Query> resultQuery(rootQuery);
+		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:[self searcher]];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : query}];
 	}
-	std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
-	std::auto_ptr<Sort> sort;
-	std::auto_ptr<Query> resultQuery(rootQuery);
-	return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:[self searcher]];
 }
 
 - (id<BRSearchResult>)findObject:(BRSearchObjectType)type withIdentifier:(NSString *)identifier {
 	NSString *idValue = [self idValueForType:type identifier:identifier];
-	Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
-	std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm));
-	std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
-	CLuceneSearchResult *result = nil;
-	if ( hits->length() > 0 ) {
-		// return first match, taking owning the Hits pointer
-		result = [[[CLuceneSearchResult searchResultClassForDocument:hits->doc(0)] alloc] initWithOwnedHits:hits index:0];
+	try {
+		Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
+		std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm));
+		std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
+		CLuceneSearchResult *result = nil;
+		if ( hits->length() > 0 ) {
+			// return first match, taking owning the Hits pointer
+			result = [[[CLuceneSearchResult searchResultClassForDocument:hits->doc(0)] alloc] initWithOwnedHits:hits index:0];
+		}
+		_CLLDECDELETE(idTerm);
+		return result;
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : idValue}];
 	}
-	_CLLDECDELETE(idTerm);
-	return result;
 }
 
 - (id<BRSearchResults>)searchWithQuery:(std::auto_ptr<Query>)query
@@ -909,8 +941,12 @@ using namespace lucene::store;
 									sortBy:(NSString *)sortFieldName
 								  sortType:(BRSearchSortType)sortType
 								 ascending:(BOOL)ascending {
-	std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer] parent:nil];
-	return [self searchWithQuery:query sortBy:sortFieldName sortType:sortType ascending:ascending];
+	try {
+		std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer] parent:nil];
+		return [self searchWithQuery:query sortBy:sortFieldName sortType:sortType ascending:ascending];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : predicate}];
+	}
 }
 
 @end
