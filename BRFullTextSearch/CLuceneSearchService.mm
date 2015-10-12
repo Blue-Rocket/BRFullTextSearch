@@ -365,9 +365,11 @@ using namespace lucene::store;
 	[userInfo addEntriesFromDictionary:dict];
 	userInfo[@"CLuceneErrorNumber"] = @(err.number());
 	if ( err.number() == CL_ERR_TooManyClauses ) {
-		result = [NSException exceptionWithName:BRSearchServiceException reason:([str length] > 0 ? str : @"Too many query clauses.") userInfo:userInfo];
+		result = [NSException exceptionWithName:BRSearchServiceTooManyResultsException reason:([str length] > 0 ? str : @"Too many query clauses.") userInfo:userInfo];
+	} else if ( err.number() == CL_ERR_Parse || err.number()==CL_ERR_TokenMgr ) {
+		result = [NSException exceptionWithName:BRSearchServiceQueryParsingException reason:([str length] > 0 ? str : @"Error parsing query.") userInfo:userInfo];
 	} else {
-		result = [NSException exceptionWithName:BRSearchServiceException reason:([str length] > 0 ? str : @"Unknown CLucene error") userInfo:userInfo];
+		result = [NSException exceptionWithName:BRSearchServiceException reason:([str length] > 0 ? str : @"Unknown CLucene error.") userInfo:userInfo];
 	}
 	return result;
 }
@@ -582,8 +584,12 @@ using namespace lucene::store;
 	}
 
 	// search for all matching objects to delete
-	std::auto_ptr<Query> query = [self queryForObjects:type withIdentifiers:identifiers];
-	[self removeObjectsFromIndexWithQuery:query queue:queue finished:finished];
+	try {
+		std::auto_ptr<Query> query = [self queryForObjects:type withIdentifiers:identifiers];
+		[self removeObjectsFromIndexWithQuery:query queue:queue finished:finished];
+	} catch ( const CLuceneError &err ) {
+		@throw [self exceptionForLuceneError:err userInfo:@{@"delete" : identifiers, @"type" : @(type)}];
+	}
 }
 
 - (int)removeObjectsFromIndexAndWait:(BRSearchObjectType)type withIdentifiers:(NSSet *)identifiers error:(NSError *__autoreleasing *)error {
