@@ -664,12 +664,8 @@ using namespace lucene::store;
 		std::auto_ptr<BooleanQuery> rootQuery(new BooleanQuery(false));
 		QueryParser parser([kBRSearchFieldNameValue asCLuceneString], [self defaultAnalyzer]);
 		for ( NSString *fieldName in generalTextFields ) {
-			try {
-				Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
-				rootQuery.get()->add(q, true, BooleanClause::SHOULD);
-			} catch ( CLuceneError &ex ) {
-				NSLog(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
-			}
+			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
+			rootQuery.get()->add(q, true, BooleanClause::SHOULD);
 		}
 		std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
 		std::auto_ptr<Sort> sort;
