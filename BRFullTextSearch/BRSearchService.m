@@ -9,3 +9,7 @@
 #import "BRSearchService.h"
 
 NSString * const BRSearchServiceErrorDomain = @"BRFTSSearchService";
+
+NSString * const BRSearchServiceException = @"BRFTSException";
+
+NSString * const BRSearchServiceTooManyResultsException = @"BRFTSTooManyResults";

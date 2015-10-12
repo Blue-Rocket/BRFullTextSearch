@@ -21,6 +21,10 @@
  * Queries will not see the result of index updates until after the update is committed. For batch
  * updates that means at the completion of the batch operation.
  * 
+ * # Exceptions
+ * 
+ * This service will translate @c CLuceneError C++ exceptions into Objective-C @c NSException instances.
+ *
  * # Query syntax
  * 
  * When searching with string queries, the 
