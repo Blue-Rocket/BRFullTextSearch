@@ -184,7 +184,7 @@
 		C92BDBC9178BC63C00700BD0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Blue Rocket";
 			};
 			buildConfigurationList = C92BDBCC178BC63C00700BD0 /* Build configuration list for PBXProject "SampleDependentProject" */;
@@ -298,6 +298,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -350,6 +351,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleDependentProject/SampleDependentProject-Prefix.pch";
 				INFOPLIST_FILE = "SampleDependentProject/SampleDependentProject-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -361,6 +363,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SampleDependentProject/SampleDependentProject-Prefix.pch";
 				INFOPLIST_FILE = "SampleDependentProject/SampleDependentProject-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
