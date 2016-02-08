@@ -25,7 +25,7 @@ extern NSString *const kBRSearchFieldNameValue;
 /** Search field constant for a date value (`s`). */
 extern NSString *const kBRSearchFieldNameTimestamp;
 
-/** Type definition for a "type of" search object flag. */
+/** Type definition for a "type of" search object flag. Values are arbitrary and application dependent. */
 typedef char BRSearchObjectType;
 
 /**

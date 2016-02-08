@@ -58,7 +58,8 @@ typedef NS_ENUM (unsigned int, BRIndexableIndexType) {
  * Get the type of object this document represents.
  *
  * Search documents are uniquely identified by combining their `indexObjectType` **and**
- * `indexIdentifier` values.
+ * `indexIdentifier` values. The actual values used are arbitrary and application dependent.
+ * Simple applications might use a single value for all search documents.
  *
  * @return the type of object
  */
