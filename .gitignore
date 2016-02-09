@@ -6,3 +6,5 @@ xcuserdata
 *.xccheckout
 *.xcscmblueprint
 SampleCocoaPodsProject/Pods
+/Framework-MacOS
+/build
