@@ -282,7 +282,8 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
 /**
  * Execute a search using an implementation-specific query string, optionally sorting the results by a search document field.
  *
- * The query string must be parseable by the implementing search service.
+ * The query string must be parseable by the implementing search service. This is a convenience method for the more general
+ * `search:withSortDescriptors:` method.
  *
  * @param query the search query
  * @param sortFieldName the name of the search document field to order the matches by, or `nil` to sort by relevance
@@ -296,12 +297,26 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
                       ascending:(BOOL)ascending;
 
 /**
+ * Execute a search using an implementation-specific query string, optionally sorting the results by a set of sort descriptors.
+ *
+ * The query string must be parseable by the implementing search service.
+ *
+ * @param query the search query
+ * @param sorts the array of sort descriptors, or `nil` to sort by relevance
+ * @return the search results
+ */
+- (id <BRSearchResults> )search:(NSString *)query withSortDescriptors:(nullable NSArray<id<BRSortDescriptor>> *)sorts;
+
+/**
  * Execute a search using a predicate, optionally sorting the results by a search document field.
  *
  * Predicates are constructed with field names as the left-hand expression, and the right-hand expression the constant
  * value to search for within that field. The supported comparison types is implementation specific, as is the support
  * for nested predicates and boolean predicates. Consult the documentation of the implementation for more information.
  *
+ * This is a convenience method for the more general `searchWithPredicate:sortDescriptors:` method.
+ *
+ * @param predicate the search predicate
  * @param sortFieldName the name of the search document field to order the matches by, or `nil` to sort by relevance
  * @param sortType the data type of the sort field (ignored if `sortFieldName` is `nil`)
  * @param ascending `YES` for ascending sort order, `NO` for descending (ignored if `sortFieldName` is `nil`)
@@ -311,6 +326,19 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
                                       sortBy:(nullable NSString *)sortFieldName
                                     sortType:(BRSearchSortType)sortType
                                    ascending:(BOOL)ascending;
+
+/**
+ * Execute a search using a predicate, optionally sorting the results by a search document field.
+ *
+ * Predicates are constructed with field names as the left-hand expression, and the right-hand expression the constant
+ * value to search for within that field. The supported comparison types is implementation specific, as is the support
+ * for nested predicates and boolean predicates. Consult the documentation of the implementation for more information.
+ *
+ * @param predicate the search predicate
+ * @param sorts the array of sort descriptors, or `nil` to sort by relevance
+ * @return the search results
+ */
+- (id <BRSearchResults> )searchWithPredicate:(NSPredicate *)predicate sortDescriptors:(nullable NSArray<id<BRSortDescriptor>> *)sorts;
 
 @end
 
