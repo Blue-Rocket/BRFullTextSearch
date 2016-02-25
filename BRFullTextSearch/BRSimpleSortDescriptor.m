@@ -8,6 +8,8 @@
 
 #import "BRSimpleSortDescriptor.h"
 
+#import "BRSearchFields.h"
+
 @implementation BRSimpleSortDescriptor {
 	NSString *sortFieldName;
 	BRSearchSortType sortType;
@@ -19,10 +21,10 @@
 @synthesize ascending;
 
 - (instancetype)init {
-	return [self initWithFieldName:nil type:BRSearchSortTypeString ascending:NO];
+	return [self initWithFieldName:kBRSearchFieldNameTimestamp type:BRSearchSortTypeString ascending:NO];
 }
 
-- (instancetype)initWithFieldName:(nullable NSString *)fieldName type:(BRSearchSortType)type ascending:(BOOL)asc {
+- (instancetype)initWithFieldName:(NSString *)fieldName type:(BRSearchSortType)type ascending:(BOOL)asc {
 	if ( (self = [super init]) ) {
 		sortFieldName = fieldName;
 		sortType = type;

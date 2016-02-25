@@ -8,6 +8,7 @@
 
 #import "BRTestSupport.h"
 
+#import "BRSearchFields.h"
 #import "BRSimpleSortDescriptor.h"
 
 @interface BRSimpleSortDescriptorTests : BRTestSupport
@@ -19,7 +20,7 @@
 - (void)testDefaultInit {
 	BRSimpleSortDescriptor *d = [[BRSimpleSortDescriptor alloc] init];
 	
-	XCTAssertNil(d.sortFieldName, @"default sort field empty");
+	XCTAssertEqualObjects(d.sortFieldName, kBRSearchFieldNameTimestamp, @"default sort by timestamp");
 	XCTAssertEqual(d.sortType, BRSearchSortTypeString, @"default sort type");
 	XCTAssertFalse(d.ascending, @"default descending order");
 }

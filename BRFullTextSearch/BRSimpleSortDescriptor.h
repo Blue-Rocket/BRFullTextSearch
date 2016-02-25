@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Initialize with settings.
  
- @param fieldName The field name to sort by, or \c nil to search by some implementation-defined relevance.
+ @param fieldName The field name to sort by.
  @param type      The type of sort to apply.
  @param ascending YES for ascending, NO for descending order.
  
  @return The initialized instance.
  */
-- (instancetype)initWithFieldName:(nullable NSString *)fieldName
+- (instancetype)initWithFieldName:(NSString *)fieldName
 							 type:(BRSearchSortType)type
 						ascending:(BOOL)ascending NS_DESIGNATED_INITIALIZER;
 

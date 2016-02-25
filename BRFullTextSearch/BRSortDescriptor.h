@@ -40,8 +40,8 @@ typedef NS_ENUM (unsigned int, BRSearchSortType) {
  */
 @protocol BRSortDescriptor <NSObject>
 
-/** The name of the search document field to order the matches by, or \c nil to sort by relevance. */
-@property (nonatomic, readonly, nullable) NSString *sortFieldName;
+/** The name of the search document field to order the matches by. */
+@property (nonatomic, readonly) NSString *sortFieldName;
 
 /** The type of sort to use. */
 @property (nonatomic, readonly) BRSearchSortType sortType;
