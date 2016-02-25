@@ -403,6 +403,7 @@
 		C909C67D1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */; };
 		C909C6801784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
 		C909C6811784DCD60016C25E /* NSDateComponents+BRFullTextSearchAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */; };
+		C90B75131C7E99CA00014124 /* BRSimpleSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B75121C7E99CA00014124 /* BRSimpleSortDescriptor.m */; };
 		C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C9575E821A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C96985F71AD6719E00B26977 /* SnowballPrefixFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */; };
@@ -866,6 +867,9 @@
 		C909C67B1784DBD30016C25E /* NSTimeZone+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimeZone+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
 		C909C67E1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateComponents+BRFullTextSearchAdditions.h"; sourceTree = "<group>"; };
 		C909C67F1784DCD50016C25E /* NSDateComponents+BRFullTextSearchAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateComponents+BRFullTextSearchAdditions.m"; sourceTree = "<group>"; };
+		C90B75101C7E97EA00014124 /* BRSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSortDescriptor.h; sourceTree = "<group>"; };
+		C90B75111C7E99CA00014124 /* BRSimpleSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleSortDescriptor.h; sourceTree = "<group>"; };
+		C90B75121C7E99CA00014124 /* BRSimpleSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleSortDescriptor.m; sourceTree = "<group>"; };
 		C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = BRFullTextSearch.podspec; sourceTree = SOURCE_ROOT; };
 		C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CLuceneAdditions.mm"; sourceTree = "<group>"; };
@@ -961,6 +965,7 @@
 				C909C6541784D4B70016C25E /* BRSearchResults.h */,
 				C909C6551784D4B70016C25E /* BRSearchService.h */,
 				C9F87C3D17D94AA700485FAE /* BRSearchService.m */,
+				C90B75101C7E97EA00014124 /* BRSortDescriptor.h */,
 				C909C64F1784D3890016C25E /* CLucene */,
 				C97940EF178601D200DF0660 /* Support */,
 				C909C6821784FAD60016C25E /* Utilities */,
@@ -1629,6 +1634,8 @@
 			children = (
 				C97940F01786022900DF0660 /* BRSimpleIndexable.h */,
 				C97940F11786022900DF0660 /* BRSimpleIndexable.m */,
+				C90B75111C7E99CA00014124 /* BRSimpleSortDescriptor.h */,
+				C90B75121C7E99CA00014124 /* BRSimpleSortDescriptor.m */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -1842,6 +1849,7 @@
 				C909C5631784CF0A0016C25E /* FieldCacheImpl.cpp in Sources */,
 				C909C5651784CF0A0016C25E /* FieldDocSortedHitQueue.cpp in Sources */,
 				C909C5671784CF0A0016C25E /* FieldSortedHitQueue.cpp in Sources */,
+				C90B75131C7E99CA00014124 /* BRSimpleSortDescriptor.m in Sources */,
 				C909C5691784CF0A0016C25E /* FilteredTermEnum.cpp in Sources */,
 				C909C56D1784CF0A0016C25E /* FuzzyQuery.cpp in Sources */,
 				C909C56F1784CF0A0016C25E /* HitQueue.cpp in Sources */,
