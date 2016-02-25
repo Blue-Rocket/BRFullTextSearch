@@ -13,31 +13,9 @@
 #import "BRSearchFields.h"
 #import "BRSearchResult.h"
 #import "BRSearchResults.h"
+#import "BRSortDescriptor.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/**
- * A search result field value sort type.
- *
- * When sorting search results by a particular field, all field values are assumed to
- * have the same data type, as specified by these constants.
- */
-typedef NS_ENUM (unsigned int, BRSearchSortType) {
-	/** Sort based on lexicographical order of field values. */
-	BRSearchSortTypeString = 0,
-
-	/** Sort based on integer order of field values. */
-	BRSearchSortTypeInteger,
-
-	/** Sort based on floating point order of field values. */
-	BRSearchSortTypeFloat,
-};
-
-#ifdef __cplusplus
-}
-#endif
+NS_ASSUME_NONNULL_BEGIN
 
 /** A `NSError` domain for search services to use. */
 extern NSString *const BRSearchServiceErrorDomain;
@@ -68,7 +46,7 @@ extern NSString * const BRSearchServiceQueryParsingException;
  *
  * @param error an error, or `nil` if no error occurred
  */
-typedef void (^BRSearchServiceCallbackBlock)(NSError *error);
+typedef void (^BRSearchServiceCallbackBlock)(NSError * _Nullable error);
 
 /**
  * An update operation completion block callback.
@@ -76,7 +54,7 @@ typedef void (^BRSearchServiceCallbackBlock)(NSError *error);
  * @param updateCount the number of updates that occurred
  * @param error an error, or `nil` if no error occurred
  */
-typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *error);
+typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError * _Nullable error);
 
 /**
  * API for a service supporting both indexing documents and executing queries to find matches to those documents.
@@ -109,7 +87,7 @@ typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *err
  * @param finishedQueue the dispatch queue to execute the completion block on, or `NULL` for an arbitrary global queue
  * @param finished a block to execute after adding the object to the index, or `NULL`
  */
-- (void)addObjectToIndex:(id <BRIndexable> )object queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished;
+- (void)addObjectToIndex:(id <BRIndexable> )object queue:(nullable dispatch_queue_t)finishedQueue finished:(nullable BRSearchServiceCallbackBlock)finished;
 
 /**
  * Add an array of objects to the index.
@@ -121,7 +99,7 @@ typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *err
  * @param finishedQueue the dispatch queue to execute the completion block on, or `NULL` for an arbitrary global queue
  * @param finished a block to execute after adding the object to the index, or `NULL`
  */
-- (void)addObjectsToIndex:(NSArray *)objects queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceCallbackBlock)finished;
+- (void)addObjectsToIndex:(NSArray *)objects queue:(nullable dispatch_queue_t)finishedQueue finished:(nullable BRSearchServiceCallbackBlock)finished;
 
 /**
  * Add a single object to the index on the current thread.
@@ -161,8 +139,8 @@ typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *err
  */
 - (void)removeObjectsFromIndex:(BRSearchObjectType)type
                withIdentifiers:(NSSet *)identifiers
-                         queue:(dispatch_queue_t)finishedQueue
-                      finished:(BRSearchServiceUpdateCallbackBlock)finished;
+                         queue:(nullable dispatch_queue_t)finishedQueue
+                      finished:(nullable BRSearchServiceUpdateCallbackBlock)finished;
 
 /**
  * Remove a set of objects of the same type based on their unique identifiers on the current thread.
@@ -187,8 +165,8 @@ typedef void (^BRSearchServiceUpdateCallbackBlock)(int updateCount, NSError *err
  * @see searchWithPredicate:sortBy:sortType:ascending: for a discussion on predicate queries
  */
 - (void)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
-                                          queue:(dispatch_queue_t)finishedQueue
-                                       finished:(BRSearchServiceUpdateCallbackBlock)finished;
+                                          queue:(nullable dispatch_queue_t)finishedQueue
+                                       finished:(nullable BRSearchServiceUpdateCallbackBlock)finished;
 
 /**
  * Remove a set of documents from the search index that match a predicate query, on the current thread.
@@ -228,7 +206,7 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
  * @param finishedQueue the dispatch queue to execute the completion block on, or `NULL` for an arbitrary global queue
  * @param finished a block to execute after the bulk operations are complete, or `NULL`
  */
-- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(dispatch_queue_t)finishedQueue finished:(BRSearchServiceUpdateCallbackBlock)finished;
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock queue:(nullable dispatch_queue_t)finishedQueue finished:(nullable BRSearchServiceUpdateCallbackBlock)finished;
 
 /**
  * Perform a batch set of index update operations on the current thread.
@@ -310,9 +288,10 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
  * @param sortFieldName the name of the search document field to order the matches by, or `nil` to sort by relevance
  * @param sortType the data type of the sort field (ignored if `sortFieldName` is `nil`)
  * @param ascending `YES` for ascending sort order, `NO` for descending (ignored if `sortFieldName` is `nil`)
+ * @return the search results
  */
 - (id <BRSearchResults> )search:(NSString *)query
-                         sortBy:(NSString *)sortFieldName
+                         sortBy:(nullable NSString *)sortFieldName
                        sortType:(BRSearchSortType)sortType
                       ascending:(BOOL)ascending;
 
@@ -326,10 +305,13 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
  * @param sortFieldName the name of the search document field to order the matches by, or `nil` to sort by relevance
  * @param sortType the data type of the sort field (ignored if `sortFieldName` is `nil`)
  * @param ascending `YES` for ascending sort order, `NO` for descending (ignored if `sortFieldName` is `nil`)
+ * @return the search results
  */
 - (id <BRSearchResults> )searchWithPredicate:(NSPredicate *)predicate
-                                      sortBy:(NSString *)sortFieldName
+                                      sortBy:(nullable NSString *)sortFieldName
                                     sortType:(BRSearchSortType)sortType
                                    ascending:(BOOL)ascending;
 
 @end
+
+NS_ASSUME_NONNULL_END
