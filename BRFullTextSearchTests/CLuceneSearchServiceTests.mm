@@ -9,6 +9,7 @@
 #import "CLuceneSearchServiceTests.h"
 
 #import "BRSimpleIndexable.h"
+#import "BRSimpleSortDescriptor.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
 #import "CLuceneSearchService.h"
@@ -416,6 +417,76 @@
 	XCTAssertEqual(count, (NSUInteger)3, @"results iterated");
 }
 
+- (TestIndexable *)createTestIndexable:(NSString *)identifier {
+	NSDictionary *data = @{
+						   kBRSearchFieldNameTitle : @"My special note",
+						   kBRSearchFieldNameValue : @"This is a long winded note with really important details in it."
+						   };
+	return [[TestIndexable alloc] initWithIdentifier:identifier data:data];
+}
+
+- (void)testSearchResultsMultipleSortDescriptors {
+	TestIndexable *n0 = [self createTestIndexable:@"0"];
+	n0.date = [n0.date dateByAddingTimeInterval:(60 * 60 * 24 * -1)]; // n0 = yesterday
+	n0.tags = @[@"A", @"B"];
+	TestIndexable *n1 = [self createTestIndexable:@"1"];
+	n1.title = @"My other fancy note.";
+	n1.date = [[NSDate new] dateByAddingTimeInterval:-60];            // n1 = 1 min ago
+	n1.tags = @[@"B"];
+	TestIndexable *n2 = [self createTestIndexable:@"2"];
+	n2.title = @"My pretty note.";
+	n2.date = [NSDate new];                                           // n2 & n3 = right now
+	n2.tags = @[@"C"];
+	TestIndexable *n3 = [self createTestIndexable:@"3"];
+	n3.title = @"My super note.";
+	n3.date = n2.date;
+	n3.tags = @[@"D"];
+	
+	[searchService addObjectsToIndexAndWait:@[n0, n1, n2, n3] error:nil];
+	
+	NSArray<id<BRSortDescriptor>> *sorts;
+	NSArray<NSString *> *expectedResultOrder;
+	id<BRSearchResults> sorted;
+ 
+	// we will sort descending by date (get newest first) followed by ascending by tag
+	expectedResultOrder = @[n2.uid, n3.uid, n1.uid, n0.uid];
+
+	sorts = @[
+			  [[BRSimpleSortDescriptor alloc] initWithFieldName:kBRSearchFieldNameTimestamp type:BRSearchSortTypeString ascending:NO],
+			  [[BRSimpleSortDescriptor alloc] initWithFieldName:kBRTestIndexableSearchFieldNameTags type:BRSearchSortTypeString ascending:YES],
+			  ];
+
+	sorted = [searchService search:@"note" withSortDescriptors:sorts];
+	
+	XCTAssertEqual([sorted count], expectedResultOrder.count, @"sorted count");
+	__block NSUInteger count = 0;
+	[sorted iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		XCTAssertEqual(index, count, @"index matches expected count");
+		XCTAssertEqualObjects(result.identifier, expectedResultOrder[count], @"result %lu", (unsigned long)count);
+		count++;
+	}];
+	XCTAssertEqual(count, expectedResultOrder.count, @"results iterated");
+
+	// we will sort ascending by date (get oldest first) followed by descending by tag
+	expectedResultOrder = @[n0.uid, n1.uid, n3.uid, n2.uid];
+	
+	sorts = @[
+			  [[BRSimpleSortDescriptor alloc] initWithFieldName:kBRSearchFieldNameTimestamp type:BRSearchSortTypeString ascending:YES],
+			  [[BRSimpleSortDescriptor alloc] initWithFieldName:kBRTestIndexableSearchFieldNameTags type:BRSearchSortTypeString ascending:NO],
+			  ];
+
+	sorted = [searchService search:@"note" withSortDescriptors:sorts];
+	
+	XCTAssertEqual([sorted count], expectedResultOrder.count, @"sorted count");
+	count = 0;
+	[sorted iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		XCTAssertEqual(index, count, @"index matches expected count");
+		XCTAssertEqualObjects(result.identifier, expectedResultOrder[count], @"result %lu", (unsigned long)count);
+		count++;
+	}];
+	XCTAssertEqual(count, expectedResultOrder.count, @"results iterated");
+}
+
 - (void)testSearchResultsGroupedByDay {
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
 	n0.date = [n0.date dateByAddingTimeInterval:(60 * 60 * 24 * -1)]; // offset dates to test grouping
@@ -451,12 +522,15 @@
 
 - (void)testIndexNothing {
 	// test that API doesn't freak out from empty input
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
 	[searchService addObjectToIndexAndWait:nil error:nil];
 	[searchService addObjectToIndex:nil queue:NULL finished:NULL];
 	[searchService addObjectsToIndexAndWait:nil error:nil];
 	[searchService addObjectsToIndexAndWait:[NSArray new] error:nil];
 	[searchService addObjectsToIndex:nil queue:NULL finished:NULL];
 	[searchService addObjectsToIndex:[NSArray new] queue:NULL finished:NULL];
+#pragma clang diagnostic pop
 }
 
 - (void)testUpdateDocument {
@@ -970,10 +1044,13 @@
 
 - (void)testDeleteNothing {
 	// test that API doesn't freak out from empty sets
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnonnull"
 	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:nil error:nil];
 	[searchService removeObjectsFromIndexAndWait:'?' withIdentifiers:[NSSet new] error:nil];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:nil queue:NULL finished:NULL];
 	[searchService removeObjectsFromIndex:'?' withIdentifiers:[NSSet new] queue:NULL finished:NULL];
+#pragma clang diagnostic pop
 }
 
 - (void)testBulkDeleteInclusiveRange {
