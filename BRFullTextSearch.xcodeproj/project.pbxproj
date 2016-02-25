@@ -220,6 +220,7 @@
 		C90B75291C7EA32800014124 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2921784CC380016C25E /* libstdc++.dylib */; };
 		C90B752A1C7EA32B00014124 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2901784CC320016C25E /* libz.dylib */; };
 		C90B752B1C7EA3C000014124 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C97940F61786240100DF0660 /* stop-words.txt */; };
+		C90B752D1C7EA44900014124 /* BRSimpleSortDescriptorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B752C1C7EA44900014124 /* BRSimpleSortDescriptorTests.m */; };
 		C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C99FCBF01846746E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
@@ -674,6 +675,7 @@
 		C90B75181C7EA00D00014124 /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90B751C1C7EA00D00014124 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C90B75271C7EA30600014124 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		C90B752C1C7EA44900014124 /* BRSimpleSortDescriptorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleSortDescriptorTests.m; sourceTree = "<group>"; };
 		C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = BRFullTextSearch.podspec; sourceTree = SOURCE_ROOT; };
 		C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSData+CLuceneAdditions.mm"; sourceTree = "<group>"; };
@@ -793,6 +795,7 @@
 			children = (
 				C97940E9178600C900DF0660 /* BRTestSupport.h */,
 				C97940EA178600C900DF0660 /* BRTestSupport.m */,
+				C90B752C1C7EA44900014124 /* BRSimpleSortDescriptorTests.m */,
 				C97940EC1786015200DF0660 /* CLuceneSearchServiceTests.h */,
 				C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */,
 				C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */,
@@ -1747,6 +1750,7 @@
 			files = (
 				C90B75251C7EA04700014124 /* NSDate_BRFullTextSearchAdditionsTests.m in Sources */,
 				C90B75231C7EA04000014124 /* BRTestSupport.m in Sources */,
+				C90B752D1C7EA44900014124 /* BRSimpleSortDescriptorTests.m in Sources */,
 				C90B75241C7EA04300014124 /* CLuceneSearchServiceTests.mm in Sources */,
 				C90B75261C7EA04B00014124 /* TestIndexable.m in Sources */,
 			);
