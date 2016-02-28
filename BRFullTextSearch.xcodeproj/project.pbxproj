@@ -883,6 +883,7 @@
 		C9A68F3D1BCB6376003E6AE1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 		C9AE054317E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDate_BRFullTextSearchAdditionsTests.h; sourceTree = "<group>"; };
 		C9AE054417E149E4006527D0 /* NSDate_BRFullTextSearchAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDate_BRFullTextSearchAdditionsTests.m; sourceTree = "<group>"; };
+		C9B151CA1C838E9A007ED123 /* CLuceneSearchService+Subclassing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CLuceneSearchService+Subclassing.h"; sourceTree = "<group>"; };
 		C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SnowballPrefixFilter.cpp; sourceTree = "<group>"; };
 		C9D6EC201AD615FC006D23F4 /* SnowballPrefixFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnowballPrefixFilter.h; sourceTree = "<group>"; };
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
@@ -1599,6 +1600,7 @@
 				C909C6661784D5000016C25E /* CLuceneSearchResults.mm */,
 				C909C6671784D5000016C25E /* CLuceneSearchService.h */,
 				C909C6681784D5000016C25E /* CLuceneSearchService.mm */,
+				C9B151CA1C838E9A007ED123 /* CLuceneSearchService+Subclassing.h */,
 				C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */,
 				C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */,
 				C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */,

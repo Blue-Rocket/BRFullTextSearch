@@ -16,6 +16,7 @@
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "CLuceneSearchService+Subclassing.h"
 #import "NSData+CLuceneAdditions.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
@@ -192,6 +193,10 @@ using namespace lucene::store;
 		defaultAnalyzer.reset([self analyzerForLanguage:defaultAnalyzerLanguage].release());
 	}
 	return defaultAnalyzer.get();
+}
+
+- (void)setDefaultAnalyer:(std::auto_ptr<Analyzer>)analyzer {
+	defaultAnalyzer = analyzer;
 }
 
 #pragma mark - Supporting API
