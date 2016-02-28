@@ -1090,4 +1090,20 @@
 	[self assertSearchResults:results matchingIdentifiers:@[n0.uid] msg:@"'This' matches becaues of case"];
 }
 
+- (void)testCustomGeneralTextFields {
+	searchService.generalTextFields = @[kBRSearchFieldNameValue]; // make value, not title, default general search field
+	
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
+	
+	id<BRSearchResults> results;
+	
+	results = [searchService search:@"special"];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"'special' doesn't match because title not default general field"];
+	
+	results = [searchService search:@"t:special"];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid] msg:@"'special:t' matches because of explicit title field"];
+}
+
 @end
