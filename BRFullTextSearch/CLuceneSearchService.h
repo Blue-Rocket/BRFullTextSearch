@@ -79,6 +79,23 @@
 @property (nonatomic, getter=isSupportStemmedPrefixSearches) BOOL supportStemmedPrefixSearches;
 
 /**
+ * An array of string field names that should be treated as the _default_ tokenized text fields to search
+ * when parsing query strings in the `search:` method to determine the _default_ field to use for
+ * unprefixed search terms. This is **not** used by the predicate based search methods. You can still
+ * explicitly specify the field to search for a query term by prefixing the term with the field name and
+ * a colon.
+ *
+ * For example, by default a search for the phrase `special` will be parsed into the query `t:special OR v:special`.
+ * If you configured this property with a single field name `z` the same phrase will be parsed into the
+ * query `z:special`.
+ * 
+ * Defaults to an array with the `kBRSearchFieldNameTitle` (**t**) and `kBRSearchFieldNameValue` (**v**) field names.
+ * 
+ * @since 1.0.11
+ */
+@property (nonatomic, copy) NSArray<NSString *> *generalTextFields;
+
+/**
  * Init the search service with a given path to use to store the index files.
  *
  * @param indexPath a directory in which to write the CLucene index files in

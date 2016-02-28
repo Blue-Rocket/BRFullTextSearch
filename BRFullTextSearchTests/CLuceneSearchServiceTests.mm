@@ -8,12 +8,15 @@
 
 #import "CLuceneSearchServiceTests.h"
 
+#import <memory>
 #import "BRSimpleIndexable.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
-#import "CLuceneSearchService.h"
+#import "CLuceneSearchService+Subclassing.h"
 #import "NSDate+BRFullTextSearchAdditions.h"
 #import "TestIndexable.h"
+
+#import "CLucene/analysis/Analyzers.h"
 
 @implementation CLuceneSearchServiceTests {
 	CLuceneSearchService *searchService;
@@ -1060,6 +1063,47 @@
 
 	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
 	[self assertSearchResults:results matchingIdentifiers:nil msg:@"o == ? && < s <"];
+}
+
+- (void)testCustomAnalyzer {
+	std::auto_ptr<Analyzer> wsAnalyzer(new lucene::analysis::WhitespaceAnalyzer());
+	[searchService setDefaultAnalyer:wsAnalyzer];
+	
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	n0.title = @"This note is tokenized on white-space only.";
+	n0.value = nil;
+	
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
+	
+	id<BRSearchResults> results;
+	
+	results = [searchService search:@"only"];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"'only' doesn't match because of period"];
+
+	results = [searchService search:@"only."];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid] msg:@"'only.' matches because of period"];
+
+	results = [searchService search:@"this"];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"'this' doesn't match because of case"];
+	
+	results = [searchService search:@"This"];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid] msg:@"'This' matches becaues of case"];
+}
+
+- (void)testCustomGeneralTextFields {
+	searchService.generalTextFields = @[kBRSearchFieldNameValue]; // make value, not title, default general search field
+	
+	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
+	
+	[searchService addObjectsToIndexAndWait:@[n0] error:nil];
+	
+	id<BRSearchResults> results;
+	
+	results = [searchService search:@"special"];
+	[self assertSearchResults:results matchingIdentifiers:nil msg:@"'special' doesn't match because title not default general field"];
+	
+	results = [searchService search:@"t:special"];
+	[self assertSearchResults:results matchingIdentifiers:@[n0.uid] msg:@"'special:t' matches because of explicit title field"];
 }
 
 @end

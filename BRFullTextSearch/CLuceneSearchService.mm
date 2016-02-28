@@ -16,6 +16,7 @@
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "CLuceneSearchService+Subclassing.h"
 #import "NSData+CLuceneAdditions.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
@@ -42,7 +43,7 @@ using namespace lucene::store;
 
 @implementation CLuceneSearchService {
 	NSString *indexPath;
-	NSArray *generalTextFields;
+	NSArray<NSString *> *generalTextFields;
 	NSInteger indexUpdateOptimizeThreshold;
 	Directory *dir;
 	std::auto_ptr<Analyzer> defaultAnalyzer;
@@ -53,6 +54,7 @@ using namespace lucene::store;
 
 @synthesize indexUpdateOptimizeThreshold;
 @synthesize bundle, defaultAnalyzerLanguage;
+@synthesize generalTextFields;
 @synthesize indexPath;
 
 - (id)init {
@@ -192,6 +194,10 @@ using namespace lucene::store;
 		defaultAnalyzer.reset([self analyzerForLanguage:defaultAnalyzerLanguage].release());
 	}
 	return defaultAnalyzer.get();
+}
+
+- (void)setDefaultAnalyer:(std::auto_ptr<Analyzer>)analyzer {
+	defaultAnalyzer = analyzer;
 }
 
 #pragma mark - Supporting API
