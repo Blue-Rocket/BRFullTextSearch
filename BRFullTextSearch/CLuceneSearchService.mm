@@ -12,6 +12,7 @@
 #import "CLucene/_ApiHeader.h"
 #import "ConstantScoreQuery.h"
 #import "BRNoLockFactory.h"
+#import "BRSimpleSortDescriptor.h"
 #import "BRSnowballAnalyzer.h"
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
@@ -700,20 +701,22 @@ using namespace lucene::store;
 	}
 }
 
-- (id<BRSearchResults>)searchWithQuery:(std::auto_ptr<Query>)query
-							  sortBy:(NSString *)sortFieldName
-							sortType:(BRSearchSortType)sortType
-						   ascending:(BOOL)ascending {
+- (id<BRSearchResults>)searchWithQuery:(std::auto_ptr<Query>)query sortDescriptors:(nullable NSArray<id<BRSortDescriptor>> *)sortDescriptors {
 	std::tr1::shared_ptr<Searcher> s = [self searcher];
-	if ( sortFieldName != nil ) {
-		SortField *sortField = new SortField([sortFieldName asCLuceneString], (sortType == BRSearchSortTypeInteger
-															  ? SortField::INT
-															  : SortField::STRING), !ascending);
+	if ( sortDescriptors != nil ) {
+		std::vector<SortField *> sortFields;
+		for ( id<BRSortDescriptor> desc in sortDescriptors ) {
+			SortField *sortField = new SortField([desc.sortFieldName asCLuceneString], (desc.sortType == BRSearchSortTypeInteger
+																						? SortField::INT
+																						: SortField::STRING), !desc.ascending);
+			sortFields.push_back(sortField);
+		}
 		
 		// this ensures we have consistent results of sortField has duplicate values
-		SortField *docField = (ascending ? SortField::FIELD_DOC() : new SortField(NULL, SortField::DOC, true));
-		SortField *fields[] = {sortField, docField, NULL}; // requires NULL last element
-		std::auto_ptr<Sort> sort(new Sort(fields)); // assumes ownership of fields
+		SortField *docFieldSort = new SortField(NULL, SortField::DOC, ![sortDescriptors firstObject].ascending);
+		sortFields.push_back(docFieldSort);
+		sortFields.push_back(NULL); // requires NULL last element
+		std::auto_ptr<Sort> sort(new Sort(&sortFields[0])); // assumes ownership of fields
 		std::auto_ptr<Hits> hits(s->search(query.get(), sort.get()));
 		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
 	}
@@ -723,9 +726,17 @@ using namespace lucene::store;
 }
 
 - (id<BRSearchResults>)search:(NSString *)query
-					 sortBy:(NSString *)sortFieldName
-				   sortType:(BRSearchSortType)sortType
-				  ascending:(BOOL)ascending {
+					   sortBy:(nullable NSString *)sortFieldName
+					 sortType:(BRSearchSortType)sortType
+					ascending:(BOOL)ascending {
+	NSArray<id<BRSortDescriptor>> *sorts = nil;
+	if ( sortFieldName.length > 0 ) {
+		sorts = @[[[BRSimpleSortDescriptor alloc] initWithFieldName:sortFieldName type:sortType ascending:ascending]];
+	}
+	return [self search:query withSortDescriptors:sorts];
+}
+
+- (id<BRSearchResults>)search:(NSString *)query withSortDescriptors:(NSArray<id<BRSortDescriptor>> *)sorts {
 	if ( [query length] < 1 ) {
 		return nil;
 	}
@@ -739,7 +750,7 @@ using namespace lucene::store;
 			NSLog(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
 	}
-	return [self searchWithQuery:rootQuery sortBy:sortFieldName sortType:sortType ascending:ascending];
+	return [self searchWithQuery:rootQuery sortDescriptors:sorts];
 }
 
 #pragma mark - Predicate search API
@@ -949,9 +960,17 @@ using namespace lucene::store;
 									sortBy:(NSString *)sortFieldName
 								  sortType:(BRSearchSortType)sortType
 								 ascending:(BOOL)ascending {
+	NSArray<id<BRSortDescriptor>> *sorts = nil;
+	if ( sortFieldName.length > 0 ) {
+		sorts = @[[[BRSimpleSortDescriptor alloc] initWithFieldName:sortFieldName type:sortType ascending:ascending]];
+	}
+	return [self searchWithPredicate:predicate sortDescriptors:sorts];
+}
+
+- (id<BRSearchResults>)searchWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray<id<BRSortDescriptor>> *)sorts {
 	try {
 		std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer] parent:nil];
-		return [self searchWithQuery:query sortBy:sortFieldName sortType:sortType ascending:ascending];
+		return [self searchWithQuery:query sortDescriptors:sorts];
 	} catch ( const CLuceneError &err ) {
 		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : predicate}];
 	}

@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+	
 /** Search field constant for the search document unique identifier value (`id`). */
 extern NSString *const kBRSearchFieldNameIdentifier;
 
@@ -48,6 +50,8 @@ extern NSString *StringForBRSearchObjectType(BRSearchObjectType type);
  */
 extern BRSearchObjectType BRSearchObjectTypeForString(NSString *string);
 
+NS_ASSUME_NONNULL_END
+	
 #ifdef __cplusplus
 }
 #endif

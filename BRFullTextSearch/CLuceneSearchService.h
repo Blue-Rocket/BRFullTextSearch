@@ -31,6 +31,11 @@
  * [lucene::queryParser::QueryParser](http://clucene.sourceforge.net/doc/html/classlucene_1_1queryParser_1_1QueryParser.html#_details)
  * class is used.
  * 
+ * # Sorting
+ * 
+ * Lucene can only sort on fields that have a single term in them. Usually this means you are limited
+ * to sorting on untokenized fields only, for example timestamp fields.
+ * 
  * # Predicate query support
  * 
  * Predicate queries are fully supported, including nested predicates and boolean predicates.

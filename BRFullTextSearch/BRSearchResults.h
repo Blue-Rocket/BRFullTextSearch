@@ -10,6 +10,8 @@
 
 #import "BRSearchResult.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  * Block for iterating over search result matches.
  *
@@ -69,3 +71,6 @@ typedef void (^BRSearchServiceSearchResultsIterator)(NSUInteger index, id <BRSea
 - (NSArray *)resultsGroupedByDay:(NSString *)fieldName;
 
 @end
+
+NS_ASSUME_NONNULL_END
+

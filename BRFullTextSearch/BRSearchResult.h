@@ -10,6 +10,8 @@
 
 #import "BRSearchFields.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  * API for a search result match.
  *
@@ -32,7 +34,7 @@
  * @param fieldName the name of the field to get the value for
  * @return the value of the field, or `nil` if no value is available
  */
-- (id)valueForField:(NSString *)fieldName;
+- (nullable id)valueForField:(NSString *)fieldName;
 
 /**
  * Get the date components, in local time, for a timestamp field.
@@ -55,3 +57,5 @@
 - (NSDictionary *)dictionaryRepresentation;
 
 @end
+
+NS_ASSUME_NONNULL_END
