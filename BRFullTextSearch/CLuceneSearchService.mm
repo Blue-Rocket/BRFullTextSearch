@@ -770,8 +770,10 @@ using namespace lucene::store;
 				}
 				QueryParser parser([[lhs keyPath] asCLuceneString], theAnalyzer);
 				try {
-					Query *q = parser.parse([rhs constantValueCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
+					TCHAR *query = QueryParser::escape([rhs constantValueCLuceneString]);
+					Query *q = parser.parse(query, [[lhs keyPath] asCLuceneString], theAnalyzer);
 					result.reset(q);
+					_CLDELETE_CARRAY(query);
 				} catch ( CLuceneError &ex ) {
 					NSLog(@"Error %d parsing query [%@]: %@", ex.number(), [lhs keyPath], [NSString stringWithCLuceneString:ex.twhat()]);
 				}

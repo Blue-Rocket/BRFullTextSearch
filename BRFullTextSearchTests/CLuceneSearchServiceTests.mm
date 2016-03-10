@@ -640,6 +640,24 @@
 	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
 }
 
+- (void)testSearchWithEscapedPredicate {
+	BRSimpleIndexable *n = [self createTestIndexableInstance];
+	[searchService addObjectToIndexAndWait:n error:nil];
+	NSString *nID = n.uid;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"t like %@", @"-special"]; // the "-" will be escaped and then parsed out of term
+	
+	id<BRSearchResults> results = [searchService searchWithPredicate:predicate sortBy:kBRSearchFieldNameTimestamp sortType:BRSearchSortTypeString ascending:YES];
+	XCTAssertEqual([results count], (NSUInteger)1, @"results count");
+	XCTAssertTrue([results isKindOfClass:[CLuceneSearchResults class]], @"Results must be CLuceneSearchResults");
+	__block NSUInteger count = 0;
+	[results iterateWithBlock:^(NSUInteger index, id<BRSearchResult>result, BOOL *stop) {
+		count++;
+		XCTAssertTrue([result isKindOfClass:[CLuceneSearchResult class]], @"Results must be LuceneBRSimpleIndexableSearchResult");
+		XCTAssertEqualObjects([result identifier], nID, @"object ID");
+	}];
+	XCTAssertEqual(count, (NSUInteger)1, @"results iterated");
+}
+
 - (void)testSearchWithCompoundPredicate {
 	BRSimpleIndexable *n0 = [self createTestIndexableInstance];
 	BRSimpleIndexable *n1 = [self createTestIndexableInstance];
