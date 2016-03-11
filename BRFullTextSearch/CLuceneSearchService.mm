@@ -141,19 +141,23 @@ using namespace lucene::store;
 #pragma mark - Accessors
 
 - (std::tr1::shared_ptr<Searcher>)searcher {
-	if ( searcher.get() == NULL ) {
-		// create the index directory, if it doesn't already exist
-		BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
-		if ( create ) {
-			// create modifier now, which will create the index if it doesn't exist
-			dispatch_sync(IndexWriteQueue, ^{
-				IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
-				modifier.close();
-			});
+	std::tr1::shared_ptr<Searcher> s = searcher;
+	if ( s.get() == NULL ) {
+		@synchronized(self) {
+			// create the index directory, if it doesn't already exist
+			BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
+			if ( create ) {
+				dispatch_sync(IndexWriteQueue, ^{
+					// create modifier now, which will create the index if it doesn't exist
+					IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
+					modifier.close();
+				});
+			}
+			s.reset(new IndexSearcher(dir));
+			searcher = s;
 		}
-		searcher.reset(new IndexSearcher(dir));
 	}
-	return searcher;
+	return s;
 }
 
 - (std::auto_ptr<Analyzer>)analyzerForLanguage:(NSString *)lang {
@@ -239,7 +243,6 @@ using namespace lucene::store;
 
 - (void)resetSearcher {
 	if ( searcher.get() != NULL ) {
-		searcher->close();
 		searcher.reset();
 	}
 }
@@ -674,10 +677,11 @@ using namespace lucene::store;
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
 			rootQuery.get()->add(q, true, BooleanClause::SHOULD);
 		}
-		std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
+		std::tr1::shared_ptr<Searcher> s = [self searcher];
+		std::auto_ptr<Hits> hits(s->search(rootQuery.get()));
 		std::auto_ptr<Sort> sort;
 		std::auto_ptr<Query> resultQuery(rootQuery);
-		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:[self searcher]];
+		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:s];
 	} catch ( const CLuceneError &err ) {
 		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : query}];
 	}
@@ -687,8 +691,9 @@ using namespace lucene::store;
 	NSString *idValue = [self idValueForType:type identifier:identifier];
 	try {
 		Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
+		std::tr1::shared_ptr<Searcher> s = [self searcher];
 		std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm));
-		std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
+		std::auto_ptr<Hits> hits(s->search(idQuery.get()));
 		CLuceneSearchResult *result = nil;
 		if ( hits->length() > 0 ) {
 			// return first match, taking owning the Hits pointer
