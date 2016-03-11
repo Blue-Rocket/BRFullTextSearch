@@ -141,19 +141,23 @@ using namespace lucene::store;
 #pragma mark - Accessors
 
 - (std::tr1::shared_ptr<Searcher>)searcher {
-	if ( searcher.get() == NULL ) {
-		// create the index directory, if it doesn't already exist
-		BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
-		if ( create ) {
-			// create modifier now, which will create the index if it doesn't exist
-			dispatch_sync(IndexWriteQueue, ^{
-				IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
-				modifier.close();
-			});
+	std::tr1::shared_ptr<Searcher> s = searcher;
+	if ( s.get() == NULL ) {
+		@synchronized(self) {
+			// create the index directory, if it doesn't already exist
+			BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
+			if ( create ) {
+				dispatch_sync(IndexWriteQueue, ^{
+					// create modifier now, which will create the index if it doesn't exist
+					IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
+					modifier.close();
+				});
+			}
+			s.reset(new IndexSearcher(dir));
+			searcher = s;
 		}
-		searcher.reset(new IndexSearcher(dir));
 	}
-	return searcher;
+	return s;
 }
 
 - (std::auto_ptr<Analyzer>)analyzerForLanguage:(NSString *)lang {
