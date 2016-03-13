@@ -12,10 +12,12 @@
 #import "CLucene/_ApiHeader.h"
 #import "ConstantScoreQuery.h"
 #import "BRNoLockFactory.h"
+#import "BRSimpleSortDescriptor.h"
 #import "BRSnowballAnalyzer.h"
 #import "CLuceneIndexUpdateContext.h"
 #import "CLuceneSearchResult.h"
 #import "CLuceneSearchResults.h"
+#import "CLuceneSearchService+Subclassing.h"
 #import "NSData+CLuceneAdditions.h"
 #import "NSExpression+CLuceneAdditions.h"
 #import "NSString+CLuceneAdditions.h"
@@ -42,7 +44,7 @@ using namespace lucene::store;
 
 @implementation CLuceneSearchService {
 	NSString *indexPath;
-	NSArray *generalTextFields;
+	NSArray<NSString *> *generalTextFields;
 	NSInteger indexUpdateOptimizeThreshold;
 	Directory *dir;
 	std::auto_ptr<Analyzer> defaultAnalyzer;
@@ -53,6 +55,7 @@ using namespace lucene::store;
 
 @synthesize indexUpdateOptimizeThreshold;
 @synthesize bundle, defaultAnalyzerLanguage;
+@synthesize generalTextFields;
 @synthesize indexPath;
 
 - (id)init {
@@ -138,19 +141,23 @@ using namespace lucene::store;
 #pragma mark - Accessors
 
 - (std::tr1::shared_ptr<Searcher>)searcher {
-	if ( searcher.get() == NULL ) {
-		// create the index directory, if it doesn't already exist
-		BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
-		if ( create ) {
-			// create modifier now, which will create the index if it doesn't exist
-			dispatch_sync(IndexWriteQueue, ^{
-				IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
-				modifier.close();
-			});
+	std::tr1::shared_ptr<Searcher> s = searcher;
+	if ( s.get() == NULL ) {
+		@synchronized(self) {
+			// create the index directory, if it doesn't already exist
+			BOOL create = ([CLuceneSearchService indexExistsAtPath:indexPath] == NO);
+			if ( create ) {
+				dispatch_sync(IndexWriteQueue, ^{
+					// create modifier now, which will create the index if it doesn't exist
+					IndexModifier modifier(dir, [self defaultAnalyzer], (bool)create);
+					modifier.close();
+				});
+			}
+			s.reset(new IndexSearcher(dir));
+			searcher = s;
 		}
-		searcher.reset(new IndexSearcher(dir));
 	}
-	return searcher;
+	return s;
 }
 
 - (std::auto_ptr<Analyzer>)analyzerForLanguage:(NSString *)lang {
@@ -194,6 +201,10 @@ using namespace lucene::store;
 	return defaultAnalyzer.get();
 }
 
+- (void)setDefaultAnalyer:(std::auto_ptr<Analyzer>)analyzer {
+	defaultAnalyzer = analyzer;
+}
+
 #pragma mark - Supporting API
 
 - (BOOL)isSupportStemmedPrefixSearches {
@@ -232,7 +243,6 @@ using namespace lucene::store;
 
 - (void)resetSearcher {
 	if ( searcher.get() != NULL ) {
-		searcher->close();
 		searcher.reset();
 	}
 }
@@ -667,10 +677,11 @@ using namespace lucene::store;
 			Query *q = parser.parse([query asCLuceneString], [fieldName asCLuceneString], [self defaultAnalyzer]);
 			rootQuery.get()->add(q, true, BooleanClause::SHOULD);
 		}
-		std::auto_ptr<Hits> hits([self searcher]->search(rootQuery.get()));
+		std::tr1::shared_ptr<Searcher> s = [self searcher];
+		std::auto_ptr<Hits> hits(s->search(rootQuery.get()));
 		std::auto_ptr<Sort> sort;
 		std::auto_ptr<Query> resultQuery(rootQuery);
-		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:[self searcher]];
+		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:resultQuery searcher:s];
 	} catch ( const CLuceneError &err ) {
 		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : query}];
 	}
@@ -680,8 +691,9 @@ using namespace lucene::store;
 	NSString *idValue = [self idValueForType:type identifier:identifier];
 	try {
 		Term *idTerm = new Term([kBRSearchFieldNameIdentifier asCLuceneString], [idValue asCLuceneString]);
+		std::tr1::shared_ptr<Searcher> s = [self searcher];
 		std::auto_ptr<TermQuery> idQuery(new TermQuery(idTerm));
-		std::auto_ptr<Hits> hits([self searcher]->search(idQuery.get()));
+		std::auto_ptr<Hits> hits(s->search(idQuery.get()));
 		CLuceneSearchResult *result = nil;
 		if ( hits->length() > 0 ) {
 			// return first match, taking owning the Hits pointer
@@ -694,20 +706,22 @@ using namespace lucene::store;
 	}
 }
 
-- (id<BRSearchResults>)searchWithQuery:(std::auto_ptr<Query>)query
-							  sortBy:(NSString *)sortFieldName
-							sortType:(BRSearchSortType)sortType
-						   ascending:(BOOL)ascending {
+- (id<BRSearchResults>)searchWithQuery:(std::auto_ptr<Query>)query sortDescriptors:(nullable NSArray<id<BRSortDescriptor>> *)sortDescriptors {
 	std::tr1::shared_ptr<Searcher> s = [self searcher];
-	if ( sortFieldName != nil ) {
-		SortField *sortField = new SortField([sortFieldName asCLuceneString], (sortType == BRSearchSortTypeInteger
-															  ? SortField::INT
-															  : SortField::STRING), !ascending);
+	if ( sortDescriptors != nil ) {
+		std::vector<SortField *> sortFields;
+		for ( id<BRSortDescriptor> desc in sortDescriptors ) {
+			SortField *sortField = new SortField([desc.sortFieldName asCLuceneString], (desc.sortType == BRSearchSortTypeInteger
+																						? SortField::INT
+																						: SortField::STRING), !desc.ascending);
+			sortFields.push_back(sortField);
+		}
 		
 		// this ensures we have consistent results of sortField has duplicate values
-		SortField *docField = (ascending ? SortField::FIELD_DOC() : new SortField(NULL, SortField::DOC, true));
-		SortField *fields[] = {sortField, docField, NULL}; // requires NULL last element
-		std::auto_ptr<Sort> sort(new Sort(fields)); // assumes ownership of fields
+		SortField *docFieldSort = new SortField(NULL, SortField::DOC, ![sortDescriptors firstObject].ascending);
+		sortFields.push_back(docFieldSort);
+		sortFields.push_back(NULL); // requires NULL last element
+		std::auto_ptr<Sort> sort(new Sort(&sortFields[0])); // assumes ownership of fields
 		std::auto_ptr<Hits> hits(s->search(query.get(), sort.get()));
 		return [[CLuceneSearchResults alloc] initWithHits:hits sort:sort query:query searcher:s];
 	}
@@ -717,9 +731,17 @@ using namespace lucene::store;
 }
 
 - (id<BRSearchResults>)search:(NSString *)query
-					 sortBy:(NSString *)sortFieldName
-				   sortType:(BRSearchSortType)sortType
-				  ascending:(BOOL)ascending {
+					   sortBy:(nullable NSString *)sortFieldName
+					 sortType:(BRSearchSortType)sortType
+					ascending:(BOOL)ascending {
+	NSArray<id<BRSortDescriptor>> *sorts = nil;
+	if ( sortFieldName.length > 0 ) {
+		sorts = @[[[BRSimpleSortDescriptor alloc] initWithFieldName:sortFieldName type:sortType ascending:ascending]];
+	}
+	return [self search:query withSortDescriptors:sorts];
+}
+
+- (id<BRSearchResults>)search:(NSString *)query withSortDescriptors:(NSArray<id<BRSortDescriptor>> *)sorts {
 	if ( [query length] < 1 ) {
 		return nil;
 	}
@@ -733,7 +755,7 @@ using namespace lucene::store;
 			NSLog(@"Error %d parsing query [%@]: %@", ex.number(), query, [NSString stringWithCLuceneString:ex.twhat()]);
 		}
 	}
-	return [self searchWithQuery:rootQuery sortBy:sortFieldName sortType:sortType ascending:ascending];
+	return [self searchWithQuery:rootQuery sortDescriptors:sorts];
 }
 
 #pragma mark - Predicate search API
@@ -764,8 +786,10 @@ using namespace lucene::store;
 				}
 				QueryParser parser([[lhs keyPath] asCLuceneString], theAnalyzer);
 				try {
-					Query *q = parser.parse([rhs constantValueCLuceneString], [[lhs keyPath] asCLuceneString], theAnalyzer);
+					TCHAR *query = QueryParser::escape([rhs constantValueCLuceneString]);
+					Query *q = parser.parse(query, [[lhs keyPath] asCLuceneString], theAnalyzer);
 					result.reset(q);
+					_CLDELETE_CARRAY(query);
 				} catch ( CLuceneError &ex ) {
 					NSLog(@"Error %d parsing query [%@]: %@", ex.number(), [lhs keyPath], [NSString stringWithCLuceneString:ex.twhat()]);
 				}
@@ -941,9 +965,17 @@ using namespace lucene::store;
 									sortBy:(NSString *)sortFieldName
 								  sortType:(BRSearchSortType)sortType
 								 ascending:(BOOL)ascending {
+	NSArray<id<BRSortDescriptor>> *sorts = nil;
+	if ( sortFieldName.length > 0 ) {
+		sorts = @[[[BRSimpleSortDescriptor alloc] initWithFieldName:sortFieldName type:sortType ascending:ascending]];
+	}
+	return [self searchWithPredicate:predicate sortDescriptors:sorts];
+}
+
+- (id<BRSearchResults>)searchWithPredicate:(NSPredicate *)predicate sortDescriptors:(NSArray<id<BRSortDescriptor>> *)sorts {
 	try {
 		std::auto_ptr<Query> query = [self queryForPredicate:predicate analyzer:[self defaultAnalyzer] parent:nil];
-		return [self searchWithQuery:query sortBy:sortFieldName sortType:sortType ascending:ascending];
+		return [self searchWithQuery:query sortDescriptors:sorts];
 	} catch ( const CLuceneError &err ) {
 		@throw [self exceptionForLuceneError:err userInfo:@{@"query" : predicate}];
 	}

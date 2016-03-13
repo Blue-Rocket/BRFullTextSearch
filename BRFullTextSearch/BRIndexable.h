@@ -10,6 +10,8 @@
 
 #import "BRSearchFields.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /** A search document original field value storage type. */
 typedef NS_ENUM (unsigned int, BRIndexableStorageType) {
 	/** Store the original field value in the index. Useful for tokenized or omitted field index types. */
@@ -58,7 +60,8 @@ typedef NS_ENUM (unsigned int, BRIndexableIndexType) {
  * Get the type of object this document represents.
  *
  * Search documents are uniquely identified by combining their `indexObjectType` **and**
- * `indexIdentifier` values.
+ * `indexIdentifier` values. The actual values used are arbitrary and application dependent.
+ * Simple applications might use a single value for all search documents.
  *
  * @return the type of object
  */
@@ -119,3 +122,5 @@ typedef NS_ENUM (unsigned int, BRIndexableIndexType) {
 - (BRIndexableIndexType)indexFieldIndexType:(NSString *)fieldName;
 
 @end
+
+NS_ASSUME_NONNULL_END

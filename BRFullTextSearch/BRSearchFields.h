@@ -10,6 +10,8 @@
 extern "C" {
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+	
 /** Search field constant for the search document unique identifier value (`id`). */
 extern NSString *const kBRSearchFieldNameIdentifier;
 
@@ -25,7 +27,7 @@ extern NSString *const kBRSearchFieldNameValue;
 /** Search field constant for a date value (`s`). */
 extern NSString *const kBRSearchFieldNameTimestamp;
 
-/** Type definition for a "type of" search object flag. */
+/** Type definition for a "type of" search object flag. Values are arbitrary and application dependent. */
 typedef char BRSearchObjectType;
 
 /**
@@ -48,6 +50,8 @@ extern NSString *StringForBRSearchObjectType(BRSearchObjectType type);
  */
 extern BRSearchObjectType BRSearchObjectTypeForString(NSString *string);
 
+NS_ASSUME_NONNULL_END
+	
 #ifdef __cplusplus
 }
 #endif
