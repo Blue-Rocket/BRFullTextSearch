@@ -227,7 +227,9 @@
 		C9D6EC231AD619B9006D23F4 /* SnowballPrefixFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9D6EC1F1AD615FC006D23F4 /* SnowballPrefixFilter.cpp */; };
 		C9E6137617C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */; };
 		C9F87C3E17D94AA700485FAE /* BRSearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F87C3D17D94AA700485FAE /* BRSearchService.m */; };
-		C9F87C3F17D94AA700485FAE /* BRSearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F87C3D17D94AA700485FAE /* BRSearchService.m */; };
+		E345D8FD1C9DEB77005733F5 /* BRSimpleSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B75121C7E99CA00014124 /* BRSimpleSortDescriptor.m */; };
+		E345D8FE1C9DEC4A005733F5 /* BRSimpleSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = C90B75111C7E99CA00014124 /* BRSimpleSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E345D8FF1C9DED7C005733F5 /* BRSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = C90B75101C7E97EA00014124 /* BRSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E38E8CBD1C6A5187000EB763 /* NSTimeZone+BRFullTextSearchAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C909C67A1784DBD20016C25E /* NSTimeZone+BRFullTextSearchAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E38E8CBE1C6A518F000EB763 /* BRSimpleIndexable.h in Headers */ = {isa = PBXBuildFile; fileRef = C97940F01786022900DF0660 /* BRSimpleIndexable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E38E8CBF1C6A518F000EB763 /* NSDate+BRFullTextSearchAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C909C6761784DB700016C25E /* NSDate+BRFullTextSearchAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -903,9 +905,7 @@
 		C90B75101C7E97EA00014124 /* BRSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSortDescriptor.h; sourceTree = "<group>"; };
 		C90B75111C7E99CA00014124 /* BRSimpleSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleSortDescriptor.h; sourceTree = "<group>"; };
 		C90B75121C7E99CA00014124 /* BRSimpleSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleSortDescriptor.m; sourceTree = "<group>"; };
-		C90B75181C7EA00D00014124 /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C90B751C1C7EA00D00014124 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C90B75271C7EA30600014124 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		C90B752C1C7EA44900014124 /* BRSimpleSortDescriptorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleSortDescriptorTests.m; sourceTree = "<group>"; };
 		C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = BRFullTextSearch.podspec; sourceTree = SOURCE_ROOT; };
 		C9575E7F1A97EDAF00394CDA /* NSData+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+CLuceneAdditions.h"; sourceTree = "<group>"; };
@@ -930,6 +930,7 @@
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSExpression+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 		C9F87C3D17D94AA700485FAE /* BRSearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSearchService.m; sourceTree = "<group>"; };
+		E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DF7E451C69A075005B861B /* BRFullTextSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BRFullTextSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DF7E471C69A075005B861B /* BRFullTextSearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRFullTextSearch.h; sourceTree = "<group>"; };
 		E3DF7E491C69A075005B861B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1004,8 +1005,8 @@
 			isa = PBXGroup;
 			children = (
 				C909C2611784CB600016C25E /* libBRFullTextSearch.a */,
-				C909C2721784CB600016C25E /* BRFullTextSearchTests.xctest */,
 				E3DF7E451C69A075005B861B /* BRFullTextSearch.framework */,
+				E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1877,6 +1878,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E345D8FF1C9DED7C005733F5 /* BRSortDescriptor.h in Headers */,
+				E345D8FE1C9DEC4A005733F5 /* BRSimpleSortDescriptor.h in Headers */,
 				E3DF7F731C69AD31005B861B /* BRIndexable.h in Headers */,
 				E38E8CC91C6A5194000EB763 /* NSString+CLuceneAdditions.h in Headers */,
 				E38E8CC31C6A5194000EB763 /* CLuceneIndexUpdateContext.h in Headers */,
@@ -1936,7 +1939,7 @@
 			);
 			name = BRFullTextSearchTests;
 			productName = BRFullTextSearchTests;
-			productReference = C90B75181C7EA00D00014124 /* BRFullTextSearchTests.xctest */;
+			productReference = E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		E3DF7E441C69A075005B861B /* BRFullTextSearch Mac OS */ = {
@@ -2324,6 +2327,7 @@
 				E3DF7ED31C69A394005B861B /* TermSpans.cpp in Sources */,
 				E3DF7EE11C69A39D005B861B /* BitSet.cpp in Sources */,
 				E3DF7EB81C69A38F005B861B /* MatchAllDocsQuery.cpp in Sources */,
+				E345D8FD1C9DEB77005733F5 /* BRSimpleSortDescriptor.m in Sources */,
 				E3DF7E741C69A37C005B861B /* DocumentsWriterThreadState.cpp in Sources */,
 				E3DF7E691C69A328005B861B /* StandardTokenizer.cpp in Sources */,
 				E3DF7ECE1C69A394005B861B /* SpanNotQuery.cpp in Sources */,
@@ -2943,6 +2947,7 @@
 				C90B75221C7EA00D00014124 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E3DF7E4C1C69A075005B861B /* Build configuration list for PBXNativeTarget "BRFullTextSearch Mac OS" */ = {
 			isa = XCConfigurationList;
