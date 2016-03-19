@@ -1,26 +1,26 @@
 PODS:
-  - BRFullTextSearch (1.0.9):
-    - BRFullTextSearch/Core (= 1.0.9)
-  - BRFullTextSearch/API (1.0.9)
-  - BRFullTextSearch/CLucene (1.0.9):
+  - BRFullTextSearch (1.0.10):
+    - BRFullTextSearch/Core (= 1.0.10)
+  - BRFullTextSearch/API (1.0.10)
+  - BRFullTextSearch/CLucene (1.0.10):
     - BRFullTextSearch/CLucene-Contribs-Lib
     - BRFullTextSearch/CLucene-Core
     - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Config (1.0.9)
-  - BRFullTextSearch/CLucene-Contribs-Lib (1.0.9):
+  - BRFullTextSearch/CLucene-Config (1.0.10)
+  - BRFullTextSearch/CLucene-Contribs-Lib (1.0.10):
     - BRFullTextSearch/CLucene-Core
     - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Core (1.0.9):
+  - BRFullTextSearch/CLucene-Core (1.0.10):
     - BRFullTextSearch/CLucene-Core-API
     - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Core-API (1.0.9):
+  - BRFullTextSearch/CLucene-Core-API (1.0.10):
     - BRFullTextSearch/CLucene-Config
-  - BRFullTextSearch/CLucene-Shared (1.0.9):
+  - BRFullTextSearch/CLucene-Shared (1.0.10):
     - BRFullTextSearch/CLucene-Core-API
-  - BRFullTextSearch/Core (1.0.9):
+  - BRFullTextSearch/Core (1.0.10):
     - BRFullTextSearch/API
     - BRFullTextSearch/Implementation-CLucene
-  - BRFullTextSearch/Implementation-CLucene (1.0.9):
+  - BRFullTextSearch/Implementation-CLucene (1.0.10):
     - BRFullTextSearch/API
     - BRFullTextSearch/CLucene
   - MagicalRecord (2.2):
@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  BRFullTextSearch: b62cbddbf828301e5e2403536044b58837fedf25
-  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+  BRFullTextSearch: 11eb51d09423cfbdab713ec3fbb221ad36e66239
+  MagicalRecord: 2dc87179ae7c1f2a274442624ec65a07d4357a6f
 
 COCOAPODS: 0.39.0
