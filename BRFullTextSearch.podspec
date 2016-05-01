@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "BRFullTextSearch"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "iOS Objective-C full text search engine."
   s.description  = <<-DESC
                    This project provides a way to integrate full-text search
@@ -16,7 +16,8 @@ Pod::Spec.new do |s|
   s.license      = "Apache License, Version 2.0"
   s.author       = { "Matt Magoffin" => "matt@bluerocket.us" }
 
-  s.platform     = :ios, "5.0"
+  s.ios.deployment_target = '5.0'
+  s.osx.deployment_target = '10.7'
 
   s.source       = { :git => "https://github.com/Blue-Rocket/BRFullTextSearch.git", 
   					 :tag => s.version.to_s, :submodules => true }
