@@ -245,7 +245,6 @@
 		E38E8CC91C6A5194000EB763 /* NSString+CLuceneAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C909C6571784D4B70016C25E /* NSString+CLuceneAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E38E8CCA1C6A5194000EB763 /* SnowballPrefixFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = C9D6EC201AD615FC006D23F4 /* SnowballPrefixFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E38E8CCB1C6A519B000EB763 /* BRSearchResult.h in Headers */ = {isa = PBXBuildFile; fileRef = C909C6521784D4B70016C25E /* BRSearchResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E3DF7E481C69A075005B861B /* BRFullTextSearch.h in Headers */ = {isa = PBXBuildFile; fileRef = E3DF7E471C69A075005B861B /* BRFullTextSearch.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E3DF7E4E1C69A145005B861B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DF7E4D1C69A145005B861B /* Foundation.framework */; };
 		E3DF7E511C69A1BE005B861B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DF7E4F1C69A149005B861B /* libz.tbd */; };
 		E3DF7E531C69A1C9005B861B /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DF7E521C69A1C9005B861B /* libstdc++.tbd */; };
@@ -932,12 +931,10 @@
 		C9F87C3D17D94AA700485FAE /* BRSearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSearchService.m; sourceTree = "<group>"; };
 		E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DF7E451C69A075005B861B /* BRFullTextSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BRFullTextSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E3DF7E471C69A075005B861B /* BRFullTextSearch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRFullTextSearch.h; sourceTree = "<group>"; };
 		E3DF7E491C69A075005B861B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E3DF7E4D1C69A145005B861B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		E3DF7E4F1C69A149005B861B /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		E3DF7E521C69A1C9005B861B /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libstdc++.tbd"; sourceTree = DEVELOPER_DIR; };
-		E3DF7EF71C69A716005B861B /* BRFullTextSearch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRFullTextSearch-Prefix.pch"; sourceTree = "<group>"; };
 		E3DF7F3D1C69AC43005B861B /* da */ = {isa = PBXFileReference; lastKnownFileType = text; name = da; path = "stop-words.txt"; sourceTree = "<group>"; };
 		E3DF7F401C69AC43005B861B /* de */ = {isa = PBXFileReference; lastKnownFileType = text; name = de; path = "stop-words.txt"; sourceTree = "<group>"; };
 		E3DF7F431C69AC43005B861B /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "stop-words.txt"; sourceTree = "<group>"; };
@@ -1716,8 +1713,6 @@
 		E3DF7E461C69A075005B861B /* BRFullTextSearch Mac OS */ = {
 			isa = PBXGroup;
 			children = (
-				E3DF7E471C69A075005B861B /* BRFullTextSearch.h */,
-				E3DF7EF71C69A716005B861B /* BRFullTextSearch-Prefix.pch */,
 				E3DF7F7F1C69B1AF005B861B /* Supporting Files */,
 			);
 			path = "BRFullTextSearch Mac OS";
@@ -1883,7 +1878,6 @@
 				E3DF7F731C69AD31005B861B /* BRIndexable.h in Headers */,
 				E38E8CC91C6A5194000EB763 /* NSString+CLuceneAdditions.h in Headers */,
 				E38E8CC31C6A5194000EB763 /* CLuceneIndexUpdateContext.h in Headers */,
-				E3DF7E481C69A075005B861B /* BRFullTextSearch.h in Headers */,
 				E38E8CC61C6A5194000EB763 /* CLuceneSearchService.h in Headers */,
 				E38E8CC11C6A5194000EB763 /* BRNoLockFactory.h in Headers */,
 				E38E8CBD1C6A5187000EB763 /* NSTimeZone+BRFullTextSearchAdditions.h in Headers */,
@@ -2829,7 +2823,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "BRFullTextSearch Mac OS/BRFullTextSearch-Prefix.pch";
+				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2884,7 +2878,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_PREFIX_HEADER = "BRFullTextSearch Mac OS/BRFullTextSearch-Prefix.pch";
+				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
