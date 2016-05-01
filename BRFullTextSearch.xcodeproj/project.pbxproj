@@ -219,8 +219,8 @@
 		C90B75261C7EA04B00014124 /* TestIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C99FCBE918466AA700A90E66 /* TestIndexable.m */; };
 		C90B75291C7EA32800014124 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2921784CC380016C25E /* libstdc++.dylib */; };
 		C90B752A1C7EA32B00014124 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2901784CC320016C25E /* libz.dylib */; };
-		C90B752B1C7EA3C000014124 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = C97940F61786240100DF0660 /* stop-words.txt */; };
 		C90B752D1C7EA44900014124 /* BRSimpleSortDescriptorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C90B752C1C7EA44900014124 /* BRSimpleSortDescriptorTests.m */; };
+		C933D8271CD68B2D006206B9 /* stop-words.txt in Resources */ = {isa = PBXBuildFile; fileRef = E3DF7F421C69AC43005B861B /* stop-words.txt */; };
 		C9575E811A97EDAF00394CDA /* NSData+CLuceneAdditions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C9575E801A97EDAF00394CDA /* NSData+CLuceneAdditions.mm */; };
 		C97940F21786022900DF0660 /* BRSimpleIndexable.m in Sources */ = {isa = PBXBuildFile; fileRef = C97940F11786022900DF0660 /* BRSimpleIndexable.m */; };
 		C99FCBF01846746E00A90E66 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FCBEE1846745E00A90E66 /* UIKit.framework */; };
@@ -877,7 +877,7 @@
 		C909C6461784D00C0016C25E /* BRSnowballAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BRSnowballAnalyzer.cpp; sourceTree = "<group>"; };
 		C909C6471784D00C0016C25E /* BRNoLockFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRNoLockFactory.h; sourceTree = "<group>"; };
 		C909C6481784D00C0016C25E /* BRNoLockFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BRNoLockFactory.cpp; sourceTree = "<group>"; };
-		C909C6491784D00C0016C25E /* BRFullTextSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRFullTextSearch.h; sourceTree = "<group>"; };
+		C909C6491784D00C0016C25E /* BRFullTextSearch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BRFullTextSearch.h; path = BRFullTextSearch/BRFullTextSearch.h; sourceTree = "<group>"; };
 		C909C6501784D4B70016C25E /* BRIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRIndexable.h; sourceTree = "<group>"; };
 		C909C6511784D4B70016C25E /* BRIndexUpdateContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRIndexUpdateContext.h; sourceTree = "<group>"; };
 		C909C6521784D4B70016C25E /* BRSearchResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSearchResult.h; sourceTree = "<group>"; };
@@ -915,7 +915,6 @@
 		C97940ED1786015200DF0660 /* CLuceneSearchServiceTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CLuceneSearchServiceTests.mm; sourceTree = "<group>"; };
 		C97940F01786022900DF0660 /* BRSimpleIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRSimpleIndexable.h; sourceTree = "<group>"; };
 		C97940F11786022900DF0660 /* BRSimpleIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSimpleIndexable.m; sourceTree = "<group>"; };
-		C97940F51786240100DF0660 /* en */ = {isa = PBXFileReference; lastKnownFileType = text; name = en; path = "en.lproj/stop-words.txt"; sourceTree = "<group>"; };
 		C99FCBE818466AA700A90E66 /* TestIndexable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestIndexable.h; sourceTree = "<group>"; };
 		C99FCBE918466AA700A90E66 /* TestIndexable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestIndexable.m; sourceTree = "<group>"; };
 		C99FCBEB18466FE600A90E66 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -989,6 +988,7 @@
 		C909C2581784CB600016C25E = {
 			isa = PBXGroup;
 			children = (
+				C933D8261CD68AF8006206B9 /* Packaging */,
 				C909C6421784CF0E0016C25E /* CLucene */,
 				C909C2661784CB600016C25E /* BRFullTextSearch */,
 				C909C27B1784CB600016C25E /* BRFullTextSearchTests */,
@@ -1046,11 +1046,7 @@
 		C909C2671784CB600016C25E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C97940F61786240100DF0660 /* stop-words.txt */,
-				C9A68F3D1BCB6376003E6AE1 /* README.md */,
-				C909C6491784D00C0016C25E /* BRFullTextSearch.h */,
 				C909C2681784CB600016C25E /* BRFullTextSearch-Prefix.pch */,
-				C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1699,6 +1695,16 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		C933D8261CD68AF8006206B9 /* Packaging */ = {
+			isa = PBXGroup;
+			children = (
+				C9A68F3D1BCB6376003E6AE1 /* README.md */,
+				C909C6491784D00C0016C25E /* BRFullTextSearch.h */,
+				C90D54AE1AC4772000D14210 /* BRFullTextSearch.podspec */,
+			);
+			name = Packaging;
+			sourceTree = "<group>";
+		};
 		C97940EF178601D200DF0660 /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -2007,7 +2013,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C90B752B1C7EA3C000014124 /* stop-words.txt in Resources */,
+				C933D8271CD68B2D006206B9 /* stop-words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2488,14 +2494,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C97940F61786240100DF0660 /* stop-words.txt */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C97940F51786240100DF0660 /* en */,
-			);
-			name = "stop-words.txt";
-			sourceTree = "<group>";
-		};
 		E3DF7F3C1C69AC43005B861B /* stop-words.txt */ = {
 			isa = PBXVariantGroup;
 			children = (
