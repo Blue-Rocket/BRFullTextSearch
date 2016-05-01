@@ -10,12 +10,12 @@
 		C933D8361CD68F23006206B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D8351CD68F23006206B9 /* AppDelegate.m */; };
 		C933D8391CD68F23006206B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D8381CD68F23006206B9 /* main.m */; };
 		C933D83C1CD68F23006206B9 /* StickyNoteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D83B1CD68F23006206B9 /* StickyNoteListViewController.m */; };
-		C933D83F1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C933D83D1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodeld */; };
 		C933D8411CD68F23006206B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C933D8401CD68F23006206B9 /* Assets.xcassets */; };
 		C933D8441CD68F23006206B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C933D8421CD68F23006206B9 /* Main.storyboard */; };
 		C933D8521CD690F2006206B9 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D84D1CD690F2006206B9 /* CoreDataManager.m */; };
 		C933D8531CD690F2006206B9 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D84F1CD690F2006206B9 /* Notifications.m */; };
 		C933D8541CD690F2006206B9 /* StickyNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D8511CD690F2006206B9 /* StickyNote.m */; };
+		C933D8571CD6C258006206B9 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C933D8551CD6C258006206B9 /* Model.xcdatamodeld */; };
 		FBAEC06D638494E845C69064 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C83B2400F99D89A8A08182 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +28,6 @@
 		C933D8381CD68F23006206B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C933D83A1CD68F23006206B9 /* StickyNoteListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StickyNoteListViewController.h; sourceTree = "<group>"; };
 		C933D83B1CD68F23006206B9 /* StickyNoteListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StickyNoteListViewController.m; sourceTree = "<group>"; };
-		C933D83E1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SampleOSXCocoaPodsProject.xcdatamodel; sourceTree = "<group>"; };
 		C933D8401CD68F23006206B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C933D8431CD68F23006206B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C933D8451CD68F23006206B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -38,6 +37,7 @@
 		C933D84F1CD690F2006206B9 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		C933D8501CD690F2006206B9 /* StickyNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNote.h; sourceTree = "<group>"; };
 		C933D8511CD690F2006206B9 /* StickyNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNote.m; sourceTree = "<group>"; };
+		C933D8561CD6C258006206B9 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		CC15C44C0CAA5FEFDEBBDFB7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,7 +121,7 @@
 			children = (
 				C933D8501CD690F2006206B9 /* StickyNote.h */,
 				C933D8511CD690F2006206B9 /* StickyNote.m */,
-				C933D83D1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodeld */,
+				C933D8551CD6C258006206B9 /* Model.xcdatamodeld */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -246,10 +246,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C933D83F1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodeld in Sources */,
 				C933D83C1CD68F23006206B9 /* StickyNoteListViewController.m in Sources */,
 				C933D8521CD690F2006206B9 /* CoreDataManager.m in Sources */,
 				C933D8541CD690F2006206B9 /* StickyNote.m in Sources */,
+				C933D8571CD6C258006206B9 /* Model.xcdatamodeld in Sources */,
 				C933D8391CD68F23006206B9 /* main.m in Sources */,
 				C933D8531CD690F2006206B9 /* Notifications.m in Sources */,
 				C933D8361CD68F23006206B9 /* AppDelegate.m in Sources */,
@@ -403,13 +403,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		C933D83D1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodeld */ = {
+		C933D8551CD6C258006206B9 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				C933D83E1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodel */,
+				C933D8561CD6C258006206B9 /* Model.xcdatamodel */,
 			);
-			currentVersion = C933D83E1CD68F23006206B9 /* SampleOSXCocoaPodsProject.xcdatamodel */;
-			path = SampleOSXCocoaPodsProject.xcdatamodeld;
+			currentVersion = C933D8561CD6C258006206B9 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

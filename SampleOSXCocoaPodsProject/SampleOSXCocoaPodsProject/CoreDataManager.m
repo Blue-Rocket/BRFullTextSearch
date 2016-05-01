@@ -16,10 +16,6 @@
 
 - (id)init {
 	if ( (self = [super init]) ) {
-		static dispatch_once_t onceToken;
-		dispatch_once(&onceToken, ^{
-			[MagicalRecord setupCoreDataStack];
-		});
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(maintainSearchIndexFromManagedObjectDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification

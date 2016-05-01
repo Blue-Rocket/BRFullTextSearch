@@ -8,12 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+@protocol BRSearchService;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
-@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
-@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
-@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-
+@property (nonatomic, readonly) id<BRSearchService> searchService;
 
 @end
 
