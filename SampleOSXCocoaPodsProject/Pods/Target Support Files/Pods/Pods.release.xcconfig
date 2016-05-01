@@ -1,0 +1,7 @@
+CLANG_CXX_LANGUAGE_STANDARD = gnu++98
+CLANG_CXX_LIBRARY = libstdc++
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BRFullTextSearch" "${PODS_ROOT}/Headers/Public/MagicalRecord"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/BRFullTextSearch" -isystem "${PODS_ROOT}/Headers/Public/MagicalRecord"
+OTHER_LDFLAGS = $(inherited) -ObjC -stdlib=libstdc++ -l"BRFullTextSearch" -l"MagicalRecord" -l"stdc++" -l"z" -framework "CoreData"
+PODS_ROOT = ${SRCROOT}/Pods

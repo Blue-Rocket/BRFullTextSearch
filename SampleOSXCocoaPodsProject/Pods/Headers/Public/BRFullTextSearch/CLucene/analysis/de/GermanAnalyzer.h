@@ -1,0 +1,1 @@
+../../../../../../../../clucene/src/contribs-lib/CLucene/analysis/de/GermanAnalyzer.h
