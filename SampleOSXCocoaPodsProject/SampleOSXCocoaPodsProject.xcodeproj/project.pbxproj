@@ -16,6 +16,9 @@
 		C933D8531CD690F2006206B9 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D84F1CD690F2006206B9 /* Notifications.m */; };
 		C933D8541CD690F2006206B9 /* StickyNote.m in Sources */ = {isa = PBXBuildFile; fileRef = C933D8511CD690F2006206B9 /* StickyNote.m */; };
 		C933D8571CD6C258006206B9 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C933D8551CD6C258006206B9 /* Model.xcdatamodeld */; };
+		C96BB02A1CEB91A600C7B022 /* Metadata+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = C96BB0271CEB91A600C7B022 /* Metadata+CoreDataProperties.m */; };
+		C96BB02B1CEB91A600C7B022 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = C96BB0291CEB91A600C7B022 /* Metadata.m */; };
+		C96BB02D1CEB924600C7B022 /* Sample Data in Resources */ = {isa = PBXBuildFile; fileRef = C96BB02C1CEB924600C7B022 /* Sample Data */; };
 		FBAEC06D638494E845C69064 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C83B2400F99D89A8A08182 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +41,11 @@
 		C933D8501CD690F2006206B9 /* StickyNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyNote.h; sourceTree = "<group>"; };
 		C933D8511CD690F2006206B9 /* StickyNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyNote.m; sourceTree = "<group>"; };
 		C933D8561CD6C258006206B9 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		C96BB0261CEB91A600C7B022 /* Metadata+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Metadata+CoreDataProperties.h"; sourceTree = "<group>"; };
+		C96BB0271CEB91A600C7B022 /* Metadata+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Metadata+CoreDataProperties.m"; sourceTree = "<group>"; };
+		C96BB0281CEB91A600C7B022 /* Metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
+		C96BB0291CEB91A600C7B022 /* Metadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Metadata.m; sourceTree = "<group>"; };
+		C96BB02C1CEB924600C7B022 /* Sample Data */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Sample Data"; sourceTree = SOURCE_ROOT; };
 		CC15C44C0CAA5FEFDEBBDFB7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +109,7 @@
 				C933D83A1CD68F23006206B9 /* StickyNoteListViewController.h */,
 				C933D83B1CD68F23006206B9 /* StickyNoteListViewController.m */,
 				C933D8401CD68F23006206B9 /* Assets.xcassets */,
+				C96BB02C1CEB924600C7B022 /* Sample Data */,
 				C933D8421CD68F23006206B9 /* Main.storyboard */,
 				C933D8451CD68F23006206B9 /* Info.plist */,
 				C933D8371CD68F23006206B9 /* Supporting Files */,
@@ -119,6 +128,10 @@
 		C933D84B1CD690C0006206B9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C96BB0261CEB91A600C7B022 /* Metadata+CoreDataProperties.h */,
+				C96BB0271CEB91A600C7B022 /* Metadata+CoreDataProperties.m */,
+				C96BB0281CEB91A600C7B022 /* Metadata.h */,
+				C96BB0291CEB91A600C7B022 /* Metadata.m */,
 				C933D8501CD690F2006206B9 /* StickyNote.h */,
 				C933D8511CD690F2006206B9 /* StickyNote.m */,
 				C933D8551CD6C258006206B9 /* Model.xcdatamodeld */,
@@ -188,6 +201,7 @@
 			files = (
 				C933D8411CD68F23006206B9 /* Assets.xcassets in Resources */,
 				C933D8441CD68F23006206B9 /* Main.storyboard in Resources */,
+				C96BB02D1CEB924600C7B022 /* Sample Data in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +264,9 @@
 				C933D8521CD690F2006206B9 /* CoreDataManager.m in Sources */,
 				C933D8541CD690F2006206B9 /* StickyNote.m in Sources */,
 				C933D8571CD6C258006206B9 /* Model.xcdatamodeld in Sources */,
+				C96BB02A1CEB91A600C7B022 /* Metadata+CoreDataProperties.m in Sources */,
 				C933D8391CD68F23006206B9 /* main.m in Sources */,
+				C96BB02B1CEB91A600C7B022 /* Metadata.m in Sources */,
 				C933D8531CD690F2006206B9 /* Notifications.m in Sources */,
 				C933D8361CD68F23006206B9 /* AppDelegate.m in Sources */,
 			);

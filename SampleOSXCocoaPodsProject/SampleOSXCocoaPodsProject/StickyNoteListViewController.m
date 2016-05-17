@@ -28,6 +28,8 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataDidChange:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_defaultContext]];
 }
 
 - (void)viewWillAppear {
@@ -36,10 +38,15 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 	notesController.managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 	notesController.entityName = @"StickyNote";
 	notesController.automaticallyRearrangesObjects = YES;
-	notesController.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:NO]];
+	notesController.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"created" ascending:YES]];
 	
 	NSError *error = nil;
 	[notesController fetchWithRequest:nil merge:NO error:&error];
+	[self.tableView reloadData];
+}
+
+- (void)dataDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {

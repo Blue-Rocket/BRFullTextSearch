@@ -12,6 +12,8 @@
 #import <BRFullTextSearch/CLuceneSearchService.h>
 #import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "CoreDataManager.h"
+#import "Metadata.h"
+#import "StickyNote.h"
 
 @interface AppDelegate ()
 
@@ -38,6 +40,41 @@
 	searchService = [CLuceneSearchService new];
 	coreDataManager = [CoreDataManager new];
 	coreDataManager.searchService = searchService;
+	
+	NSUInteger count = [Metadata MR_countOfEntities];
+	if ( count < 1 ) {
+		// populate initial dataset
+		NSString *sampleDir = [[[NSBundle mainBundle] pathForResource:@"sample-1" ofType:@"json" inDirectory:@"Sample Data"] stringByDeletingLastPathComponent];
+		NSError *error = nil;
+		NSArray<NSString *> *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:sampleDir error:&error];
+		if ( error ) {
+			NSLog(@"Error listing sample data files directory %@: %@", sampleDir, [error localizedDescription]);
+			return;
+		}
+		[MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+			NSError *error = nil;
+			for ( NSString *fileName in files ) {
+				NSString *filePath = [sampleDir stringByAppendingPathComponent:fileName];
+				NSData *data = [NSData dataWithContentsOfFile:filePath options:0 error:&error];
+				if ( !data ) {
+					NSLog(@"Error reading sample data file %@: %@", sampleDir, [error localizedDescription]);
+					error = nil;
+					continue;
+				}
+				NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+				if ( !json ) {
+					NSLog(@"Error reading sample data file %@: %@", sampleDir, [error localizedDescription]);
+					error = nil;
+					continue;
+				}
+				StickyNote *note = [StickyNote MR_createInContext:localContext];
+				note.text = json[@"text"];
+				note.created = [NSDate new];
+			}
+			Metadata *m = [Metadata MR_createInContext:localContext];
+			m.created = [NSDate new];
+		}];
+	}
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
