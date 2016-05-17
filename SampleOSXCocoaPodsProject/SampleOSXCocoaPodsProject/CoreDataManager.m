@@ -19,7 +19,7 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(maintainSearchIndexFromManagedObjectDidSave:)
 													 name:NSManagedObjectContextDidSaveNotification
-												   object:[NSManagedObjectContext MR_defaultContext]];
+												   object:[NSManagedObjectContext MR_rootSavingContext]];
 	}
 	return self;
 }

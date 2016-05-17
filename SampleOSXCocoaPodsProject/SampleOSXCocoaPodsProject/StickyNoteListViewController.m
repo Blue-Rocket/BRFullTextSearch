@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "Notifications.h"
 #import "StickyNote.h"
+#import "StickyNoteViewController.h"
 
 static NSString * const kDateCellIdentifier = @"DateCell";
 static NSString * const kTextCellIdentifier = @"TextCell";
@@ -24,12 +25,13 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 
 @implementation StickyNoteListViewController {
 	NSArrayController *notesController;
+	StickyNote *editNote;
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataDidChange:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_defaultContext]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataDidChange:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_rootSavingContext]];
 }
 
 - (void)viewWillAppear {
@@ -45,8 +47,24 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 	[self.tableView reloadData];
 }
 
+- (IBAction)newDocument:(id)sender {
+	NSLog(@"New!");
+	[self performSegueWithIdentifier:@"NewNote" sender:sender];
+}
+
+- (void)prepareForSegue:(NSStoryboardSegue *)segue sender:(id)sender {
+	if ( [segue.identifier isEqualToString:@"EditNote"] ) {
+		StickyNoteViewController *dest = segue.destinationController;
+		dest.note = editNote;
+	}
+}
+
 - (void)dataDidChange:(NSNotification *)notification {
-	[self.tableView reloadData];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		NSError *error = nil;
+		[notesController fetchWithRequest:nil merge:YES error:&error];
+		[self.tableView reloadData];
+	});
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {

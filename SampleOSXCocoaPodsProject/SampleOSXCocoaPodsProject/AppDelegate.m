@@ -51,7 +51,7 @@
 			NSLog(@"Error listing sample data files directory %@: %@", sampleDir, [error localizedDescription]);
 			return;
 		}
-		[MagicalRecord saveUsingCurrentThreadContextWithBlockAndWait:^(NSManagedObjectContext *localContext) {
+		[MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
 			NSError *error = nil;
 			for ( NSString *fileName in files ) {
 				NSString *filePath = [sampleDir stringByAppendingPathComponent:fileName];
@@ -70,6 +70,9 @@
 				StickyNote *note = [StickyNote MR_createInContext:localContext];
 				note.text = json[@"text"];
 				note.created = [NSDate new];
+				if ( [fileName isEqualToString:[files lastObject]] == NO ) {
+					[NSThread sleepForTimeInterval:1]; // note primary key based on timestamp, so make sure each is unique
+				}
 			}
 			Metadata *m = [Metadata MR_createInContext:localContext];
 			m.created = [NSDate new];

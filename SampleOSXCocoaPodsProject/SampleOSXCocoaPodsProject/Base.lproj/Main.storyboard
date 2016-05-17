@@ -665,6 +665,70 @@
             </objects>
             <point key="canvasLocation" x="75" y="250"/>
         </scene>
+        <!--Sticky Note View Controller-->
+        <scene sceneID="gpQ-gm-bjX">
+            <objects>
+                <viewController id="FYw-54-7BA" customClass="StickyNoteViewController" sceneMemberID="viewController">
+                    <view key="view" id="ISI-Ur-Rg4">
+                        <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lfS-Sz-pNd">
+                                <rect key="frame" x="0.0" y="61" width="480" height="209"/>
+                                <clipView key="contentView" id="Ofy-Hq-sfK">
+                                    <rect key="frame" x="1" y="1" width="463" height="207"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textView importsGraphics="NO" richText="NO" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" usesFontPanel="YES" verticallyResizable="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" spellingCorrection="YES" smartInsertDelete="YES" id="4Ed-aR-tdM">
+                                            <rect key="frame" x="0.0" y="0.0" width="463" height="207"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <size key="minSize" width="463" height="207"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="minSize" width="463" height="207"/>
+                                            <size key="maxSize" width="463" height="10000000"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="yw4-La-d3j">
+                                    <rect key="frame" x="-100" y="-100" width="87" height="18"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="41c-Z6-xeN">
+                                    <rect key="frame" x="464" y="1" width="15" height="207"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vqv-gk-rNC">
+                                <rect key="frame" x="391" y="13" width="70" height="32"/>
+                                <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tPb-cZ-Dd8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="saveNote:" target="FYw-54-7BA" id="bJK-zN-2hv"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Vqv-gk-rNC" secondAttribute="trailing" constant="25" id="GVJ-MI-Oqw"/>
+                            <constraint firstAttribute="bottom" secondItem="Vqv-gk-rNC" secondAttribute="bottom" constant="20" id="KGW-ts-BiA"/>
+                            <constraint firstItem="Vqv-gk-rNC" firstAttribute="top" secondItem="4Ed-aR-tdM" secondAttribute="bottom" constant="21" id="VNN-xD-Olz"/>
+                            <constraint firstItem="lfS-Sz-pNd" firstAttribute="top" secondItem="ISI-Ur-Rg4" secondAttribute="top" id="ch5-Sw-76g"/>
+                            <constraint firstAttribute="trailing" secondItem="lfS-Sz-pNd" secondAttribute="trailing" id="gIP-2I-tdx"/>
+                            <constraint firstItem="lfS-Sz-pNd" firstAttribute="leading" secondItem="ISI-Ur-Rg4" secondAttribute="leading" id="jQg-Zj-Jsx"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="4Ed-aR-tdM" id="Sts-sO-hOe"/>
+                    </connections>
+                </viewController>
+                <customObject id="LwT-7F-LGY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1362" y="225"/>
+        </scene>
         <!--Sticky Note List View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
@@ -792,6 +856,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="jQG-z9-MlU" id="17L-jf-JhH"/>
+                        <segue destination="FYw-54-7BA" kind="sheet" identifier="NewNote" id="uT2-yJ-DDS"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
