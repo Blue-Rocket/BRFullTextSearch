@@ -1,10 +1,10 @@
 # BRFullTextSearch
 
-iOS Objective-C full text search engine.
+Objective-C full text search engine.
 
 This project provides a way to integrate full-text search capabilities into your iOS
-project. First, it provides a protocol-based API for a simple text indexing and
-search framework. Second, it provides a [CLucene](http://clucene.sourceforge.net/)
+or OS X project. First, it provides a protocol-based API for a simple text indexing
+and search framework. Second, it provides a [CLucene](http://clucene.sourceforge.net/)
 based implementation of that framework.
 
 # Example Usage
@@ -29,6 +29,17 @@ id<BRSearchResults> results = [service search:@"special"];
 	NSLog(@"Found result: %@", [result dictionaryRepresentation]);
 }];
 ```
+
+
+# Sample projects
+
+There are several sample projects included in the source distribution:
+
+ * [SampleCocoaPodsProject](SampleCocoaPodsProject/) - a Core Data based iOS application using CocoaPods integration
+ * [SampleCoreDataProject](SampleCoreDataProject/) - a Core Data based iOS application using dependent project integration
+ * [SampleDependentProject](SampleDependentProject) - a basic iOS application using dependent project integration
+ * [SampleOSXCocoaPodsProject](SampleOSXCocoaPodsProject/) - a Core Data based OS X application using CocoaPods integration
+ * [SampleStaticLibraryProject](SampleStaticLibraryProject/) - a basic iOS application using static library integration
 
 # Predicate queries
 
@@ -81,7 +92,7 @@ for efficient bulk operations:
 typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> updateContext);
 
 // perform a bulk operation, calling the passed on block
-- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock 
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock
                   queue:(dispatch_queue_t)finishedQueue
                finished:(BRSearchServiceUpdateCallbackBlock)finished;
 
@@ -89,10 +100,10 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
 
 - (void)addObjectToIndex:(id <BRIndexable> )object context:(id <BRIndexUpdateContext> )updateContext;
 
-- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier 
+- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier
                      context:(id <BRIndexUpdateContext> )updateContext;
 
-- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate 
+- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
                                        context:(id <BRIndexUpdateContext> )updateContext;
 
 - (int)removeAllObjectsFromIndex:(id <BRIndexUpdateContext> )updateContext;
@@ -122,18 +133,23 @@ id<BRSearchService> service = ...;
 } queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
     // all finished here
 }];
-``` 
+```
 
 # Core Data support
 
 It's pretty easy to integrate BRFullTextSearch with Core Data, to maintain a search
 index while changes are persisted in Core Data. One way is to listen for the
 `NSManagedObjectContextDidSaveNotification` notification and process Core Data
-changes as index delete and update operations. The **SampleCoreDataProject** project
+changes as index delete and update operations. The **SampleCoreDataProject** iOS project
 contains an example of this integration. The app allows you to create small _sticky
 notes_ and search the text of those notes. See the
-[CoreDataManager](https://github.com/Blue-Rocket/BRFullTextSearch/blob/master/SampleCoreDataProject/SampleCoreDataProject/CoreDataManager.m) class in the sample
+[CoreDataManager](SampleCoreDataProject/SampleCoreDataProject/CoreDataManager.m) class in the sample
 project, whose `maintainSearchIndexFromManagedObjectDidSave:` method handles this.
+
+The **SampleOSXCocoaPodsProject** OS X project also contains an example of this integration.
+See the [CoreDataManager](SampleOSXCocoaPodsProject/SampleOSXCocoaPodsProject/CoreDataManager.m)
+class in that project for details.
+
 
 # Project Integration
 
@@ -152,7 +168,7 @@ $ pod setup
 Change to the directory of your Xcode project, and create a file named `Podfile` with
 contents similar to this:
 
-	platform :ios, '5.0' 
+	platform :ios, '5.0'
 	pod 'BRFullTextSearch', '~> 1.0'
 
 Install into your project:
@@ -184,7 +200,7 @@ first initialize git submodules. For example:
 	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
-	
+
 This will pull in the relevant submodules, e.g. CLucene.
 
 The BRFullTextSearch Xcode project includes a target called
@@ -227,7 +243,7 @@ example:
 	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
-	
+
 This will pull in the relevant submodules, e.g. CLucene.
 
 Then drag the **BRFullTextSearch.xcodeproj** onto your project in the Project

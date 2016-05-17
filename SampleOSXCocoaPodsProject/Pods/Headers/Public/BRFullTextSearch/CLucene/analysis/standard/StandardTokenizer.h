@@ -1,0 +1,1 @@
+../../../../../../../../clucene/src/core/CLucene/analysis/standard/StandardTokenizer.h
