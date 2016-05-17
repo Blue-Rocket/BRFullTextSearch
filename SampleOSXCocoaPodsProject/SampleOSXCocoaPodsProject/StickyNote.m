@@ -18,6 +18,13 @@ const BRSearchObjectType kStickyNoteSearchObjectType = 'n';
 @dynamic created;
 @dynamic text;
 
++ (NSDate *)createdDateForCurrentSystemTime {
+	NSCalendar *cal = [NSCalendar currentCalendar];
+	NSDateComponents *timestamp = [cal components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit)
+										 fromDate:[NSDate new]];
+	return [cal dateFromComponents:timestamp];
+}
+
 #pragma mark - Indexable
 
 - (BRSearchObjectType)indexObjectType {

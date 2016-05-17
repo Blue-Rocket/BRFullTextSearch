@@ -69,7 +69,7 @@
 				}
 				StickyNote *note = [StickyNote MR_createInContext:localContext];
 				note.text = json[@"text"];
-				note.created = [NSDate new];
+				note.created = [StickyNote createdDateForCurrentSystemTime];
 				if ( [fileName isEqualToString:[files lastObject]] == NO ) {
 					[NSThread sleepForTimeInterval:1]; // note primary key based on timestamp, so make sure each is unique
 				}

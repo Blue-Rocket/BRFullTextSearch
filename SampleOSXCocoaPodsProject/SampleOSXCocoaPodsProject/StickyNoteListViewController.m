@@ -35,6 +35,7 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 	[super viewDidLoad];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataDidChange:) name:NSManagedObjectContextDidSaveNotification object:[NSManagedObjectContext MR_rootSavingContext]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(indexDidChange:) name:SearchIndexDidChange object:nil];
 }
 
 - (void)viewWillAppear {
@@ -65,6 +66,20 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 
 - (IBAction)newDocument:(id)sender {
 	[self performSegueWithIdentifier:@"NewNote" sender:sender];
+}
+
+- (IBAction)doubleClickTable:(NSTableView *)sender {
+	NSUInteger row = sender.clickedRow;
+	if ( searchResults ) {
+		id<BRSearchResult> r = [searchResults resultAtIndex:row];
+		NSDate *noteDate = [NSDate dateWithIndexTimestampString:[r valueForField:kBRSearchFieldNameTimestamp]];
+		editNote = [StickyNote MR_findFirstByAttribute:@"created" withValue:noteDate];
+	} else {
+		editNote = [notesController.arrangedObjects objectAtIndex:row];
+	}
+	if ( editNote ) {
+		[self performSegueWithIdentifier:@"EditNote" sender:self];
+	}
 }
 
 - (id<BRSearchService>)searchService {
@@ -99,6 +114,13 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 		[notesController fetchWithRequest:nil merge:YES error:&error];
 		[self.tableView reloadData];
 	});
+}
+
+- (void)indexDidChange:(NSNotification *)notification {
+	if ( searchResults ) {
+		// re-refresh search results
+		[self executeSearch];
+	}
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {

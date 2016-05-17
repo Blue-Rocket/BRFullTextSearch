@@ -17,4 +17,11 @@ extern const BRSearchObjectType kStickyNoteSearchObjectType;
 @property (nonatomic, retain) NSDate * created;
 @property (nonatomic, retain) NSString * text;
 
+/**
+ Get a date suitable for using as a @c created property value, based on the current time.
+ 
+ @return The date.
+ */
++ (NSDate *)createdDateForCurrentSystemTime;
+
 @end

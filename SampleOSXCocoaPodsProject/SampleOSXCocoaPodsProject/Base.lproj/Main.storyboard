@@ -357,7 +357,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="BRFullTextSearch Notes" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -366,7 +366,7 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="77FC758B-49B2-4024-B353-AA0C438A962D" label="Search" paletteLabel="Search" id="oa0-jI-vxJ">
                                     <nil key="toolTip"/>
-                                    <size key="minSize" width="500" height="22"/>
+                                    <size key="minSize" width="490" height="22"/>
                                     <size key="maxSize" width="580" height="22"/>
                                     <searchField key="view" wantsLayer="YES" verticalHuggingPriority="750" id="9Mw-nx-zaE">
                                         <rect key="frame" x="0.0" y="14" width="490" height="22"/>
@@ -414,10 +414,10 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <size key="minSize" width="463" height="207"/>
-                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <size key="maxSize" width="480" height="10000000"/>
                                             <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <size key="minSize" width="463" height="207"/>
-                                            <size key="maxSize" width="463" height="10000000"/>
+                                            <size key="maxSize" width="480" height="10000000"/>
                                         </textView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -441,23 +441,51 @@
                                     <action selector="saveNote:" target="FYw-54-7BA" id="bJK-zN-2hv"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0nD-vl-btf">
+                                <rect key="frame" x="310" y="13" width="82" height="32"/>
+                                <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ecm-wC-bXW">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+Gw
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancel:" target="FYw-54-7BA" id="sVu-CE-xrh"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KjQ-vr-sbl">
+                                <rect key="frame" x="14" y="13" width="80" height="32"/>
+                                <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="L0X-ku-MBn">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="deleteNote:" target="FYw-54-7BA" id="ksg-aw-wi5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Vqv-gk-rNC" firstAttribute="leading" secondItem="0nD-vl-btf" secondAttribute="trailing" constant="11" id="7yb-ko-voo"/>
                             <constraint firstAttribute="trailing" secondItem="Vqv-gk-rNC" secondAttribute="trailing" constant="25" id="GVJ-MI-Oqw"/>
                             <constraint firstAttribute="bottom" secondItem="Vqv-gk-rNC" secondAttribute="bottom" constant="20" id="KGW-ts-BiA"/>
+                            <constraint firstItem="0nD-vl-btf" firstAttribute="centerY" secondItem="Vqv-gk-rNC" secondAttribute="centerY" id="KIk-40-RXC"/>
+                            <constraint firstItem="KjQ-vr-sbl" firstAttribute="leading" secondItem="ISI-Ur-Rg4" secondAttribute="leading" constant="20" id="SN9-gl-ZvV"/>
                             <constraint firstItem="Vqv-gk-rNC" firstAttribute="top" secondItem="4Ed-aR-tdM" secondAttribute="bottom" constant="21" id="VNN-xD-Olz"/>
                             <constraint firstItem="lfS-Sz-pNd" firstAttribute="top" secondItem="ISI-Ur-Rg4" secondAttribute="top" id="ch5-Sw-76g"/>
                             <constraint firstAttribute="trailing" secondItem="lfS-Sz-pNd" secondAttribute="trailing" id="gIP-2I-tdx"/>
                             <constraint firstItem="lfS-Sz-pNd" firstAttribute="leading" secondItem="ISI-Ur-Rg4" secondAttribute="leading" id="jQg-Zj-Jsx"/>
+                            <constraint firstItem="KjQ-vr-sbl" firstAttribute="centerY" secondItem="Vqv-gk-rNC" secondAttribute="centerY" id="oPJ-sO-QS4"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="deleteButton" destination="KjQ-vr-sbl" id="gDy-n1-9ru"/>
                         <outlet property="textView" destination="4Ed-aR-tdM" id="Sts-sO-hOe"/>
                     </connections>
                 </viewController>
                 <customObject id="LwT-7F-LGY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1362" y="225"/>
+            <point key="canvasLocation" x="693" y="655"/>
         </scene>
         <!--Sticky Note List View Controller-->
         <scene sceneID="hIz-AP-VOD">
@@ -556,6 +584,7 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
+                                                <action trigger="doubleAction" selector="doubleClickTable:" target="XfG-lQ-9wD" id="Ili-aU-CsD"/>
                                                 <outlet property="dataSource" destination="XfG-lQ-9wD" id="W04-Qm-2Ee"/>
                                                 <outlet property="delegate" destination="XfG-lQ-9wD" id="JVt-a8-aaC"/>
                                             </connections>
@@ -587,6 +616,7 @@
                     <connections>
                         <outlet property="tableView" destination="jQG-z9-MlU" id="17L-jf-JhH"/>
                         <segue destination="FYw-54-7BA" kind="sheet" identifier="NewNote" id="uT2-yJ-DDS"/>
+                        <segue destination="FYw-54-7BA" kind="sheet" identifier="EditNote" id="KEB-cr-vEN"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -594,4 +624,7 @@
             <point key="canvasLocation" x="75" y="655"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="KEB-cr-vEN"/>
+    </inferredMetricsTieBreakers>
 </document>

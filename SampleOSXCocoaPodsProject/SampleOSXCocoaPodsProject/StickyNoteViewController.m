@@ -13,17 +13,26 @@
 
 @interface StickyNoteViewController ()
 @property (strong) IBOutlet NSTextView *textView;
+@property (strong) IBOutlet NSButton *deleteButton;
 
 @end
 
 @implementation StickyNoteViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewWillAppear {
+	[super viewWillAppear];
 	NSString *text = self.note.text;
 	if ( text.length > 0 ) {
 		self.textView.string = text;
 	}
+	self.deleteButton.hidden = (self.note == nil);
+}
+
+- (IBAction)cancel:(id)sender {
+	[self dismissViewController:self];
+}
+
+- (IBAction)deleteNote:(id)sender {
 }
 
 - (IBAction)saveNote:(id)sender {
@@ -33,7 +42,7 @@
 		StickyNote *n;
 		if ( !note ) {
 			n = [StickyNote MR_createInContext:localContext];
-			n.created = [NSDate new];
+			n.created = [StickyNote createdDateForCurrentSystemTime];
 		} else {
 			n = [note MR_inContext:localContext];
 		}
