@@ -81,7 +81,7 @@ for efficient bulk operations:
 typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> updateContext);
 
 // perform a bulk operation, calling the passed on block
-- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock 
+- (void)bulkUpdateIndex:(BRSearchServiceIndexUpdateBlock)updateBlock
                   queue:(dispatch_queue_t)finishedQueue
                finished:(BRSearchServiceUpdateCallbackBlock)finished;
 
@@ -89,10 +89,10 @@ typedef void (^BRSearchServiceIndexUpdateBlock)(id <BRIndexUpdateContext> update
 
 - (void)addObjectToIndex:(id <BRIndexable> )object context:(id <BRIndexUpdateContext> )updateContext;
 
-- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier 
+- (int)removeObjectFromIndex:(BRSearchObjectType)type withIdentifier:(NSString *)identifier
                      context:(id <BRIndexUpdateContext> )updateContext;
 
-- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate 
+- (int)removeObjectsFromIndexMatchingPredicate:(NSPredicate *)predicate
                                        context:(id <BRIndexUpdateContext> )updateContext;
 
 - (int)removeAllObjectsFromIndex:(id <BRIndexUpdateContext> )updateContext;
@@ -122,7 +122,7 @@ id<BRSearchService> service = ...;
 } queue:dispatch_get_main_queue() finished:^(int updateCount, NSError *error) {
     // all finished here
 }];
-``` 
+```
 
 # Core Data support
 
@@ -152,7 +152,7 @@ $ pod setup
 Change to the directory of your Xcode project, and create a file named `Podfile` with
 contents similar to this:
 
-	platform :ios, '5.0' 
+	platform :ios, '5.0'
 	pod 'BRFullTextSearch', '~> 1.0'
 
 Install into your project:
@@ -184,7 +184,7 @@ first initialize git submodules. For example:
 	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
-	
+
 This will pull in the relevant submodules, e.g. CLucene.
 
 The BRFullTextSearch Xcode project includes a target called
@@ -227,7 +227,7 @@ example:
 	git clone https://github.com/Blue-Rocket/BRFullTextSearch.git
 	cd BRFullTextSearch
 	git submodule update --init
-	
+
 This will pull in the relevant submodules, e.g. CLucene.
 
 Then drag the **BRFullTextSearch.xcodeproj** onto your project in the Project
