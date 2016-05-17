@@ -1,0 +1,1 @@
+../../../../../BRFullTextSearch/CLuceneSearchService+Subclassing.h

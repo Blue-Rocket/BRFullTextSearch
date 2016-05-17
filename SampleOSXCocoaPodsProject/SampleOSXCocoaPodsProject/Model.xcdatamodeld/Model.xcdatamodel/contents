@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="10174" systemVersion="15E65" minimumToolsVersion="Xcode 7.0">
+    <entity name="Metadata" representedClassName="Metadata" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="StickyNote" representedClassName="StickyNote" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="StickyNote" positionX="-54" positionY="-9" width="128" height="75"/>
+        <element name="Metadata" positionX="-54" positionY="9" width="128" height="60"/>
+    </elements>
+</model>

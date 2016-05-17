@@ -1,0 +1,1 @@
+../../../../../../../../clucene/src/core/CLucene/search/spans/SpanWeight.h

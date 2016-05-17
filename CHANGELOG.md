@@ -1,6 +1,17 @@
 # Change Log
 
-## [1.1.0](https://github.com/Blue-Rocket/BRFullTextSearch/tree/1.1.0) (2016-03-14)
+## [1.1.1](https://github.com/Blue-Rocket/BRFullTextSearch/tree/1.1.1) (2016-05-18)
+[Full Changelog](https://github.com/Blue-Rocket/BRFullTextSearch/compare/1.1.0...1.1.1)
+
+**Implemented enhancements:**
+
+- \[Request\] Mac OS Targets [\#8](https://github.com/Blue-Rocket/BRFullTextSearch/issues/8)
+
+**Closed issues:**
+
+- 'CLucene/analysis/AnalysisHeader.h' file not found - Swift Project [\#17](https://github.com/Blue-Rocket/BRFullTextSearch/issues/17)
+
+## [1.1.0](https://github.com/Blue-Rocket/BRFullTextSearch/tree/1.1.0) (2016-03-13)
 [Full Changelog](https://github.com/Blue-Rocket/BRFullTextSearch/compare/1.0.10...1.1.0)
 
 **Implemented enhancements:**
