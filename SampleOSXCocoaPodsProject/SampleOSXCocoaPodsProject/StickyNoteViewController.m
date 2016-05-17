@@ -33,6 +33,10 @@
 }
 
 - (IBAction)deleteNote:(id)sender {
+	[MagicalRecord saveWithBlock:^(NSManagedObjectContext *localContext) {
+		[[self.note MR_inContext:localContext] MR_deleteInContext:localContext];
+	}];
+	[self dismissViewController:self];
 }
 
 - (IBAction)saveNote:(id)sender {
