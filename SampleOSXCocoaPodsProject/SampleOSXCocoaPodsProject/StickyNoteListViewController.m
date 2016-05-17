@@ -8,6 +8,7 @@
 
 #import "StickyNoteListViewController.h"
 
+#import <BRFullTextSearch/BRFullTextSearch.h>
 #import <BRFullTextSearch/NSDate+BRFullTextSearchAdditions.h>
 #import <MagicalRecord/CoreData+MagicalRecord.h>
 #import "AppDelegate.h"
@@ -18,14 +19,16 @@
 static NSString * const kDateCellIdentifier = @"DateCell";
 static NSString * const kTextCellIdentifier = @"TextCell";
 
-@interface StickyNoteListViewController () <NSTableViewDataSource, NSTableViewDelegate>
+@interface StickyNoteListViewController () <NSTableViewDataSource, NSTableViewDelegate, NSSearchFieldDelegate>
 @property (strong) IBOutlet NSTableView *tableView;
-
+@property (weak) IBOutlet NSSearchField *searchField;
+@property (readonly) id<BRSearchService> searchService;
 @end
 
 @implementation StickyNoteListViewController {
 	NSArrayController *notesController;
 	StickyNote *editNote;
+	id<BRSearchResults> searchResults;
 }
 
 - (void)viewDidLoad {
@@ -45,11 +48,42 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 	NSError *error = nil;
 	[notesController fetchWithRequest:nil merge:NO error:&error];
 	[self.tableView reloadData];
+
+	NSToolbarItem *item = [self.view.window.toolbar.items firstObject];
+	if ( [item.view isKindOfClass:[NSSearchField class]] ) {
+		self.searchField = (NSSearchField *)item.view;
+		self.searchField.delegate = self;
+	}
+}
+
+- (void)controlTextDidChange:(NSNotification *)obj {
+	id field = obj.object;
+	if ( field == self.searchField ) {
+		[self executeSearch];
+	}
 }
 
 - (IBAction)newDocument:(id)sender {
-	NSLog(@"New!");
 	[self performSegueWithIdentifier:@"NewNote" sender:sender];
+}
+
+- (id<BRSearchService>)searchService {
+	AppDelegate *delegate = (AppDelegate *)[NSApplication sharedApplication].delegate;
+	return delegate.searchService;
+}
+
+- (void)executeSearch {
+	NSString *query = [self.searchField stringValue];
+	searchResults = nil;
+	if ( query.length > 1 ) {
+		searchResults = [self.searchService search:query];
+		[self.tableView reloadData];
+	}
+}
+
+- (void)searchFieldDidEndSearching:(NSSearchField *)sender {
+	searchResults = nil;
+	[self.tableView reloadData];
 }
 
 - (void)prepareForSegue:(NSStoryboardSegue *)segue sender:(id)sender {
@@ -68,10 +102,25 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 }
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-	return [notesController.arrangedObjects count];
+	return (searchResults
+			? [searchResults count]
+			: [notesController.arrangedObjects count]);
 }
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+	NSDate *noteDate = nil;
+	NSString *noteText = nil;
+	
+	if ( searchResults ) {
+		id<BRSearchResult> r = [searchResults resultAtIndex:row];
+		noteDate = [NSDate dateWithIndexTimestampString:[r valueForField:kBRSearchFieldNameTimestamp]];
+		noteText = [r valueForField:kBRSearchFieldNameValue];
+	} else {
+		StickyNote *stickyNote = [notesController.arrangedObjects objectAtIndex:row];
+		noteDate = stickyNote.created;
+		noteText = stickyNote.text;
+	}
+	
 	static NSDateFormatter *dateFormatter;
 	if ( dateFormatter == nil ) {
 		dateFormatter = [[NSDateFormatter alloc] init];
@@ -79,15 +128,15 @@ static NSString * const kTextCellIdentifier = @"TextCell";
 		[dateFormatter setDateFormat:formatString];
 	}
 
-	StickyNote *stickyNote = [notesController.arrangedObjects objectAtIndex:row];
+	
 	NSString *cellIdentifier;
 	NSString *cellValue = nil;
 	if ( tableColumn == tableView.tableColumns[0] ) {
 		cellIdentifier = kDateCellIdentifier;
-		cellValue = [dateFormatter stringFromDate:stickyNote.created];
+		cellValue = [dateFormatter stringFromDate:noteDate];
 	} else {
 		cellIdentifier = kTextCellIdentifier;
-		cellValue = stickyNote.text;
+		cellValue = noteText;
 	}
 	NSTableCellView *cell = [tableView makeViewWithIdentifier:cellIdentifier owner:nil];
 	cell.textField.stringValue = cellValue;
