@@ -6,6 +6,7 @@
 **Implemented enhancements:**
 
 - \[Request\] Mac OS Targets [\#8](https://github.com/Blue-Rocket/BRFullTextSearch/issues/8)
+- Added Mac OS framework [\#9](https://github.com/Blue-Rocket/BRFullTextSearch/pull/9) ([phildow](https://github.com/phildow))
 
 **Closed issues:**
 
