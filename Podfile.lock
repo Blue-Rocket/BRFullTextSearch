@@ -1,0 +1,38 @@
+PODS:
+  - BRCLucene (1.0.0):
+    - BRCLucene/CLucene (= 1.0.0)
+  - BRCLucene/CLucene (1.0.0):
+    - BRCLucene/CLucene-Contribs-Lib
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Config (1.0.0)
+  - BRCLucene/CLucene-Contribs-Lib (1.0.0):
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core (1.0.0):
+    - BRCLucene/CLucene-Core-API
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core-API (1.0.0):
+    - BRCLucene/CLucene-Config
+  - BRCLucene/CLucene-Shared (1.0.0):
+    - BRCLucene/CLucene-Core-API
+
+DEPENDENCIES:
+  - BRCLucene (from `https://github.com/Blue-Rocket/clucene.git`, branch `feature/pod`)
+
+EXTERNAL SOURCES:
+  BRCLucene:
+    :branch: feature/pod
+    :git: https://github.com/Blue-Rocket/clucene.git
+
+CHECKOUT OPTIONS:
+  BRCLucene:
+    :commit: d7924376a21770f0ffff39addcf7ff1599aa2df0
+    :git: https://github.com/Blue-Rocket/clucene.git
+
+SPEC CHECKSUMS:
+  BRCLucene: 55ff26934e29fdb6b2cd5d181fec25a451a58a94
+
+PODFILE CHECKSUM: 9b475d4985b5b3c5ae66c470460a0d117e305efb
+
+COCOAPODS: 1.0.1

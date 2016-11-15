@@ -10,7 +10,7 @@
 
 #import "CLucene.h"
 #import "CLucene/_ApiHeader.h"
-#import "ConstantScoreQuery.h"
+#import "CLucene/search/ConstantScoreQuery.h"
 #import "BRNoLockFactory.h"
 #import "BRSimpleSortDescriptor.h"
 #import "BRSnowballAnalyzer.h"

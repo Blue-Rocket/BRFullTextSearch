@@ -5,9 +5,6 @@
       location = "group:BRFullTextSearch.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SampleDependentProject/SampleDependentProject.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:SampleStaticLibraryProject/SampleStaticLibraryProject.xcodeproj">
+      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
