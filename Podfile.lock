@@ -27,12 +27,12 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BRCLucene:
-    :commit: d7924376a21770f0ffff39addcf7ff1599aa2df0
+    :commit: 24eb25fc4c720cb4ff97a263ef488e1bedf6c10c
     :git: https://github.com/Blue-Rocket/clucene.git
 
 SPEC CHECKSUMS:
-  BRCLucene: 55ff26934e29fdb6b2cd5d181fec25a451a58a94
+  BRCLucene: 3de331a9edbc7c2a644b4116ab8899942b566898
 
 PODFILE CHECKSUM: 9b475d4985b5b3c5ae66c470460a0d117e305efb
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

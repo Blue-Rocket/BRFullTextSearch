@@ -18,7 +18,7 @@
     "submodules": true
   },
   "libraries": [
-    "stdc++",
+    "c++",
     "z"
   ],
   "compiler_flags": [
@@ -31,9 +31,7 @@
     "-DNDEBUG"
   ],
   "xcconfig": {
-    "CLANG_CXX_LANGUAGE_STANDARD": "gnu++98",
-    "CLANG_CXX_LIBRARY": "libstdc++",
-    "OTHER_LDFLAGS": "-stdlib=libstdc++"
+    "GCC_PREPROCESSOR_DEFINITIONS": "_WCHAR_H_CPLUSPLUS_98_CONFORMANCE_"
   },
   "requires_arc": false,
   "default_subspecs": "CLucene",
