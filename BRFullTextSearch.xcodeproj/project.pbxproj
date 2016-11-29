@@ -22,7 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		03B7FF76098C0020B53B1963 /* libPods-BasePods-BRFullTextSearchTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C1BE10792AA64013FE1EF4 /* libPods-BasePods-BRFullTextSearchTests.a */; };
-		1F52100168033F6AD997E2D6 /* libPods-BasePods-BRFullTextSearch Mac OS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5234BF92A2853373DF95BE8A /* libPods-BasePods-BRFullTextSearch Mac OS.a */; };
+		08F58ED50F9FA6B4ADC815B9 /* libPods-BasePods-BRFullTextSearchMacOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 975BE9E97FE948445107BD2A /* libPods-BasePods-BRFullTextSearchMacOS.a */; };
 		6022E4062A55E98145910DDD /* libPods-BasePods-BRFullTextSearch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D25A545E77BFA43C3C5D47F /* libPods-BasePods-BRFullTextSearch.a */; };
 		B41D7B5916D7FE7B09F1A0F7 /* libPods-BRFullTextSearchTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A941FCDB2DC233E241C3800 /* libPods-BRFullTextSearchTests.a */; };
 		C909C2651784CB600016C25E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C909C2641784CB600016C25E /* Foundation.framework */; };
@@ -133,11 +133,13 @@
 		0B150ED0DC675AAD38D91041 /* Pods-BasePods-BRFullTextSearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearchTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearchTests/Pods-BasePods-BRFullTextSearchTests.release.xcconfig"; sourceTree = "<group>"; };
 		175688046C735C8053C0E015 /* Pods-BRFullTextSearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BRFullTextSearchTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BRFullTextSearchTests/Pods-BRFullTextSearchTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A941FCDB2DC233E241C3800 /* libPods-BRFullTextSearchTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BRFullTextSearchTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5234BF92A2853373DF95BE8A /* libPods-BasePods-BRFullTextSearch Mac OS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BasePods-BRFullTextSearch Mac OS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AD30F9EDBB90E180F819A99 /* Pods-BRFullTextSearchTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BRFullTextSearchTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BRFullTextSearchTests/Pods-BRFullTextSearchTests.release.xcconfig"; sourceTree = "<group>"; };
+		685E3CDA24EE7C8ED3604A8D /* Pods-BasePods-BRFullTextSearchMacOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearchMacOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearchMacOS/Pods-BasePods-BRFullTextSearchMacOS.debug.xcconfig"; sourceTree = "<group>"; };
 		8D25A545E77BFA43C3C5D47F /* libPods-BasePods-BRFullTextSearch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BasePods-BRFullTextSearch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DD1D88DC310484ED3F8C547 /* Pods-BasePods-BRFullTextSearch.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearch.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearch/Pods-BasePods-BRFullTextSearch.release.xcconfig"; sourceTree = "<group>"; };
+		975BE9E97FE948445107BD2A /* libPods-BasePods-BRFullTextSearchMacOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BasePods-BRFullTextSearchMacOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9A68963B8579823FD1C229 /* Pods-BasePods-BRFullTextSearchTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearchTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearchTests/Pods-BasePods-BRFullTextSearchTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BFBBFA8CFA6938DDA64085B3 /* Pods-BasePods-BRFullTextSearchMacOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearchMacOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearchMacOS/Pods-BasePods-BRFullTextSearchMacOS.release.xcconfig"; sourceTree = "<group>"; };
 		C909C2611784CB600016C25E /* libBRFullTextSearch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBRFullTextSearch.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C909C2641784CB600016C25E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C909C2681784CB600016C25E /* BRFullTextSearch-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BRFullTextSearch-Prefix.pch"; sourceTree = "<group>"; };
@@ -195,8 +197,6 @@
 		C9E6137417C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSExpression+CLuceneAdditions.h"; sourceTree = "<group>"; };
 		C9E6137517C5A82E00EB6E38 /* NSExpression+CLuceneAdditions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "NSExpression+CLuceneAdditions.mm"; sourceTree = "<group>"; };
 		C9F87C3D17D94AA700485FAE /* BRSearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRSearchService.m; sourceTree = "<group>"; };
-		CB58E768DBC5A4CEB101D280 /* Pods-BasePods-BRFullTextSearch Mac OS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearch Mac OS.release.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearch Mac OS/Pods-BasePods-BRFullTextSearch Mac OS.release.xcconfig"; sourceTree = "<group>"; };
-		D392DA42076B1C70E03D0EEE /* Pods-BasePods-BRFullTextSearch Mac OS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasePods-BRFullTextSearch Mac OS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BasePods-BRFullTextSearch Mac OS/Pods-BasePods-BRFullTextSearch Mac OS.debug.xcconfig"; sourceTree = "<group>"; };
 		E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BRFullTextSearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DF7E451C69A075005B861B /* BRFullTextSearch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BRFullTextSearch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3DF7E491C69A075005B861B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -242,7 +242,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F52100168033F6AD997E2D6 /* libPods-BasePods-BRFullTextSearch Mac OS.a in Frameworks */,
+				08F58ED50F9FA6B4ADC815B9 /* libPods-BasePods-BRFullTextSearchMacOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,10 +256,10 @@
 				5AD30F9EDBB90E180F819A99 /* Pods-BRFullTextSearchTests.release.xcconfig */,
 				E420548430583E76A949D1FF /* Pods-BasePods-BRFullTextSearch.debug.xcconfig */,
 				8DD1D88DC310484ED3F8C547 /* Pods-BasePods-BRFullTextSearch.release.xcconfig */,
-				D392DA42076B1C70E03D0EEE /* Pods-BasePods-BRFullTextSearch Mac OS.debug.xcconfig */,
-				CB58E768DBC5A4CEB101D280 /* Pods-BasePods-BRFullTextSearch Mac OS.release.xcconfig */,
 				9D9A68963B8579823FD1C229 /* Pods-BasePods-BRFullTextSearchTests.debug.xcconfig */,
 				0B150ED0DC675AAD38D91041 /* Pods-BasePods-BRFullTextSearchTests.release.xcconfig */,
+				685E3CDA24EE7C8ED3604A8D /* Pods-BasePods-BRFullTextSearchMacOS.debug.xcconfig */,
+				BFBBFA8CFA6938DDA64085B3 /* Pods-BasePods-BRFullTextSearchMacOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -294,8 +294,8 @@
 				C909C2641784CB600016C25E /* Foundation.framework */,
 				4A941FCDB2DC233E241C3800 /* libPods-BRFullTextSearchTests.a */,
 				8D25A545E77BFA43C3C5D47F /* libPods-BasePods-BRFullTextSearch.a */,
-				5234BF92A2853373DF95BE8A /* libPods-BasePods-BRFullTextSearch Mac OS.a */,
 				01C1BE10792AA64013FE1EF4 /* libPods-BasePods-BRFullTextSearchTests.a */,
+				975BE9E97FE948445107BD2A /* libPods-BasePods-BRFullTextSearchMacOS.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -646,9 +646,9 @@
 			productReference = E345D8FC1C9DEA89005733F5 /* BRFullTextSearchTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		E3DF7E441C69A075005B861B /* BRFullTextSearch Mac OS */ = {
+		E3DF7E441C69A075005B861B /* BRFullTextSearchMacOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E3DF7E4C1C69A075005B861B /* Build configuration list for PBXNativeTarget "BRFullTextSearch Mac OS" */;
+			buildConfigurationList = E3DF7E4C1C69A075005B861B /* Build configuration list for PBXNativeTarget "BRFullTextSearchMacOS" */;
 			buildPhases = (
 				62172D825257FBA38E5A7E81 /* [CP] Check Pods Manifest.lock */,
 				E3DF7E401C69A075005B861B /* Sources */,
@@ -662,8 +662,8 @@
 			);
 			dependencies = (
 			);
-			name = "BRFullTextSearch Mac OS";
-			productName = "BRFullTextSearch Mac OS";
+			name = BRFullTextSearchMacOS;
+			productName = "BRFullTextSearchMacOS";
 			productReference = E3DF7E451C69A075005B861B /* BRFullTextSearch.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -709,7 +709,7 @@
 				C909C2601784CB600016C25E /* BRFullTextSearch */,
 				C90B75171C7EA00D00014124 /* BRFullTextSearchTests */,
 				C909C28C1784CB740016C25E /* BRFullTextSearch.framework */,
-				E3DF7E441C69A075005B861B /* BRFullTextSearch Mac OS */,
+				E3DF7E441C69A075005B861B /* BRFullTextSearchMacOS */,
 			);
 		};
 /* End PBXProject section */
@@ -876,7 +876,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BasePods-BRFullTextSearch Mac OS/Pods-BasePods-BRFullTextSearch Mac OS-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BasePods-BRFullTextSearchMacOS/Pods-BasePods-BRFullTextSearchMacOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1224,7 +1224,7 @@
 		};
 		E3DF7E4A1C69A075005B861B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D392DA42076B1C70E03D0EEE /* Pods-BasePods-BRFullTextSearch Mac OS.debug.xcconfig */;
+			baseConfigurationReference = 685E3CDA24EE7C8ED3604A8D /* Pods-BasePods-BRFullTextSearchMacOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1233,8 +1233,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "Framework-MacOS/Debug";
-				CONFIGURATION_TEMP_DIR = "build/BRFullTextSearch.build/Debug-macos";
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = NO;
@@ -1245,10 +1243,6 @@
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "BRFullTextSearch/BRFullTextSearch-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1257,7 +1251,7 @@
 				INFOPLIST_FILE = "BRFullTextSearch Mac OS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.brfulltextsearch-macos";
 				PRODUCT_NAME = BRFullTextSearch;
@@ -1275,7 +1269,7 @@
 		};
 		E3DF7E4B1C69A075005B861B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB58E768DBC5A4CEB101D280 /* Pods-BasePods-BRFullTextSearch Mac OS.release.xcconfig */;
+			baseConfigurationReference = BFBBFA8CFA6938DDA64085B3 /* Pods-BasePods-BRFullTextSearchMacOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = NO;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -1284,8 +1278,6 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				CONFIGURATION_BUILD_DIR = "Framework-MacOS/Release";
-				CONFIGURATION_TEMP_DIR = "build/BRFullTextSearch.build/Release-macos";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1306,7 +1298,7 @@
 				INFOPLIST_FILE = "BRFullTextSearch Mac OS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "us.bluerocket.brfulltextsearch-macos";
 				PRODUCT_NAME = BRFullTextSearch;
@@ -1361,7 +1353,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E3DF7E4C1C69A075005B861B /* Build configuration list for PBXNativeTarget "BRFullTextSearch Mac OS" */ = {
+		E3DF7E4C1C69A075005B861B /* Build configuration list for PBXNativeTarget "BRFullTextSearchMacOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E3DF7E4A1C69A075005B861B /* Debug */,
