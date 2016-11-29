@@ -10,7 +10,7 @@
 #define __BRFullTextSearch__SnowballPrefixFilter__
 
 #include "CLucene/analysis/AnalysisHeader.h"
-#include "SnowballFilter.h"
+#include "CLucene/snowball/SnowballFilter.h"
 
 using namespace lucene::analysis;
 using namespace lucene::analysis::snowball;

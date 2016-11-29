@@ -1,1 +1,0 @@
-../../../../../../../../clucene/src/contribs-lib/CLucene/snowball/include/libstemmer.h

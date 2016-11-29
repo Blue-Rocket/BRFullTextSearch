@@ -1,0 +1,11 @@
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO
+CLANG_CXX_LANGUAGE_STANDARD = c++0x
+CLANG_CXX_LIBRARY = libc++
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 _WCHAR_H_CPLUSPLUS_98_CONFORMANCE_
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/BRCLucene" "${PODS_ROOT}/Headers/Public/BRFullTextSearch" "${PODS_ROOT}/Headers/Public/MagicalRecord"
+LIBRARY_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/BRCLucene" "$PODS_CONFIGURATION_BUILD_DIR/BRFullTextSearch" "$PODS_CONFIGURATION_BUILD_DIR/MagicalRecord"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/BRCLucene" -isystem "${PODS_ROOT}/Headers/Public/BRFullTextSearch" -isystem "${PODS_ROOT}/Headers/Public/MagicalRecord"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"BRCLucene" -l"BRFullTextSearch" -l"MagicalRecord" -l"c++" -l"z" -framework "CoreData"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_ROOT = ${SRCROOT}/Pods

@@ -1,4 +1,0 @@
-[submodule "clucene"]
-	path = clucene
-	url = https://github.com/Blue-Rocket/clucene.git
-	branch = develop

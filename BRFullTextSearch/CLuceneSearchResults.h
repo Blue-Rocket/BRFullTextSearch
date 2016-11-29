@@ -7,7 +7,6 @@
 //
 
 #import <memory>
-#import <tr1/memory>
 #import "BRSearchResults.h"
 
 namespace lucene {
@@ -27,6 +26,6 @@ namespace lucene {
 - (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)theHits
 			  sort:(std::auto_ptr<lucene::search::Sort>)theSort
 			 query:(std::auto_ptr<lucene::search::Query>)theQuery
-			 searcher:(std::tr1::shared_ptr<lucene::search::Searcher>)theSearcher;
+			 searcher:(std::shared_ptr<lucene::search::Searcher>)theSearcher;
 
 @end

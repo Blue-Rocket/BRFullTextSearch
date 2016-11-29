@@ -1,0 +1,1 @@
+../../../../../BRCLucene/src/core/CLucene/search/ChainedFilter.h

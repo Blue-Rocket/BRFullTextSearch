@@ -19,13 +19,13 @@ using namespace lucene::search;
 	std::auto_ptr<Hits> hits;
 	std::auto_ptr<Sort> sort;
 	std::auto_ptr<Query> query;
-	std::tr1::shared_ptr<Searcher> searcher;
+	std::shared_ptr<Searcher> searcher;
 }
 
 - (id)initWithHits:(std::auto_ptr<lucene::search::Hits>)theHits
 			  sort:(std::auto_ptr<lucene::search::Sort>)theSort
 			 query:(std::auto_ptr<lucene::search::Query>)theQuery
-		  searcher:(std::tr1::shared_ptr<lucene::search::Searcher>)theSearcher {
+		  searcher:(std::shared_ptr<lucene::search::Searcher>)theSearcher {
 	if ( (self = [super init]) ) {
 		hits = theHits;
 		sort = theSort;

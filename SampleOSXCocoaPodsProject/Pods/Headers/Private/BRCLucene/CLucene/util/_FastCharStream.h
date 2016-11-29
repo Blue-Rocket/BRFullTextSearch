@@ -1,0 +1,1 @@
+../../../../../BRCLucene/src/core/CLucene/util/_FastCharStream.h

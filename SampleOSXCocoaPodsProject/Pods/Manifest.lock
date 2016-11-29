@@ -1,28 +1,30 @@
 PODS:
-  - BRFullTextSearch (1.1.1):
-    - BRFullTextSearch/Core (= 1.1.1)
-  - BRFullTextSearch/API (1.1.1)
-  - BRFullTextSearch/CLucene (1.1.1):
-    - BRFullTextSearch/CLucene-Contribs-Lib
-    - BRFullTextSearch/CLucene-Core
-    - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Config (1.1.1)
-  - BRFullTextSearch/CLucene-Contribs-Lib (1.1.1):
-    - BRFullTextSearch/CLucene-Core
-    - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Core (1.1.1):
-    - BRFullTextSearch/CLucene-Core-API
-    - BRFullTextSearch/CLucene-Shared
-  - BRFullTextSearch/CLucene-Core-API (1.1.1):
-    - BRFullTextSearch/CLucene-Config
-  - BRFullTextSearch/CLucene-Shared (1.1.1):
-    - BRFullTextSearch/CLucene-Core-API
-  - BRFullTextSearch/Core (1.1.1):
+  - BRCLucene (0.1.0):
+    - BRCLucene/CLucene (= 0.1.0)
+  - BRCLucene/CLucene (0.1.0):
+    - BRCLucene/CLucene-Contribs-Lib
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Config (0.1.0)
+  - BRCLucene/CLucene-Contribs-Lib (0.1.0):
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core (0.1.0):
+    - BRCLucene/CLucene-Core-API
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core-API (0.1.0):
+    - BRCLucene/CLucene-Config
+  - BRCLucene/CLucene-Shared (0.1.0):
+    - BRCLucene/CLucene-Core-API
+  - BRFullTextSearch (2.0.0):
+    - BRFullTextSearch/Core (= 2.0.0)
+  - BRFullTextSearch/API (2.0.0)
+  - BRFullTextSearch/Core (2.0.0):
     - BRFullTextSearch/API
     - BRFullTextSearch/Implementation-CLucene
-  - BRFullTextSearch/Implementation-CLucene (1.1.1):
+  - BRFullTextSearch/Implementation-CLucene (2.0.0):
+    - BRCLucene (< 2.0)
     - BRFullTextSearch/API
-    - BRFullTextSearch/CLucene
   - MagicalRecord (2.2):
     - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
@@ -36,7 +38,10 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  BRFullTextSearch: 7e416f703adc68e7bc507273d0931b4199773dfb
+  BRCLucene: 1035562d82d9bdad637ce0991b0b8ef4f8720ce3
+  BRFullTextSearch: 5f5ee65e1e8a26c5743664361c1008d1f16b6983
   MagicalRecord: 2dc87179ae7c1f2a274442624ec65a07d4357a6f
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: ec1511de673c0886b75c50decf58e5f961d4b808
+
+COCOAPODS: 1.1.1

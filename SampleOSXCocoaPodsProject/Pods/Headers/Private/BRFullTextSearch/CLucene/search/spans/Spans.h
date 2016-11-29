@@ -1,1 +1,0 @@
-../../../../../../../../clucene/src/core/CLucene/search/spans/Spans.h

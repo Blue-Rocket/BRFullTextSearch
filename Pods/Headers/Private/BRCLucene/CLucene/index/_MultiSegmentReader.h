@@ -1,0 +1,1 @@
+../../../../../BRCLucene/src/core/CLucene/index/_MultiSegmentReader.h
