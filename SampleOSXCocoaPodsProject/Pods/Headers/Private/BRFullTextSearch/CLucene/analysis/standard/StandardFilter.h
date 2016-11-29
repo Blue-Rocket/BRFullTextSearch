@@ -1,1 +1,0 @@
-../../../../../../../../clucene/src/core/CLucene/analysis/standard/StandardFilter.h
