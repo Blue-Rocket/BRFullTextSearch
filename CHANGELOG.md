@@ -1,6 +1,17 @@
 # Change Log
 
-## [1.1.1](https://github.com/Blue-Rocket/BRFullTextSearch/tree/1.1.1) (2016-05-18)
+## [2.0.0-beta1](https://github.com/Blue-Rocket/BRFullTextSearch/tree/2.0.0-beta1) (2016-11-30)
+[Full Changelog](https://github.com/Blue-Rocket/BRFullTextSearch/compare/1.1.1...2.0.0-beta1)
+
+**Implemented enhancements:**
+
+- Update to BRCLucene pod [\#22](https://github.com/Blue-Rocket/BRFullTextSearch/issues/22)
+
+**Closed issues:**
+
+- Index corruption [\#19](https://github.com/Blue-Rocket/BRFullTextSearch/issues/19)
+
+## [1.1.1](https://github.com/Blue-Rocket/BRFullTextSearch/tree/1.1.1) (2016-05-17)
 [Full Changelog](https://github.com/Blue-Rocket/BRFullTextSearch/compare/1.1.0...1.1.1)
 
 **Implemented enhancements:**
