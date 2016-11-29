@@ -213,31 +213,3 @@ set up using the static library framework integration approach. You must build
 **BRFullTextSearch.framework** first, then open this project. When you run the
 project, it will index a set of documents using some Latin text. You can then search
 for latin words using a simple UI.
-
-## via dependent project
-
-Another way you can integrate BRFullTextSearch into your project is to add the
-BRFullTextSearch Xcode project as a dependent project of your project. The
-BRFullTextSearch Xcode project includes a target called **BRFullTextSearch** that
-builds a static library. You can use that target as a dependency in your own project.
-
-Then drag the **BRFullTextSearch.xcodeproj** onto your project in the Project
-Navigator. Then go to the **Build Phases** tab of your project's settings. Expand the
-**Target Dependencies** section and click the **+** button. You should see the
-**BRFullTextSearch** static library target as an available option. Select that and
-click the **Add** button.
-
-You must also add the following linker build dependencies, which you can do by
-clicking the **+** button in the **Link Binary With Libraries** section of the
-**Build Phases** tab in the project settings:
-
- * libz
- * libc++
-
-Next, add `-ObjC` as an *Other Linker Flags* build setting.
-
-Finally, you'll need to add the path to the directory containing the
-*BRFullTextSearch.xcodeproj* file as a **Header Search Paths** value in the **Build
-Settings** tab of the project settings. If you have added BRFullTextSearch as a git
-submodule to your own project, then the path might be something like
-**"$(PROJECT_DIR)/../BRFullTextSearch"**.
