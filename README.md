@@ -33,13 +33,10 @@ id<BRSearchResults> results = [service search:@"special"];
 
 # Sample projects
 
-There are several sample projects included in the source distribution:
+There are some sample projects included in the source distribution:
 
  * [SampleCocoaPodsProject](SampleCocoaPodsProject/) - a Core Data based iOS application using CocoaPods integration
- * [SampleCoreDataProject](SampleCoreDataProject/) - a Core Data based iOS application using dependent project integration
- * [SampleDependentProject](SampleDependentProject) - a basic iOS application using dependent project integration
  * [SampleOSXCocoaPodsProject](SampleOSXCocoaPodsProject/) - a Core Data based OS X application using CocoaPods integration
- * [SampleStaticLibraryProject](SampleStaticLibraryProject/) - a basic iOS application using static library integration
 
 # Predicate queries
 
@@ -140,10 +137,10 @@ id<BRSearchService> service = ...;
 It's pretty easy to integrate BRFullTextSearch with Core Data, to maintain a search
 index while changes are persisted in Core Data. One way is to listen for the
 `NSManagedObjectContextDidSaveNotification` notification and process Core Data
-changes as index delete and update operations. The **SampleCoreDataProject** iOS project
+changes as index delete and update operations. The **SampleCocoaPodsProject** iOS project
 contains an example of this integration. The app allows you to create small _sticky
 notes_ and search the text of those notes. See the
-[CoreDataManager](SampleCoreDataProject/SampleCoreDataProject/CoreDataManager.m) class in the sample
+[CoreDataManager](SampleCocoaPodsProject/SampleCocoaPodsProject/CoreDataManager.m) class in the sample
 project, whose `maintainSearchIndexFromManagedObjectDidSave:` method handles this.
 
 The **SampleOSXCocoaPodsProject** OS X project also contains an example of this integration.
