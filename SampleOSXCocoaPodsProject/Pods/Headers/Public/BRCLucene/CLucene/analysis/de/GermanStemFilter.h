@@ -1,0 +1,1 @@
+../../../../../../BRCLucene/src/contribs-lib/CLucene/analysis/de/GermanStemFilter.h

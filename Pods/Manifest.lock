@@ -1,0 +1,28 @@
+PODS:
+  - BRCLucene (1.0.0-beta1):
+    - BRCLucene/CLucene (= 1.0.0-beta1)
+  - BRCLucene/CLucene (1.0.0-beta1):
+    - BRCLucene/CLucene-Contribs-Lib
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Config (1.0.0-beta1)
+  - BRCLucene/CLucene-Contribs-Lib (1.0.0-beta1):
+    - BRCLucene/CLucene-Core
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core (1.0.0-beta1):
+    - BRCLucene/CLucene-Core-API
+    - BRCLucene/CLucene-Shared
+  - BRCLucene/CLucene-Core-API (1.0.0-beta1):
+    - BRCLucene/CLucene-Config
+  - BRCLucene/CLucene-Shared (1.0.0-beta1):
+    - BRCLucene/CLucene-Core-API
+
+DEPENDENCIES:
+  - BRCLucene (~> 1.0.0-beta1)
+
+SPEC CHECKSUMS:
+  BRCLucene: e3ff71c464c0a37d5093f2e1e9ee4e46bf578454
+
+PODFILE CHECKSUM: ee15b1e6dd161fbe90172ae3362b2df9b74822dc
+
+COCOAPODS: 1.1.1

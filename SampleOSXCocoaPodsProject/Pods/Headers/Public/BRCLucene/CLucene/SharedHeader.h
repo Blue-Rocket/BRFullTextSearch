@@ -1,0 +1,1 @@
+../../../../BRCLucene/src/shared/CLucene/SharedHeader.h

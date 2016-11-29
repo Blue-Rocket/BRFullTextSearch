@@ -12,7 +12,7 @@
 
 #include "CLucene/_ApiHeader.h"
 #include "BRNoLockFactory.h"
-#include "_Lock.h"
+#include "CLucene/store/_Lock.h"
 #include "CLucene/util/Misc.h"
 
 CL_NS_DEF(store)
