@@ -1,38 +1,28 @@
 PODS:
-  - BRCLucene (1.0.0):
-    - BRCLucene/CLucene (= 1.0.0)
-  - BRCLucene/CLucene (1.0.0):
+  - BRCLucene (1.0.0-beta1):
+    - BRCLucene/CLucene (= 1.0.0-beta1)
+  - BRCLucene/CLucene (1.0.0-beta1):
     - BRCLucene/CLucene-Contribs-Lib
     - BRCLucene/CLucene-Core
     - BRCLucene/CLucene-Shared
-  - BRCLucene/CLucene-Config (1.0.0)
-  - BRCLucene/CLucene-Contribs-Lib (1.0.0):
+  - BRCLucene/CLucene-Config (1.0.0-beta1)
+  - BRCLucene/CLucene-Contribs-Lib (1.0.0-beta1):
     - BRCLucene/CLucene-Core
     - BRCLucene/CLucene-Shared
-  - BRCLucene/CLucene-Core (1.0.0):
+  - BRCLucene/CLucene-Core (1.0.0-beta1):
     - BRCLucene/CLucene-Core-API
     - BRCLucene/CLucene-Shared
-  - BRCLucene/CLucene-Core-API (1.0.0):
+  - BRCLucene/CLucene-Core-API (1.0.0-beta1):
     - BRCLucene/CLucene-Config
-  - BRCLucene/CLucene-Shared (1.0.0):
+  - BRCLucene/CLucene-Shared (1.0.0-beta1):
     - BRCLucene/CLucene-Core-API
 
 DEPENDENCIES:
-  - BRCLucene (from `https://github.com/Blue-Rocket/clucene.git`, branch `feature/pod`)
-
-EXTERNAL SOURCES:
-  BRCLucene:
-    :branch: feature/pod
-    :git: https://github.com/Blue-Rocket/clucene.git
-
-CHECKOUT OPTIONS:
-  BRCLucene:
-    :commit: 24eb25fc4c720cb4ff97a263ef488e1bedf6c10c
-    :git: https://github.com/Blue-Rocket/clucene.git
+  - BRCLucene (~> 1.0.0-beta1)
 
 SPEC CHECKSUMS:
-  BRCLucene: 3de331a9edbc7c2a644b4116ab8899942b566898
+  BRCLucene: e3ff71c464c0a37d5093f2e1e9ee4e46bf578454
 
-PODFILE CHECKSUM: 9b475d4985b5b3c5ae66c470460a0d117e305efb
+PODFILE CHECKSUM: 74ba70080cad90ed7b3d16d16d47867a129a0e2a
 
 COCOAPODS: 1.1.1
