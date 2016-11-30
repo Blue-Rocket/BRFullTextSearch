@@ -204,9 +204,3 @@ this setting as well.
 Finally, you'll need to add the path to the directory containing the
 `BRFullTextSearch.framework` bundle as a **Framework Search Paths** value in the
 **Build Settings** tab of the project settings.
-
-The **SampleStaticLibraryProject** included in this repository is an example project
-set up using the static library framework integration approach. You must build
-**BRFullTextSearch.framework** first, then open this project. When you run the
-project, it will index a set of documents using some Latin text. You can then search
-for latin words using a simple UI.
