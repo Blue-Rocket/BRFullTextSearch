@@ -60,7 +60,7 @@ static NSExpression *ValueExpression;
 if ( ValueExpression == nil ) {
     ValueExpression = [NSExpression expressionForKeyPath:kBRSearchFieldNameValue];
 }
-NSArray *tokens = [[query stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]
+NSArray *tokens = [[[query lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]]
                    componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 NSMutableArray *predicates = [NSMutableArray arrayWithCapacity:([tokens count] * 2)];
 for ( NSString *token in tokens ) {
@@ -78,6 +78,13 @@ for ( NSString *token in tokens ) {
 NSPredicate *predicateQuery = [NSCompoundPredicate orPredicateWithSubpredicates:predicates];
 searchResults = [searchService searchWithPredicate:predicateQuery sortBy:nil sortType:0 ascending:NO];
 ```
+
+Note how a lower-case copy of the original query is used in this example. In the default configuration
+the `kBRSearchFieldNameValue` field will be _tokenized_ and all tokenized fields are converted to lower
+case when added to the index. Thus the query text must also be converted to lower case for the search to
+work as expected. The [BRIndexable][BRIndexable] protocol controls which fields are tokenized during
+indexing.
+
 
 # Batch API
 
@@ -204,3 +211,6 @@ this setting as well.
 Finally, you'll need to add the path to the directory containing the
 `BRFullTextSearch.framework` bundle as a **Framework Search Paths** value in the
 **Build Settings** tab of the project settings.
+
+
+ [BRIndexable]: https://github.com/Blue-Rocket/BRFullTextSearch/blob/master/BRFullTextSearch/BRIndexable.h
